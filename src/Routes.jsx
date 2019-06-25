@@ -5,8 +5,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Dashboard from './views/Dashboard';
 // import Account from './views/Account';
 // import Settings from './views/Settings';
-// import SignUp from './views/SignUp';
-// import SignIn from './views/SignIn';
+import SignUp from './views/SignUp';
+import SignIn from './views/SignIn';
 // import NotFound from './views/NotFound';
 
 export default class Routes extends Component {
@@ -22,6 +22,16 @@ export default class Routes extends Component {
           component={Dashboard}
           exact
           path="/dashboard"
+        />
+        <Route
+          component={SignUp}
+          exact
+          path="/sign-up"
+        />
+        <Route
+          component={SignIn}
+          exact
+          path="/sign-in"
         />
       </Switch>
     );
