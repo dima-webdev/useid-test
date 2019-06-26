@@ -7,6 +7,7 @@ import Dashboard from './views/Dashboard';
 // import Settings from './views/Settings';
 import SignUp from './views/SignUp';
 import SignIn from './views/SignIn';
+import GroupSearch from './views/GroupSearch'
 // import NotFound from './views/NotFound';
 
 export default class Routes extends Component {
@@ -32,6 +33,11 @@ export default class Routes extends Component {
           component={SignIn}
           exact
           path="/sign-in"
+        />
+        <Route
+          component={GroupSearch}
+          exact
+          path="/group-search"
         />
       </Switch>
     );

@@ -30,7 +30,8 @@ import {
   ImageOutlined as ImageIcon,
   InfoOutlined as InfoIcon,
   AccountBoxOutlined as AccountBoxIcon,
-  SettingsOutlined as SettingsIcon
+  SettingsOutlined as SettingsIcon,
+  Search as SearchIcon,
 } from '@material-ui/icons';
 
 // Component styles
@@ -52,7 +53,7 @@ class Sidebar extends Component {
             <img
               alt="logo"
               className={classes.logoImage}
-              src=""
+              src="https://static.tildacdn.com/tild6335-3665-4034-b035-383563356665/useid_logo_official1.svg"
             />
           </Link>
         </div>
@@ -95,6 +96,20 @@ class Sidebar extends Component {
             <ListItemText
               classes={{ primary: classes.listItemText }}
               primary="Dashboard"
+            />
+          </ListItem>
+          <ListItem
+            activeClassName={classes.activeListItem}
+            className={classes.listItem}
+            component={NavLink}
+            to="/group-search"
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <SearchIcon />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.listItemText }}
+              primary="Group Search"
             />
           </ListItem>
         </List>
