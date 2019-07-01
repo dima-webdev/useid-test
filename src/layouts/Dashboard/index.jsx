@@ -14,6 +14,8 @@ import { Drawer } from '@material-ui/core';
 // Custom components
 import { Sidebar, Topbar, Footer } from './components';
 
+
+import {TaskSidebar} from '../../components'
 // Component styles
 import styles from './styles';
 
@@ -70,7 +72,10 @@ class Dashboard extends Component {
             [classes.contentShift]: shiftContent
           })}
         >
-          {children}
+          <div className={classNames(classes.mainPane)}>
+            <div className={classNames(classes.mainPaneChildren)}>{children}</div>
+            <TaskSidebar />
+          </div>
           <Footer />
         </main>
       </Fragment>

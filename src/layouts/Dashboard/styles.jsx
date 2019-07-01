@@ -29,6 +29,13 @@ export default theme => ({
       duration: theme.transitions.duration.leavingScreen
     })
   },
+  mainPane: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  mainPaneChildren: {
+    width: '100%'
+  },
   contentShift: {
     marginLeft: '270px'
   }

@@ -20,22 +20,20 @@ import './assets/scss/index.scss';
 
 // Routes
 import Routes from './Routes';
+import { TaskManager } from './services/taskContext/index.jsx'
 
 // Browser history
 const browserHistory = createBrowserHistory();
-
-// Configure ChartJS
-// Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
-//   draw: chartjs.draw
-// });
 
 export default class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <Router history={browserHistory}>
-          <Routes />
-        </Router>
+        <TaskManager>
+          <Router history={browserHistory}>
+            <Routes />
+          </Router>
+        </TaskManager>
       </ThemeProvider>
     );
   }

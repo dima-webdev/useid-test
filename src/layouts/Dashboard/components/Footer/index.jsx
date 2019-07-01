@@ -13,6 +13,8 @@ import { Divider, Typography } from '@material-ui/core';
 // Component styles
 const styles = theme => ({
   root: {
+    flexGrow: '1',
+    width: '100%',
     padding: theme.spacing.unit * 4
   },
   company: {
@@ -37,7 +39,7 @@ class Footer extends Component {
           useid.pro 2019
         </Typography>
         <Typography variant="caption">
-          
+
         </Typography>
       </div>
     );

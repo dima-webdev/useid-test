@@ -3,6 +3,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import {
   Portlet,
@@ -14,29 +17,9 @@ import {
 
 import styles from './styles';
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
-
 class SearchForm extends Component {
   state = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    state: '',
-    country: ''
+
   };
 
   handleChange = e => {
@@ -45,9 +28,13 @@ class SearchForm extends Component {
     });
   };
 
+  startSearch() {
+    const task = {taskname: 'helloworld'};
+    this.props.onSearchStart(task);
+  }
+
   render() {
     const { classes, className, ...rest } = this.props;
-    const { firstName, lastName, phone, state, country, email } = this.state;
 
     const rootClassName = classNames(classes.root, className);
 
@@ -58,8 +45,7 @@ class SearchForm extends Component {
       >
         <PortletHeader>
           <PortletLabel
-            subtitle="The information can be edited"
-            title="Profile"
+            title="Search setup"
           />
         </PortletHeader>
         <PortletContent noPadding>
@@ -76,10 +62,9 @@ class SearchForm extends Component {
                 variant="outlined"
               />
             </div>
-            <div className={classes.fieldRow}>
+            <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                helperText="Enter search string here"
                 label="Search string"
                 margin="dense"
                 multiline
@@ -88,12 +73,84 @@ class SearchForm extends Component {
                 variant="outlined"
               />
             </div>
+            <div className={classes.field}>
+              <TextField
+                className={classes.textFieldSmall}
+                label="members min"
+                margin="dense"
+                rows="1"
+                required
+                variant="outlined"
+              />
+              <TextField
+                className={classes.textFieldSmall}
+                label="members max"
+                margin="dense"
+                rows="1"
+                required
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.field}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={true}
+                    value="interest"
+                    color="primary"
+                  />
+                }
+                label="By interest"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={false}
+                    value="first-name"
+                    color="primary"
+                  />
+                }
+                label="By first name"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={false}
+                    value="second-name"
+                    color="primary"
+                  />
+                }
+                label="By second name"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={false}
+                    value="job-name"
+                    color="primary"
+                  />
+                }
+                label="By job name"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={false}
+                    value="job-position"
+                    color="primary"
+                  />
+                }
+                label="By job position"
+              />
+
+            </div>
           </form>
         </PortletContent>
         <PortletFooter className={classes.portletFooter}>
           <Button
             color="primary"
             variant="contained"
+            onClick={() => this.startSearch()}
           >
             Start
           </Button>
@@ -105,7 +162,8 @@ class SearchForm extends Component {
 
 SearchForm.propTypes = {
   className: PropTypes.string,
-  classes: PropTypes.object.isRequired
-};
+  classes: PropTypes.object.isRequired,
+  onSearchStart: PropTypes.func.isRequired,
+}
 
 export default withStyles(styles)(SearchForm);

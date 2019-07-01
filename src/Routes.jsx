@@ -15,7 +15,7 @@ export default class Routes extends Component {
         <Redirect
           exact
           from="/"
-          to="/dashboard"
+          to="/group-search"
         />
         <Route
           component={Dashboard}
@@ -36,6 +36,10 @@ export default class Routes extends Component {
           component={GroupSearch}
           exact
           path="/group-search"
+        />
+        <Route
+          component={GroupSearch}
+          path="/group-search/:taskId"
         />
         <Route
           component={NotFound}

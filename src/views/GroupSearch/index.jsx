@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core';
-import { Grid } from '@material-ui/core';
+import { withStyles, Grid } from '@material-ui/core';
 import { Dashboard as DashboardLayout } from 'layouts';
+import { Redirect } from 'react-router-dom';
 
-import { GroupSearchForm } from './components'
+import {TaskContext} from '../../services/taskContext';
 
+import { GroupSearchForm, GroupSearchResult } from './components'
 const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 4
@@ -15,35 +16,62 @@ const styles = theme => ({
   }
 });
 
-class Dashboard extends Component {
-  render() {
-    const { classes } = this.props;
+class GroupSearch extends Component {
+  state = {};
 
+  render() {
+    const { classes, match } = this.props;
+    const taskId = match.params.taskId || null;
+
+    console.log(taskId);
     return (
+      <TaskContext.Consumer>{
+        tasks => {
+
+          return (
       <DashboardLayout title="Group Search">
         <div className={classes.root}>
+        {this.state.redirectTo
+          ? <Redirect
+            push
+            to={{
+              pathname: this.state.redirectTo
+            }}
+          />
+          : null }
           <Grid
             container
             spacing={4}
           >
             <Grid
               item
-              lg={8}
-              md={6}
-              xl={8}
+              lg={12}
+              md={12}
+              xl={12}
               xs={12}
             >
-              <GroupSearchForm />
+            { taskId
+              ? <GroupSearchResult taskId={taskId} />
+              : <GroupSearchForm onSearchStart={(task) => {
+                task.name = task.name || 'HELLO';
+                task.id = task.id || Math.floor(Math.random() * 10000).toString()
+
+                tasks.createTask(task)
+                .then(() => this.setState({
+                  redirectTo: `/group-search/${task.id}`
+                }));
+              }} />}
             </Grid>
           </Grid>
         </div>
       </DashboardLayout>
     );
-  }
+  }}</TaskContext.Consumer>);
+}
 }
 
-Dashboard.propTypes = {
+GroupSearch.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(GroupSearch);
