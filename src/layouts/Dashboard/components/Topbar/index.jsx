@@ -7,7 +7,7 @@ import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
 // Material helpers
-import { withStyles } from '@material-ui/core';
+import { withStyles, Avatar } from '@material-ui/core';
 
 // Material components
 import {
@@ -80,6 +80,13 @@ class Topbar extends Component {
     history.push('/sign-in');
   };
 
+  handleGoToAccount = () => {
+    const { history } = this.props;
+
+    // localStorage.setItem('isAuthenticated', false);
+    history.push('/account');
+  };
+
   handleShowNotifications = event => {
     this.setState({
       notificationsEl: event.currentTarget
@@ -136,9 +143,13 @@ class Topbar extends Component {
             </IconButton>
             <IconButton
               className={classes.signOutButton}
-              onClick={this.handleSignOut}
+              onClick={this.handleGoToAccount}
             >
-              <InputIcon />
+              <Avatar
+                alt="user"
+                className={classes.avatar}
+                src="/images/avatar.png"
+              />
             </IconButton>
           </Toolbar>
         </div>

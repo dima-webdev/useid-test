@@ -5,6 +5,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Dashboard from './views/Dashboard';
 import SignUp from './views/SignUp';
 import SignIn from './views/SignIn';
+import Account from './views/Account';
+import Settings from './views/Settings';
 import GroupSearch from './views/GroupSearch'
 import NotFound from './views/NotFound';
 
@@ -40,6 +42,16 @@ export default class Routes extends Component {
         <Route
           component={GroupSearch}
           path="/group-search/:taskId"
+        />
+        <Route
+          component={Account}
+          exact
+          path="/account"
+        />
+        <Route
+          component={Settings}
+          exact
+          path="/settings"
         />
         <Route
           component={NotFound}
