@@ -53,7 +53,8 @@ class GroupSearch extends Component {
             { taskId
               ? <GroupSearchResult taskId={taskId} />
               : <GroupSearchForm onSearchStart={(task) => {
-                task.name = task.name || 'HELLO';
+                console.log(task);
+                task.name = task.taskname || 'Taskname';
                 task.id = task.id || Math.floor(Math.random() * 10000).toString()
 
                 tasks.createTask(task)

@@ -53,7 +53,7 @@ class Sidebar extends Component {
             <img
               alt="logo"
               className={classes.logoImage}
-              src="https://static.tildacdn.com/tild6335-3665-4034-b035-383563356665/useid_logo_official1.svg"
+              src="../images/useid_logo.svg"
             />
           </Link>
         </div>
@@ -63,7 +63,7 @@ class Sidebar extends Component {
             <Avatar
               alt="Test User"
               className={classes.avatar}
-              src="/images/avatars/avatar_1.png"
+              src="/images/avatar.png"
             />
           </Link>
           <Typography

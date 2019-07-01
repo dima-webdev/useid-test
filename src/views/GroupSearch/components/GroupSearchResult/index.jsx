@@ -46,7 +46,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
               >
                 <PortletHeader>
                   <PortletLabel
-                    title={taskId + " search result"}
+                    title={'Task ' + task.taskname}
                   />
                 </PortletHeader>
                 <PortletContent>
@@ -56,7 +56,21 @@ function SearchResult ({ classes, className, taskId, ...rest }){
 
                 </PortletContent>
                 <PortletFooter className={classes.portletFooter}>
-                  Please wait for the completion of the task.
+                  Please wait for the completion of the task. <br/>
+                  <Button
+                    variant="contained"
+                    onClick={() => setState({redirectTo: '/group-search'})}
+                  >
+                    Close
+                    {state.redirectTo
+                      ? <Redirect
+                        push
+                        to={{
+                          pathname: state.redirectTo
+                        }}
+                      />
+                      : null }
+                  </Button>
                 </PortletFooter>
               </Portlet>
             </>
@@ -70,7 +84,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                 >
                   <PortletHeader>
                     <PortletLabel
-                      title={taskId + " search result"}
+                      title={task.taskname + " search result"}
                     />
                   </PortletHeader>
                   <PortletContent>

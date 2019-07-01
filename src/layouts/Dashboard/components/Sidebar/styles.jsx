@@ -18,6 +18,7 @@ export default theme => ({
     fontSize: 0
   },
   logoImage: {
+    width: 80,
     cursor: 'pointer'
   },
   logoDivider: {

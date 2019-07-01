@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {TaskContext} from '../../services/taskContext/index.jsx';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -10,24 +11,26 @@ const useStyles = makeStyles(theme => ({
     // flexDirection: 'column',
     // justifyContent: 'start',
     borderLeft: '1px solid #d3d3d3',
+    padding: theme.spacing(1),
   },
   title: {
     padding: theme.spacing(2),
     fontWeight: 500,
   },
   itemPending: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    height: 40,
-    borderBottom: '1px solid #d3d3d3',
+    // marginLeft: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    // height: 40,
     color: 'orange'
   },
   itemCompleted: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    height: 40,
-    borderBottom: '1px solid #d3d3d3',
+    // marginLeft: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    // height: 40,
     color: 'green'
+  },
+  nameText: {
+    marginTop: theme.spacing.unit * 2
   },
 }));
 
@@ -38,7 +41,12 @@ export default function TaskSidebar() {
   return <TaskContext.Consumer>{
     tasks => {
       return <div className={classes.root}>
-      <div className={classes.title}>Current tasks</div>
+      <Typography
+        className={classes.nameText}
+        variant="subtitle2"
+      >
+        Current tasks
+      </Typography>
       {
 
         tasks.allTasks.map((id) => {
@@ -46,11 +54,19 @@ export default function TaskSidebar() {
           let path = `/group-search/${id}`
           if (!task.done) {
             return <Link to={path} key={id}>
-              <div className={classes.itemPending}>{task.name} — {task.progress}%</div>
+              <Typography
+                className={classes.itemPending}
+              >
+                {task.name} — {task.progress}%
+              </Typography>
             </Link>
           } else {
             return <Link to={path} key={id}>
-              <div className={classes.itemCompleted}>{task.name} [COMPLETED]</div>
+              <Typography
+                className={classes.itemCompleted}
+              >
+                {task.name} [completed]
+              </Typography>
             </Link>
           }
         })

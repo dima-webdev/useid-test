@@ -19,19 +19,21 @@ import styles from './styles';
 
 class SearchForm extends Component {
   state = {
-
+    taskname: '',
   };
 
   handleChange = e => {
     this.setState({
-      state: e.target.value
+      taskname: e.target.value
     });
+    console.log(this.state.taskname)
   };
 
   startSearch() {
-    const task = {taskname: 'helloworld'};
+    const task = {taskname: this.state.taskname};
     this.props.onSearchStart(task);
   }
+
 
   render() {
     const { classes, className, ...rest } = this.props;
@@ -60,6 +62,7 @@ class SearchForm extends Component {
                 margin="dense"
                 required
                 variant="outlined"
+                onChange={this.handleChange}
               />
             </div>
             <div className={classes.field}>
@@ -153,6 +156,15 @@ class SearchForm extends Component {
             onClick={() => this.startSearch()}
           >
             Start
+          </Button>
+          <Button
+            variant="contained"
+          >
+            Save
+          </Button>
+          <Button
+          >
+            Cancel
           </Button>
         </PortletFooter>
       </Portlet>
