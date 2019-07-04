@@ -22,5 +22,21 @@ export default theme => ({
     paddingRight: theme.spacing.unit * 3,
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2
+  },
+  tableRow: {
+    height: '64px'
+  },
+  tableCell: {
+    whiteSpace: 'nowrap'
+  },
+  tableCellInner: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  nameText: {
+    display: 'inline-block',
+    marginLeft: theme.spacing.unit * 2,
+    fontWeight: 500,
+    cursor: 'pointer'
   }
 });

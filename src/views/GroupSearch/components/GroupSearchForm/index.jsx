@@ -94,59 +94,6 @@ class SearchForm extends Component {
                 variant="outlined"
               />
             </div>
-            <div className={classes.field}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={true}
-                    value="interest"
-                    color="primary"
-                  />
-                }
-                label="By interest"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={false}
-                    value="first-name"
-                    color="primary"
-                  />
-                }
-                label="By first name"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={false}
-                    value="second-name"
-                    color="primary"
-                  />
-                }
-                label="By second name"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={false}
-                    value="job-name"
-                    color="primary"
-                  />
-                }
-                label="By job name"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={false}
-                    value="job-position"
-                    color="primary"
-                  />
-                }
-                label="By job position"
-              />
-
-            </div>
           </form>
         </PortletContent>
         <PortletFooter className={classes.portletFooter}>

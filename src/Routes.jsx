@@ -9,6 +9,7 @@ import Account from './views/Account';
 import Settings from './views/Settings';
 import GroupSearch from './views/GroupSearch'
 import NotFound from './views/NotFound';
+import Projects from './views/Projects';
 
 export default class Routes extends Component {
   render() {
@@ -52,6 +53,11 @@ export default class Routes extends Component {
           component={Settings}
           exact
           path="/settings"
+        />
+        <Route
+          component={Projects}
+          exact
+          path="/projects"
         />
         <Route
           component={NotFound}

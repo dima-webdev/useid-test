@@ -6,7 +6,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles(theme => ({
   button: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
+    width: 10,
+    height: 10,
   },
   root: {
     display: 'flex',
@@ -14,20 +16,15 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'start',
     margin: theme.spacing(1),
   },
-  square: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 100,
-    height: 100,
-    backgroundColor: '#eee'
-  },
   info: {
     flexGrow: '1',
   },
   groupInfo: {
+    display: 'inline-block',
     marginTop: theme.spacing(1)
   },
   groupUsers: {
+    display: 'inline-block',
     marginTop: theme.spacing(1)
   }
 }));
@@ -41,12 +38,8 @@ export default function ResultItem({item, onDeleteItem}) {
           <DeleteIcon />
         </IconButton>
       </div>
-      <div>
-        <div className={classes.square} />
-      </div>
       <div className={classes.info}>
         <div className={classes.groupName}>{item.name}</div>
-        <div className={classes.groupInfo}>{item.description}</div><div className={classes.groupUsers}>{item.users} users</div>
       </div>
     </div>;
 }
