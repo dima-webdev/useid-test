@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     color: 'green'
   },
   nameText: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
 }));
 

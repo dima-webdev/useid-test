@@ -5,7 +5,7 @@ import { Grid, Typography } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 4
+    padding: theme.spacing(4)
   },
   content: {
     marginTop: '150px',

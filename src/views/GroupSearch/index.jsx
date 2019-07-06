@@ -9,7 +9,7 @@ import {TaskContext} from '../../services/taskContext';
 import { GroupSearchForm, GroupSearchResult } from './components'
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 4
+    padding: theme.spacing(4)
   },
   item: {
     height: '100%'

@@ -15,11 +15,11 @@ const styles = theme => ({
   root: {
     flexGrow: '1',
     width: '100%',
-    padding: theme.spacing.unit * 4
+    padding: theme.spacing(4)
   },
   company: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 0.5
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(0.5)
   }
 });
 

@@ -46,39 +46,39 @@ function SearchResult ({ classes, className, taskId, ...rest }){
     const groups = [
       {
         id: 1,
-        name: 'title 1',
+        name: 'Группа любителей ',
         members: '123',
-        data: 'some other data'
+        data: 'Товарищи! новая модель организационной деятельности в значительной степени обуславливает создание модели развития. '
       },
       {
         id: 2,
-        name: 'title 2',
-        members: '123',
-        data: 'some other data'
+        name: 'Жизнь не та без ',
+        members: '7655',
+        data: 'Повседневная практика показывает, что постоянный количественный рост и сфера нашей активности представляет собой .'
       },
       {
         id: 3,
-        name: 'title 3',
-        members: '123',
-        data: 'some other data'
+        name: 'Продаем и покупаем ',
+        members: '76667',
+        data: 'Идейные соображения высшего порядка, а также рамки и место обучения кадров в значительной степени обуславливает.'
       },
       {
         id: 4,
-        name: 'title 4',
-        members: '123',
-        data: 'some other data'
+        name: 'На необитаемый остров я взяла бы с собой ',
+        members: '2754',
+        data: 'С другой стороны начало повседневной работы по формированию позиции позволяет выполнять важные задания.'
       },
       {
         id: 5,
-        name: 'title 5',
-        members: '123',
-        data: 'some other data'
+        name: 'Лучшее в городе ',
+        members: '86989',
+        data: 'Повседневная практика показывает, что консультация с широким активом способствует подготовки.'
       },
       {
         id: 6,
-        name: 'title 6',
-        members: '123',
-        data: 'some other data'
+        name: 'Продам гараж и ',
+        members: '12',
+        data: 'Повседневная практика показывает, что укрепление и развитие структуры играет.'
       }
     ]
 
@@ -125,6 +125,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
     };
 
     const rootClassName = classNames(classes.root, className);
+    const tableClassName = classNames(classes.table, className);
     const { rowsPerPage, page } = state;
 
     return (
@@ -193,7 +194,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                     />
                   </PortletHeader>
                   <PortletContent>
-
+                    <div className={tableClassName}>
                     <Table>
                       <TableHead>
                         <TableRow>
@@ -209,9 +210,9 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                             />
                             Name
                           </TableCell>
-                          <TableCell align="left">ID</TableCell>
+                          <TableCell align="left">Description</TableCell>
                           <TableCell align="left">Members</TableCell>
-                          <TableCell align="left">Data</TableCell>
+
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -224,7 +225,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                               key={group.id}
                               selected={selected.indexOf(group.id) !== -1}
                             >
-                              <TableCell className={classes.tableCell}>
+                              <TableCell className={classes.tableCell, classes.nameCell}>
                                 <div className={classes.tableCellInner}>
                                   <Checkbox
                                     checked={selected.indexOf(group.id) !== -1}
@@ -238,23 +239,21 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                                     className={classes.nameText}
                                     variant="body1"
                                   >
-                                    {group.name}
+                                    {group.name + task.taskname}
                                   </Typography>
                                 </div>
                               </TableCell>
-                              <TableCell className={classes.tableCell}>
-                                {group.id}
-                              </TableCell>
-                              <TableCell className={classes.tableCell}>
-                                {group.members}
-                              </TableCell>
-                              <TableCell className={classes.tableCell}>
+                              <TableCell className={classes.tableCell, classes.descCell}>
                                 {group.data}
+                              </TableCell>
+                              <TableCell className={classes.tableCell, classes.countCell}>
+                                {group.members}
                               </TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
                     </Table>
+                    </div>
                     <TablePagination
                                 backIconButtonProps={{
                                   'aria-label': 'Previous Page'

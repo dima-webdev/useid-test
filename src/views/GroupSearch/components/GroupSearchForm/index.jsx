@@ -6,6 +6,8 @@ import { Button, TextField } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import CitySelect from '../CitySelect/index.jsx';
+
 
 import {
   Portlet,
@@ -68,13 +70,27 @@ class SearchForm extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                label="Search string"
+                label="Enter key words"
                 margin="dense"
                 multiline
-                rows="8"
+                rows="4"
                 required
                 variant="outlined"
               />
+            </div>
+            <div className={classes.field}>
+              <TextField
+                className={classes.textField}
+                label="Enter exception words"
+                margin="dense"
+                multiline
+                rows="4"
+                required
+                variant="outlined"
+              />
+            </div>
+            <div className={classes.field}>
+              <CitySelect />
             </div>
             <div className={classes.field}>
               <TextField
@@ -82,7 +98,6 @@ class SearchForm extends Component {
                 label="members min"
                 margin="dense"
                 rows="1"
-                required
                 variant="outlined"
               />
               <TextField
@@ -90,7 +105,6 @@ class SearchForm extends Component {
                 label="members max"
                 margin="dense"
                 rows="1"
-                required
                 variant="outlined"
               />
             </div>

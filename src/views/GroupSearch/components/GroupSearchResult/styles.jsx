@@ -1,33 +1,47 @@
 export default theme => ({
   root: {},
   field: {
-    margin: theme.spacing.unit * 3
+    margin: theme.spacing(3)
   },
   textField: {
     width: '420px',
     maxWidth: '100%',
-    marginRight: theme.spacing.unit * 3
+    marginRight: theme.spacing(3)
   },
   textFieldSmall: {
     width: '120px',
-    marginRight: theme.spacing.unit * 3
+    marginRight: theme.spacing(3)
   },
   textFieldMulti: {
     width: '420px',
     maxWidth: '100%',
-    marginRight: theme.spacing.unit * 3
+    marginRight: theme.spacing(3)
   },
   portletFooter: {
-    paddingLeft: theme.spacing.unit * 3,
-    paddingRight: theme.spacing.unit * 3,
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
+  },
+  table: {
+    overflow: 'auto',
+    maxHeight: 100 + (64*5) + 'px'
   },
   tableRow: {
     height: '64px'
   },
   tableCell: {
-    whiteSpace: 'nowrap'
+    // whiteSpace: 'nowrap',
+    flexWrap: 'wrap'
+  },
+  nameCell: {
+    flex: 2
+  },
+  descCell: {
+    flex: 2
+  },
+  countCell: {
+    width: 100,
   },
   tableCellInner: {
     display: 'flex',
@@ -35,7 +49,7 @@ export default theme => ({
   },
   nameText: {
     display: 'inline-block',
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
     fontWeight: 500,
     cursor: 'pointer'
   }

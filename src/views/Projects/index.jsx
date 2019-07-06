@@ -15,7 +15,7 @@ import {TaskContext} from '../../services/taskContext';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 4
+    padding: theme.spacing(4)
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
