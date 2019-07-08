@@ -102,6 +102,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     height: 250,
     flexGrow: 1,
+    width: 420,
   },
   container: {
     position: 'relative',
@@ -159,10 +160,15 @@ export default function CitySelect() {
     });
   };
 
+  const isCountry = (val) => {
+    return countries.find((c) => c.name === val);
+  }
+
   const handleCountryChange = (event, { newValue }) => {
     setState({
       ...state,
-      country: newValue
+      country: newValue,
+      city: isCountry(newValue) ? '' : state.city,
     });
   };
 

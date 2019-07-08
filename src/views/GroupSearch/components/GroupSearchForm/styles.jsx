@@ -22,5 +22,8 @@ export default theme => ({
     paddingRight: theme.spacing(3),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2)
+  },
+  citySelect: {
+    width: '420px',
   }
 });

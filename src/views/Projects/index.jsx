@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Grid } from '@material-ui/core';
+import { withStyles, Grid, Link } from '@material-ui/core';
 import { Dashboard as DashboardLayout } from 'layouts';
 import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
@@ -24,26 +24,15 @@ const styles = theme => ({
 });
 
 
-  const projects = [
-    {
-      id: 1,
-      title: 'Project 1',
-      date: '11.07.2019',
-      description: 'description 1'
-    },
-    {
-      id: 2,
-      title: 'Project 2',
-      date: '11.07.2019',
-      description: 'description 2'
-    },
-    {
-      id: 3,
-      title: 'Project 3',
-      date: '11.07.2019',
-      description: 'description 3'
-    }
-  ]
+const projects = [
+  { id: 'p1', title: 'Adidas' },
+  { id: 'p2', title: 'Hermitage' },
+  { id: 'p3', title: 'Dog rates' },
+  { id: 'p4', title: 'Lidl' },
+  { id: 'p5', title: 'The secret project' },
+  { id: 'p6', title: 'Кириллический' },
+  { id: 'p7', title: 'Ifmo' },
+]
 
 class Projects extends Component {
   state = {};
@@ -63,11 +52,10 @@ class Projects extends Component {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <Typography>
-            {element.date}
-            <Button color="primary" className={classes.button}>
-              Go to project
-            </Button><br/>
-            {element.description}
+            Task 1<br/>
+            Universe search<br/>
+            SPb-Hel transfers<br/>
+            Allegro travellers
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
@@ -87,9 +75,7 @@ class Projects extends Component {
             xl={4}
             xs={12}
           >
-          {
-            projectsList
-          }
+            <CreationForm />
           </Grid>
           <Grid
             item
@@ -98,7 +84,9 @@ class Projects extends Component {
             xl={8}
             xs={12}
           >
-            <CreationForm />
+          {
+            projectsList
+          }
           </Grid>
         </Grid>
         </div>

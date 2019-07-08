@@ -133,13 +133,6 @@ class Topbar extends Component {
               className={classes.notificationsButton}
               onClick={this.handleShowNotifications}
             >
-              <Badge
-                badgeContent={notificationsCount}
-                color="primary"
-                variant="dot"
-              >
-                <NotificationsIcon />
-              </Badge>
             </IconButton>
             <IconButton
               className={classes.signOutButton}

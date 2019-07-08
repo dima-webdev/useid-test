@@ -36,7 +36,7 @@ import {
 
 function SearchResult ({ classes, className, taskId, ...rest }){
 
-    const [selected, setSelected] = useState([]);
+    const [unselected, setUnselected] = useState([]);
 
     const [state, setState] = useState({
       rowsPerPage: 10,
@@ -87,33 +87,26 @@ function SearchResult ({ classes, className, taskId, ...rest }){
       let selectedGroups;
 
       if (event.target.checked) {
-        selectedGroups = groups.map(group => group.id);
-      } else {
         selectedGroups = [];
+      } else {
+        selectedGroups = groups.map(group => group.id);
       }
 
-      setSelected(selectedGroups);
+      setUnselected(selectedGroups);
     };
 
     function handleSelectOne(event, id) {
 
-      const selectedIndex = selected.indexOf(id);
+      const selectedIndex = unselected.indexOf(id);
       let newSelectedGroups = [];
 
       if (selectedIndex === -1) {
-        newSelectedGroups = newSelectedGroups.concat(selected, id);
-      } else if (selectedIndex === 0) {
-        newSelectedGroups = newSelectedGroups.concat(selected.slice(1));
-      } else if (selectedIndex === selected.length - 1) {
-        newSelectedGroups = newSelectedGroups.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelectedGroups = newSelectedGroups.concat(
-          selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1)
-        );
+        newSelectedGroups = newSelectedGroups.concat(unselected, id);
+      } else {
+        newSelectedGroups = unselected.filter((groupId) => groupId !== id)
       }
 
-      setSelected(newSelectedGroups );
+      setUnselected(newSelectedGroups );
     };
 
     function handleChangePage(event, page) {
@@ -181,6 +174,9 @@ function SearchResult ({ classes, className, taskId, ...rest }){
               </Portlet>
             </>
           } else {
+            console.log({
+              unselected
+            });
             let results = tasks.resultsById[taskId].map(item => <ResultItem key={item.name} onDeleteItem={(item) => {
               //setState(state.filter(i => i !== item))
             }} item={item} />)
@@ -200,11 +196,11 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                         <TableRow>
                           <TableCell align="left">
                             <Checkbox
-                              checked={selected.length === groups.length}
+                              checked={unselected.length === 0}
                               color="primary"
                               indeterminate={
-                                selected.length > 0 &&
-                                selected.length < groups.length
+                                unselected.length > 0 &&
+                                unselected.length < groups.length
                               }
                               onChange={handleSelectAll}
                             />
@@ -223,12 +219,12 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                               className={classes.tableRow}
                               hover
                               key={group.id}
-                              selected={selected.indexOf(group.id) !== -1}
+                              selected={unselected.indexOf(group.id) === -1}
                             >
                               <TableCell className={classes.tableCell, classes.nameCell}>
                                 <div className={classes.tableCellInner}>
                                   <Checkbox
-                                    checked={selected.indexOf(group.id) !== -1}
+                                    checked={unselected.indexOf(group.id) === -1}
                                     color="primary"
                                     onChange={event =>
                                       handleSelectOne(event, group.id)
@@ -282,7 +278,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                       // onChange={handleChange}
                     >
                       <FormControlLabel value="all users" control={<Radio />} label="all" />
-                      <FormControlLabel value="cross users" control={<Radio />} label="cross" />
+                      <FormControlLabel value="only users who joined to every group" control={<Radio />} label="cross" />
                     </RadioGroup>
                   </FormControl><br/><br/>
                     <Button

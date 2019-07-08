@@ -90,9 +90,6 @@ class SearchForm extends Component {
               />
             </div>
             <div className={classes.field}>
-              <CitySelect />
-            </div>
-            <div className={classes.field}>
               <TextField
                 className={classes.textFieldSmall}
                 label="members min"
@@ -107,6 +104,9 @@ class SearchForm extends Component {
                 rows="1"
                 variant="outlined"
               />
+            </div>
+            <div className={classes.field}>
+              <CitySelect className={classes.citySelect} />
             </div>
           </form>
         </PortletContent>

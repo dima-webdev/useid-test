@@ -40,6 +40,7 @@ import {
   ExpandLess,
   StarBorder,
   Add,
+  Home,
 } from '@material-ui/icons';
 
 // Component styles
@@ -129,7 +130,7 @@ class Sidebar extends Component {
             to="/dashboard"
           >
             <ListItemIcon className={classes.listItemIcon}>
-              <DashboardIcon />
+              <Home />
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
