@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
 
 // Externals
 import PropTypes from 'prop-types';
@@ -36,12 +37,16 @@ import schema from './schema';
 validate.validators.checked = validators.checked;
 
 // Service methods
-const signUp = () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1500);
-  });
+const signUp = (email, password) => {
+  // return new Promise(resolve => {
+  //   setTimeout(() => {
+  //     resolve(true);
+  //   }, 1500);
+  // });
+  return resolveClient.then((client) => {
+    console.log(email, password)
+    return client.apis.default.createUser_1({login: email, password});
+  })
 };
 
 class SignUp extends Component {
@@ -107,12 +112,13 @@ class SignUp extends Component {
 
       this.setState({ isLoading: true });
 
-      await signUp({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password
-      });
+      // await signUp({
+      //   firstName: values.firstName,
+      //   lastName: values.lastName,
+      //   email: values.email,
+      //   password: values.password
+      // });
+      await signUp( values.email, values.password);
 
       history.push('/sign-in');
     } catch (error) {

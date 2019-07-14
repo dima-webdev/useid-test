@@ -1,0 +1,188 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+basePath: "/api"
+schemes:
+- "http"
+- "https"
+security:
+- ApiKeyAuth: []
+paths:
+  /login/login:
+    post:
+      summary: "login"
+      description: "This method gets username and password and returns a unique token\
+        \ that identifies the user for subsequent interactions. The password must\
+        \ be hashed by sha256"
+      operationId: "login_1"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "login"
+        in: "formData"
+        required: false
+        type: "string"
+      - name: "password"
+        in: "formData"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+  /login/logout:
+    post:
+      summary: "logout"
+      description: "This method allows to logout current user and close his session"
+      operationId: "logout_1"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+  /login/sigin:
+    post:
+      operationId: "sigin_1"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "login"
+        in: "formData"
+        required: false
+        type: "string"
+      - name: "password"
+        in: "formData"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          headers: {}
+          schema:
+            type: "string"
+  /user/current:
+    get:
+      operationId: "getCurrentUser_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          headers: {}
+          schema:
+            $ref: "#/definitions/UserResponse"
+  /user:
+    get:
+      operationId: "readUser_1"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "login"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          headers: {}
+          schema:
+            $ref: "#/definitions/SystemUserDTO"
+    post:
+      operationId: "createUser_1"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "login"
+        in: "formData"
+        required: false
+        type: "string"
+      - name: "password"
+        in: "formData"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          headers: {}
+          schema:
+            type: "string"
+  /user/{id}:
+    put:
+      operationId: "updateUser_1"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "login"
+        in: "formData"
+        required: false
+        type: "string"
+      - name: "password"
+        in: "formData"
+        required: false
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      operationId: "removeUser_1"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+securityDefinitions:
+  ApiKeyAuth:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  UserResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      email:
+        type: "string"
+      permissions:
+        type: "array"
+        uniqueItems: true
+        items:
+          type: "string"
+  SystemUserDTO:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      email:
+        type: "string"

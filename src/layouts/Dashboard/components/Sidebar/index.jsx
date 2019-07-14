@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { ProjectContext } from '../../../../services/projectContext/index.jsx'
+import { ApiContext } from '../../../../services/apiContext/index.jsx'
 
 // Externals
 import classNames from 'classnames';
@@ -115,6 +116,16 @@ class Sidebar extends Component {
               }
             }}
           </ProjectContext.Consumer>
+          <ApiContext.Consumer>
+            {
+              (st) => {
+                console.log(st);
+                if (st.client) {
+                  debugger
+                 }
+              }
+            }
+          </ApiContext.Consumer>
         </div>
         <Divider className={classes.profileDivider} />
 
@@ -135,6 +146,20 @@ class Sidebar extends Component {
             <ListItemText
               classes={{ primary: classes.listItemText }}
               primary="Dashboard"
+            />
+          </ListItem>
+          <ListItem
+            activeClassName={classes.activeListItem}
+            className={classes.listItem}
+            component={NavLink}
+            to="/results"
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.listItemText }}
+              primary="Results"
             />
           </ListItem>
           <ListItem

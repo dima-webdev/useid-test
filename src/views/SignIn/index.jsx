@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
 
 // Externals
 import PropTypes from 'prop-types';
@@ -33,12 +34,16 @@ import styles from './styles';
 import schema from './schema';
 
 // Service methods
-const signIn = () => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true);
-    }, 1500);
-  });
+const signIn = (email, password) => {
+
+  return resolveClient.then((client) => {
+    return client.apis.default.sigin({login: email, password});
+  })
+  // return new Promise(resolve => {
+  //   setTimeout(() => {
+  //     resolve(true);
+  //   }, 1500);
+  // });
 };
 
 class SignIn extends Component {
@@ -152,7 +157,7 @@ class SignIn extends Component {
                     className={classes.bio}
                     variant="body2"
                   >
-                    
+
                   </Typography>
                 </div>
               </div>
@@ -193,6 +198,7 @@ class SignIn extends Component {
                     onClick={this.handleSignIn}
                     size="large"
                     variant="contained"
+                    disabled
                   >
                     <FacebookIcon className={classes.facebookIcon} />
                     Login with Facebook
@@ -202,6 +208,7 @@ class SignIn extends Component {
                     onClick={this.handleSignIn}
                     size="large"
                     variant="contained"
+                    disabled
                   >
                     <GoogleIcon className={classes.googleIcon} />
                     Login with Google
@@ -260,6 +267,17 @@ class SignIn extends Component {
                       {submitError}
                     </Typography>
                   )}
+                  <ApiContext.Consumer>
+                    {
+                      (st) => {
+                        console.log(st);
+                        if (st.client) {
+                          let user = st.client.apis.default.getCurrentUser_1();
+                          console.log(user);
+                         }
+                      }
+                    }
+                  </ApiContext.Consumer>
                   {isLoading ? (
                     <CircularProgress className={classes.progress} />
                   ) : (

@@ -8,7 +8,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CitySelect from '../CitySelect/index.jsx';
 
-
 import {
   Portlet,
   PortletHeader,
@@ -122,6 +121,11 @@ class SearchForm extends Component {
             variant="contained"
           >
             Save
+          </Button>
+          <Button
+            variant="contained"
+          >
+            Test
           </Button>
           <Button
           >

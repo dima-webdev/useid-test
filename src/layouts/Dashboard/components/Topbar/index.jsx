@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 // Externals
 import classNames from 'classnames';
@@ -15,7 +16,10 @@ import {
   IconButton,
   Popover,
   Toolbar,
-  Typography
+  Typography,
+  Button,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 
 // Material icons
@@ -23,7 +27,7 @@ import {
   Menu as MenuIcon,
   Close as CloseIcon,
   NotificationsOutlined as NotificationsIcon,
-  Input as InputIcon
+  Input as InputIcon,
 } from '@material-ui/icons';
 
 // Shared services
@@ -42,7 +46,8 @@ class Topbar extends Component {
     notifications: [],
     notificationsLimit: 4,
     notificationsCount: 0,
-    notificationsEl: null
+    notificationsEl: null,
+    anchorEl: null,
   };
 
   async getNotifications() {
@@ -99,15 +104,30 @@ class Topbar extends Component {
     });
   };
 
+  handleSetLanguge = (lang) => {
+    console.log('lang ' + lang);
+    localStorage.setItem('lang', lang);
+    window.location.reload(true);
+  }
+
+  handleClick = (event) => {
+    this.setState({anchorEl: event.currentTarget});
+  }
+
+  handleClose = () => {
+    this.setState({anchorEl: null});
+  }
+
   render() {
     const {
       classes,
       className,
       title,
       isSidebarOpen,
-      onToggleSidebar
+      onToggleSidebar,
+      intl,
     } = this.props;
-    const { notifications, notificationsCount, notificationsEl } = this.state;
+    const { notifications, notificationsCount, notificationsEl, anchorEl } = this.state;
 
     const rootClassName = classNames(classes.root, className);
     const showNotifications = Boolean(notificationsEl);
@@ -134,6 +154,21 @@ class Topbar extends Component {
               onClick={this.handleShowNotifications}
             >
             </IconButton>
+            <div>
+              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => this.handleClick(event)}>
+                {intl.locale}
+              </Button>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={() => this.handleClose()}
+              >
+                <MenuItem onClick={() => this.handleSetLanguge('ru')}>Ru</MenuItem>
+                <MenuItem onClick={() => this.handleSetLanguge('en')}>En</MenuItem>
+              </Menu>
+            </div>
             <IconButton
               className={classes.signOutButton}
               onClick={this.handleGoToAccount}
@@ -141,7 +176,7 @@ class Topbar extends Component {
               <Avatar
                 alt="user"
                 className={classes.avatar}
-                src="/images/avatar.png"
+                src="/images/elon.jpeg"
               />
             </IconButton>
           </Toolbar>
@@ -184,5 +219,6 @@ Topbar.defaultProps = {
 
 export default compose(
   withRouter,
-  withStyles(styles)
+  withStyles(styles),
+  injectIntl,
 )(Topbar);

@@ -22,6 +22,7 @@ import './assets/scss/index.scss';
 import Routes from './Routes';
 import { TaskManager } from './services/taskContext/index.jsx'
 import { ProjectManager } from './services/projectContext/index.jsx'
+import { ApiManager } from './services/apiContext/index.jsx'
 
 // Browser history
 const browserHistory = createBrowserHistory();
@@ -30,13 +31,15 @@ export default class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <ProjectManager>
-          <TaskManager>
-            <Router history={browserHistory}>
-              <Routes />
-            </Router>
-          </TaskManager>
-        </ProjectManager>
+        <ApiManager>
+          <ProjectManager>
+            <TaskManager>
+              <Router history={browserHistory}>
+                <Routes />
+              </Router>
+            </TaskManager>
+          </ProjectManager>
+        </ApiManager>
       </ThemeProvider>
     );
   }

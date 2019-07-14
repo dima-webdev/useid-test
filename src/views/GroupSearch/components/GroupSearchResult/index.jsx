@@ -277,8 +277,8 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                       // value={value}
                       // onChange={handleChange}
                     >
-                      <FormControlLabel value="all users" control={<Radio />} label="all" />
-                      <FormControlLabel value="only users who joined to every group" control={<Radio />} label="cross" />
+                      <FormControlLabel value="all" control={<Radio />} label="all users" />
+                      <FormControlLabel value="cross" control={<Radio />} label="only users who joined to every group" />
                     </RadioGroup>
                   </FormControl><br/><br/>
                     <Button

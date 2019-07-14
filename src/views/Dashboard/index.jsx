@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-
+import {injectIntl} from 'react-intl'
 import classNames from 'classnames';
 import {
   Grid,
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  Typography
+  Typography,
 } from '@material-ui/core';
 import { Dashboard as DashboardLayout } from 'layouts';
 
@@ -40,7 +40,9 @@ const projects = [
 
 class Dashboard extends Component {
   render() {
-    const { classes, className, ...rest } = this.props;
+    const { classes, className, intl, ...rest } = this.props;
+
+    console.log("messages", intl);
 
     let projectsList = projects.map(element =>
       <ExpansionPanel>
@@ -63,7 +65,7 @@ class Dashboard extends Component {
     );
 
     return (
-      <DashboardLayout title="Dashboard">
+      <DashboardLayout title={intl.messages['test.title']}>
         <div className={classes.root}>
           <Grid
             container
@@ -124,4 +126,4 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Dashboard);
+export default injectIntl(withStyles(styles)(Dashboard));
