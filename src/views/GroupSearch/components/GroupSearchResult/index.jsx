@@ -36,7 +36,8 @@ import {
 
 function SearchResult ({ classes, className, taskId, ...rest }){
 
-    const [unselected, setUnselected] = useState([]);
+    // const [unselected, setUnselected] = useState([]);
+    const [selected, setSelected] = useState([]);
 
     const [state, setState] = useState({
       rowsPerPage: 10,
@@ -92,21 +93,26 @@ function SearchResult ({ classes, className, taskId, ...rest }){
         selectedGroups = groups.map(group => group.id);
       }
 
-      setUnselected(selectedGroups);
+      // setUnselected(selectedGroups);
+      setSelected(selectedGroups);
     };
 
     function handleSelectOne(event, id) {
 
-      const selectedIndex = unselected.indexOf(id);
+      // const selectedIndex = unselected.indexOf(id);
+      const selectedIndex = selected.indexOf(id);
       let newSelectedGroups = [];
 
       if (selectedIndex === -1) {
-        newSelectedGroups = newSelectedGroups.concat(unselected, id);
+        // newSelectedGroups = newSelectedGroups.concat(unselected, id);
+        newSelectedGroups = newSelectedGroups.concat(selected, id);
       } else {
-        newSelectedGroups = unselected.filter((groupId) => groupId !== id)
+        // newSelectedGroups = unselected.filter((groupId) => groupId !== id)
+        newSelectedGroups = selected.filter((groupId) => groupId !== id)
       }
 
-      setUnselected(newSelectedGroups );
+      // setUnselected(newSelectedGroups );
+      setSelected(newSelectedGroups );
     };
 
     function handleChangePage(event, page) {
@@ -175,7 +181,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
             </>
           } else {
             console.log({
-              unselected
+              selected
             });
             let results = tasks.resultsById[taskId].map(item => <ResultItem key={item.name} onDeleteItem={(item) => {
               //setState(state.filter(i => i !== item))
@@ -196,11 +202,14 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                         <TableRow>
                           <TableCell align="left">
                             <Checkbox
-                              checked={unselected.length === 0}
+                              // checked={unselected.length === 0}
+                              checked={selected.length === 0}
                               color="primary"
                               indeterminate={
-                                unselected.length > 0 &&
-                                unselected.length < groups.length
+                                // unselected.length > 0 &&
+                                selected.length > 0 &&
+                                // unselected.length < groups.length
+                                selected.length < groups.length
                               }
                               onChange={handleSelectAll}
                             />
@@ -219,12 +228,14 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                               className={classes.tableRow}
                               hover
                               key={group.id}
-                              selected={unselected.indexOf(group.id) === -1}
+                              // selected={unselected.indexOf(group.id) === -1}
+                              selected={selected.indexOf(group.id) === -1}
                             >
                               <TableCell className={classes.tableCell, classes.nameCell}>
                                 <div className={classes.tableCellInner}>
                                   <Checkbox
-                                    checked={unselected.indexOf(group.id) === -1}
+                                    // checked={unselected.indexOf(group.id) === -1}
+                                    checked={selected.indexOf(group.id) === -1}
                                     color="primary"
                                     onChange={event =>
                                       handleSelectOne(event, group.id)

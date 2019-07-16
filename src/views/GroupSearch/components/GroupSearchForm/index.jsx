@@ -7,6 +7,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CitySelect from '../CitySelect/index.jsx';
+import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx'
 
 import {
   Portlet,
@@ -21,13 +22,37 @@ import styles from './styles';
 class SearchForm extends Component {
   state = {
     taskname: '',
+    keyWords: '',
+    stopWords: '',
+    membersMin: 0,
+    membersMax: 10000000,
+    cities: '',
+  };
+
+  sendForm = () => {
+    return resolveClient().then((client) => {
+      console.log('test');
+      return client.apis.default.getCurrentUser_1();
+    })
   };
 
   handleChange = e => {
     this.setState({
       taskname: e.target.value
     });
-    console.log(this.state.taskname)
+    console.log(this.state)
+  };
+
+  handleStopWordsChange = e => {
+    this.setState({
+      stopWords: e.target.value
+    });
+    console.log(this.state)
+  };
+
+  handleFieldChange = (field, value) => {
+    this.setState({field: value});
+    console.log(field, value);
   };
 
   startSearch() {
@@ -75,6 +100,9 @@ class SearchForm extends Component {
                 rows="4"
                 required
                 variant="outlined"
+                onChange={event =>
+                  this.handleFieldChange('keyWords', event.target.value)
+                }
               />
             </div>
             <div className={classes.field}>
@@ -86,6 +114,7 @@ class SearchForm extends Component {
                 rows="4"
                 required
                 variant="outlined"
+                onChange={this.handleStopWordsChange}
               />
             </div>
             <div className={classes.field}>
@@ -119,6 +148,7 @@ class SearchForm extends Component {
           </Button>
           <Button
             variant="contained"
+            onClick={() => this.sendForm()}
           >
             Save
           </Button>

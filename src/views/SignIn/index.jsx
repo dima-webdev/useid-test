@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import sha256 from 'js-sha256';
 
 // Externals
 import PropTypes from 'prop-types';
@@ -36,9 +37,19 @@ import schema from './schema';
 // Service methods
 const signIn = (email, password) => {
 
-  return resolveClient.then((client) => {
-    return client.apis.default.sigin({login: email, password});
-  })
+  return resolveClient
+    .then((client) => {
+      return client.apis.default.login_1({login: email, password: sha256(password)});
+    })
+    .then((response) => {
+      if (response.ok) {
+        localStorage.setItem('auth_token', response.text);
+        let ev = new Event('refresh-client')
+        window.dispatchEvent(ev);
+      };
+      console.log(response);
+      return response;
+    })
   // return new Promise(resolve => {
   //   setTimeout(() => {
   //     resolve(true);
@@ -267,17 +278,6 @@ class SignIn extends Component {
                       {submitError}
                     </Typography>
                   )}
-                  <ApiContext.Consumer>
-                    {
-                      (st) => {
-                        console.log(st);
-                        if (st.client) {
-                          let user = st.client.apis.default.getCurrentUser_1();
-                          console.log(user);
-                         }
-                      }
-                    }
-                  </ApiContext.Consumer>
                   {isLoading ? (
                     <CircularProgress className={classes.progress} />
                   ) : (

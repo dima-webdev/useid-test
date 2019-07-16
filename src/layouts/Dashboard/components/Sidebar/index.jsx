@@ -120,9 +120,6 @@ class Sidebar extends Component {
             {
               (st) => {
                 console.log(st);
-                if (st.client) {
-                  debugger
-                 }
               }
             }
           </ApiContext.Consumer>

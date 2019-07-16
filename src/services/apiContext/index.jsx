@@ -5,7 +5,41 @@ export const ApiContext = React.createContext();
 const URL = 'http://142.91.9.164:8490/api/swagger.json';
 //Swagger.http.withCredentials = true;
 
-export const resolveClient = Swagger(URL)
+let _client = null;
+let _clientP = null;
+
+export const resolveClient = () => {
+  if (_client) {
+    return Promise.resolve(_client)
+  } else {
+    let poll = (resolve, reject) => {
+      console.log('polling...')
+      setTimeout(() => {
+        if (_client) {
+          resolve(_client)
+        } else {
+          setTimeout(poll.bind(null, resolve, reject), 50)
+        }
+      }, 50)
+    }
+    return new Promise(poll)
+  }
+}
+window.addEventListener('refresh-client', () => {
+  console.log('refesh-client subscriber')
+  getFreshClient().then(client => _client = client)
+})
+
+const getFreshClient = () => {
+  const token = localStorage.getItem('auth_token');
+
+Swagger(URL, {
+  authorizations: {
+    // Type of auth, is inferred from the specification provided
+    ApiKeyAuth: token ? `Bearer ${token}` : undefined,
+    // Authorization: token,
+  }
+})
   .then( client => {
       // client.spec // The resolved spec
       console.log(client.spec)
@@ -19,16 +53,19 @@ export const resolveClient = Swagger(URL)
       //     return client.apis.default.createUser_1(credentials)
       //   }
       // })
+      _client = client;
       return client;
    })
+}
 
-
+getFreshClient()
 
 export class ApiManager extends React.Component {
   constructor() {
     super();
     this.state = {};
-    resolveClient.then((client) => this.setState({client}))
+    resolveClient().then((client) => this.setState({client}))
+
   }
 
   componentDidMount() {

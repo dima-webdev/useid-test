@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
+import sha256 from 'js-sha256';
 
 // Externals
 import PropTypes from 'prop-types';
@@ -37,15 +38,15 @@ import schema from './schema';
 validate.validators.checked = validators.checked;
 
 // Service methods
-const signUp = (email, password) => {
+const signUp = (email, password, firstName) => {
   // return new Promise(resolve => {
   //   setTimeout(() => {
   //     resolve(true);
   //   }, 1500);
   // });
-  return resolveClient.then((client) => {
-    console.log(email, password)
-    return client.apis.default.createUser_1({login: email, password});
+  return resolveClient().then((client) => {
+    console.log(email, password, sha256(password), firstName)
+    return client.apis.default.signIn_1({login: email, password: sha256(password)});
   })
 };
 
