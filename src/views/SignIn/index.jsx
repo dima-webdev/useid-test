@@ -37,7 +37,7 @@ import schema from './schema';
 // Service methods
 const signIn = (email, password) => {
 
-  return resolveClient
+  return resolveClient()
     .then((client) => {
       return client.apis.default.login_1({login: email, password: sha256(password)});
     })

@@ -12,6 +12,13 @@ import NotFound from './views/NotFound';
 import Projects from './views/Projects';
 import ResultList from './views/ResultList';
 
+class ProtectedRoute extends Component {
+  render() {
+    let isAuth = localStorage.getItem('isAuthenticated');
+    return isAuth ? <>{this.props.children}</> : <Redirect to="/sign-in" />
+  }
+}
+
 export default class Routes extends Component {
   render() {
     return (
@@ -55,11 +62,13 @@ export default class Routes extends Component {
           exact
           path="/settings"
         />
-        <Route
-          component={Projects}
-          exact
-          path="/projects"
-        />
+        <ProtectedRoute>
+          <Route
+            component={Projects}
+            exact
+            path="/projects"
+          />
+        </ProtectedRoute>
         <Route
           component={ResultList}
           exact

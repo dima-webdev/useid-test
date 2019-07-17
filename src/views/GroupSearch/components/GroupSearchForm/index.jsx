@@ -21,12 +21,14 @@ import styles from './styles';
 
 class SearchForm extends Component {
   state = {
-    taskname: '',
-    keyWords: '',
-    stopWords: '',
-    membersMin: 0,
-    membersMax: 10000000,
-    cities: '',
+    values: {
+      taskname: '',
+      keyWords: '',
+      stopWords: '',
+      membersMin: 0,
+      membersMax: 10000000,
+      cities: '',
+    },
   };
 
   sendForm = () => {
@@ -50,15 +52,27 @@ class SearchForm extends Component {
     console.log(this.state)
   };
 
-  handleFieldChange = (field, value) => {
-    this.setState({field: value});
-    console.log(field, value);
+  handleFieldChange = (field) => (event) => {
+    this.setState({values: {...this.state.values, [field]: event.target.value}});
   };
 
-  startSearch() {
-    const task = {taskname: this.state.taskname};
-    this.props.onSearchStart(task);
-  }
+  // startSearch() {
+  //   const task = {taskname: this.state.taskname};
+  //   this.props.onSearchStart(task);
+  // }
+
+  startSearch = () => {
+    return resolveClient().then((client) => {
+      const values = this.state.values;
+      console.log('save form', values);
+      return client.apis.default.saveTask_1({
+        taskId: values.taskname,
+        searchString: values.keyWords,
+        excludeString: values.stopWords,
+        state: 'INITIAL',
+      });
+    })
+  };
 
 
   render() {
@@ -88,7 +102,7 @@ class SearchForm extends Component {
                 margin="dense"
                 required
                 variant="outlined"
-                onChange={this.handleChange}
+                onChange={this.handleFieldChange('taskname')}
               />
             </div>
             <div className={classes.field}>
@@ -100,9 +114,7 @@ class SearchForm extends Component {
                 rows="4"
                 required
                 variant="outlined"
-                onChange={event =>
-                  this.handleFieldChange('keyWords', event.target.value)
-                }
+                onChange={this.handleFieldChange('keyWords')}
               />
             </div>
             <div className={classes.field}>
@@ -114,7 +126,7 @@ class SearchForm extends Component {
                 rows="4"
                 required
                 variant="outlined"
-                onChange={this.handleStopWordsChange}
+                onChange={this.handleFieldChange('stopWords')}
               />
             </div>
             <div className={classes.field}>
@@ -124,6 +136,7 @@ class SearchForm extends Component {
                 margin="dense"
                 rows="1"
                 variant="outlined"
+                onChange={this.handleFieldChange('membersMin')}
               />
               <TextField
                 className={classes.textFieldSmall}
@@ -131,6 +144,7 @@ class SearchForm extends Component {
                 margin="dense"
                 rows="1"
                 variant="outlined"
+                onChange={this.handleFieldChange('membersMax')}
               />
             </div>
             <div className={classes.field}>

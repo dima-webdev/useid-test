@@ -25,10 +25,6 @@ export const resolveClient = () => {
     return new Promise(poll)
   }
 }
-window.addEventListener('refresh-client', () => {
-  console.log('refesh-client subscriber')
-  getFreshClient().then(client => _client = client)
-})
 
 const getFreshClient = () => {
   const token = localStorage.getItem('auth_token');
@@ -59,6 +55,11 @@ Swagger(URL, {
 }
 
 getFreshClient()
+
+window.addEventListener('refresh-client', () => {
+  console.log('refesh-client subscriber')
+  getFreshClient().then(client => _client = client)
+})
 
 export class ApiManager extends React.Component {
   constructor() {

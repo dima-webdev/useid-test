@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
+import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
 
 import {
   Portlet,
@@ -20,6 +21,17 @@ class CreationForm extends Component {
       title: '',
       description: ''
     }
+  };
+
+  createProject = () => {
+    return resolveClient().then((client) => {
+      console.log('test');
+      return client.apis.default.saveProject_1(this.state.values);
+    })
+  };
+
+  handleFieldChange = (field) => (event) => {
+    this.setState({values: {...this.state.values, [field]: event.target.value}});
   };
 
   render() {
@@ -48,6 +60,7 @@ class CreationForm extends Component {
               required
               value={values.title}
               variant="outlined"
+              onChange={this.handleFieldChange('title')}
             />
             <TextField
               className={classes.textField}
@@ -56,6 +69,7 @@ class CreationForm extends Component {
               margin="dense"
               value={values.description}
               variant="outlined"
+              onChange={this.handleFieldChange('description')}
             />
           </form>
         </PortletContent>
@@ -63,6 +77,7 @@ class CreationForm extends Component {
           <Button
             color="primary"
             variant="outlined"
+            onClick={() => this.createProject()}
           >
             Create
           </Button>
