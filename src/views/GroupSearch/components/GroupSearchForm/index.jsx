@@ -29,6 +29,7 @@ class SearchForm extends Component {
       membersMax: 10000000,
       cities: '',
     },
+    id: '',
   };
 
   sendForm = () => {
@@ -62,16 +63,40 @@ class SearchForm extends Component {
   // }
 
   startSearch = () => {
-    return resolveClient().then((client) => {
-      const values = this.state.values;
-      console.log('save form', values);
-      return client.apis.default.saveTask_1({
-        taskId: values.taskname,
-        searchString: values.keyWords,
-        excludeString: values.stopWords,
-        state: 'INITIAL',
-      });
-    })
+    return resolveClient()
+      .then((client) => {
+        const values = this.state.values;
+        return client.apis.default.saveTask_1({
+          searchString: values.keyWords,
+          excludeString: values.stopWords,
+          state: 'INITIAL',
+        });
+      })
+      .then((response) => {
+        this.setState({id: response.text});
+        console.log('state ' + this.state.id);
+        this.start(response.text);
+      })
+
+      // resolveClient()
+      //   .then((client) => {
+      //     client.apis.default.startTask_1({
+      //       id: this.state.id
+      //     });
+      //     const task = {taskname: this.state.values.taskname, id: this.state.id};
+      //     this.props.onSearchStart(task);
+      //   })
+  };
+
+  start = (id) => {
+    return resolveClient()
+      .then((client) => {
+        client.apis.default.startTask_1({
+          id: id
+        });
+        const task = {taskname: this.state.values.taskname, id: id};
+        this.props.onSearchStart(task);
+      })
   };
 
 

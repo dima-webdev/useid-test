@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
@@ -25,6 +25,7 @@ import ResultItem from '../ResultItem/index.jsx'
 import styles from './styles';
 import { TaskContext } from '../../../../services/taskContext/index.jsx'
 import { Redirect } from 'react-router-dom';
+import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
 
 import {
   Portlet,
@@ -38,6 +39,16 @@ function SearchResult ({ classes, className, taskId, ...rest }){
 
     // const [unselected, setUnselected] = useState([]);
     const [selected, setSelected] = useState([]);
+
+    useEffect(() => {
+      resolveClient()
+        .then((client) => {
+          return client.apis.default.getTaskStatuses_1();
+        })
+        .then((response) => {
+          console.log(response);
+        })
+    }, []);
 
     const [state, setState] = useState({
       rowsPerPage: 10,

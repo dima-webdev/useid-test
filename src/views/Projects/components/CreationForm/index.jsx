@@ -19,7 +19,8 @@ class CreationForm extends Component {
   state = {
     values: {
       title: '',
-      description: ''
+      description: '',
+      status: 'ACTIVE'
     }
   };
 

@@ -23,6 +23,14 @@ class AccountProfile extends Component {
       .then((response) => {
         this.setState({login: response.obj.email})
       })
+
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.getTaskStatuses_1(['471a09f8-566f-471f-a55a-9f0dc0b0438f']);
+      })
+      .then((response) => {
+        console.log('task', response);
+      })
   }
 
   render() {

@@ -29,7 +29,7 @@ export const resolveClient = () => {
 const getFreshClient = () => {
   const token = localStorage.getItem('auth_token');
 
-Swagger(URL, {
+  return Swagger(URL, {
   authorizations: {
     // Type of auth, is inferred from the specification provided
     ApiKeyAuth: token ? `Bearer ${token}` : undefined,
