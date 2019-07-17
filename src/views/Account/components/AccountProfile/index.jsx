@@ -7,8 +7,24 @@ import { withStyles } from '@material-ui/core';
 import { Avatar, Typography, Button, LinearProgress } from '@material-ui/core';
 import { Portlet, PortletContent, PortletFooter } from 'components';
 import styles from './styles';
+import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx'
 
 class AccountProfile extends Component {
+
+  state = {
+    login: '',
+  };
+
+  componentDidMount() {
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.getCurrentUser_1();
+      })
+      .then((response) => {
+        this.setState({login: response.obj.email})
+      })
+  }
+
   render() {
     const { classes, className, ...rest } = this.props;
 
@@ -22,18 +38,18 @@ class AccountProfile extends Component {
         <PortletContent>
           <div className={classes.details}>
             <div className={classes.info}>
-              <Typography variant="h2">Test User</Typography>
+              <Typography variant="h2">{this.state.login}</Typography>
               <Typography
                 className={classes.locationText}
                 variant="body1"
               >
-                Ukraine
+                Russia
               </Typography>
               <Typography
                 className={classes.dateText}
                 variant="body1"
               >
-                4:32PM (GMT-4)
+
               </Typography>
             </div>
             <Avatar

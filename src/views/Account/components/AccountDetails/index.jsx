@@ -16,9 +16,9 @@ import styles from './styles';
 
 class Account extends Component {
   state = {
-    firstName: 'User',
-    lastName: 'Test',
-    email: 'user@useid.pro',
+    firstName: '',
+    lastName: '',
+    email: '',
     phone: '',
     country: 'Russia'
   };
@@ -29,12 +29,13 @@ class Account extends Component {
     });
   };
 
-  // handleSignOut = () => {
-  //   const { history } = this.props;
-  //
-  //   localStorage.setItem('isAuthenticated', false);
-  //   history.push('/sign-in');
-  // };
+  handleSignOut = () => {
+    const { history } = this.props;
+
+    localStorage.setItem('isAuthenticated', false);
+    localStorage.removeItem('auth_token');
+    history.push('/sign-in');
+  };
 
   render() {
     const { classes, className, ...rest } = this.props;
@@ -116,7 +117,7 @@ class Account extends Component {
           </Button>
           <Button variant="contained" href='/settings'>Settings</Button>
           <Button
-            //onClick={this.handleSignOut}
+            onClick={this.handleSignOut}
             href='/sign-in'>
             Log out
           </Button>
