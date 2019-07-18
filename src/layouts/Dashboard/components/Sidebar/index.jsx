@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { ProjectContext } from '../../../../services/projectContext/index.jsx'
-import { ApiContext } from '../../../../services/apiContext/index.jsx'
 
 // Externals
 import classNames from 'classnames';
@@ -64,7 +63,7 @@ class Sidebar extends Component {
   render() {
     const { classes, className } = this.props;
 
-    const allProjects = [
+    let allProjects = [
       { id: 'p1', title: 'Adidas' },
       { id: 'p2', title: 'Hermitage' },
       { id: 'p3', title: 'Dog rates' },
@@ -95,6 +94,8 @@ class Sidebar extends Component {
 
           <ProjectContext.Consumer>
             { ({currentProject, allProjects}) => {
+              this.allProjects = allProjects;
+              console.log(currentProject);
               if (!currentProject) {
                 return (
                   <Typography
@@ -116,13 +117,6 @@ class Sidebar extends Component {
               }
             }}
           </ProjectContext.Consumer>
-          <ApiContext.Consumer>
-            {
-              (st) => {
-                console.log(st);
-              }
-            }
-          </ApiContext.Consumer>
         </div>
         <Divider className={classes.profileDivider} />
 

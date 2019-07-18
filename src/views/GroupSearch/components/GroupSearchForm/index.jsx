@@ -69,6 +69,8 @@ class SearchForm extends Component {
         return client.apis.default.saveTask_1({
           searchString: values.keyWords,
           excludeString: values.stopWords,
+          title: values.taskname,
+          projectId: localStorage.getItem('currentProject'),
           state: 'INITIAL',
         });
       })
@@ -77,15 +79,6 @@ class SearchForm extends Component {
         console.log('state ' + this.state.id);
         this.start(response.text);
       })
-
-      // resolveClient()
-      //   .then((client) => {
-      //     client.apis.default.startTask_1({
-      //       id: this.state.id
-      //     });
-      //     const task = {taskname: this.state.values.taskname, id: this.state.id};
-      //     this.props.onSearchStart(task);
-      //   })
   };
 
   start = (id) => {

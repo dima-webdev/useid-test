@@ -1,4 +1,5 @@
 import React from 'react';
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
 
 export const ProjectContext = React.createContext();
 
@@ -6,19 +7,33 @@ export class ProjectManager extends React.Component {
   constructor() {
     super();
     this.state = {
-      currentProject: 'p2',
-      allProjects: {
-        p1: { id: 'p1', title: 'Adidas' },
-        p2: { id: 'p2', title: 'Hermitage' },
-        p3: { id: 'p3', title: 'Dog rates' },
-        p4: { id: 'p4', title: 'Lidl' },
-        p5: { id: 'p5', title: 'The secret project' },
-        p6: { id: 'p6', title: 'Кириллический' },
-        p7: { id: 'p7', title: 'Ifmo' },
-      },
-      projectKeys: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'],
+      currentProject: '',
+      allProjects: {},
+      projectKeys: [],
       setCurrentProject: this.setCurrentProject.bind(this),
   }}
+
+  componentDidMount() {
+    resolveClient()
+      .then((client) => {
+        console.log(this.state.userId);
+        // return client.apis.default.getUserProjects_1({userId: this.state.userId});
+        return client.apis.default.getCurrentUserProjects_1();
+      })
+      .then((response) => {
+        let projectsArr = response.obj;
+        let projectKeys = [];
+        let allProjects = {};
+        projectsArr.forEach(function(elem) {
+          projectKeys.push(elem.id);
+          allProjects[elem.id] = elem;
+        })
+        console.log(projectKeys);
+        console.log(allProjects);
+        this.setState({projectKeys, allProjects})
+        console.log('state', this.state);
+      })
+  }
 
   // получить все проекты
 
@@ -32,6 +47,8 @@ export class ProjectManager extends React.Component {
       this.setState({
         currentProject: projectId,
       })
+
+      localStorage.setItem('currentProject', projectId);
 
   }
 

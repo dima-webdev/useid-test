@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { CreationForm } from './components';
 
 import {TaskContext} from '../../services/taskContext';
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
 
 const styles = theme => ({
   root: {
@@ -26,22 +27,46 @@ const styles = theme => ({
 
 const projects = [
   { id: 'p1', title: 'Adidas' },
-  { id: 'p2', title: 'Hermitage' },
-  { id: 'p3', title: 'Dog rates' },
-  { id: 'p4', title: 'Lidl' },
-  { id: 'p5', title: 'The secret project' },
-  { id: 'p6', title: 'Кириллический' },
-  { id: 'p7', title: 'Ifmo' },
 ]
 
 class Projects extends Component {
-  state = {};
+  state = {
+    userId: '',
+    projects:[]
+  };
+
+  // projects = [];
+
+  componentDidMount() {
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.getCurrentUser_1();
+      })
+      .then((response) => {
+        this.setState({userId: response.obj.id})
+      })
+      .then(() => {
+        return resolveClient()
+          .then((client) => {
+            console.log(this.state.userId);
+            // return client.apis.default.getUserProjects_1({userId: this.state.userId});
+            return client.apis.default.getCurrentUserProjects_1();
+          })
+          .then((response) => {
+
+            this.setState({projects: response.obj})
+            console.log('projects', response.obj);
+          })
+      })
+
+
+  }
 
 
   render() {
     const { classes } = this.props;
 
-    let projectsList = projects.map(element =>
+    let projectsList = this.state.projects.map(element =>
       <ExpansionPanel>
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
@@ -50,14 +75,6 @@ class Projects extends Component {
         >
           <Typography className={classes.heading}>{element.title}</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Task 1<br/>
-            Universe search<br/>
-            SPb-Hel transfers<br/>
-            Allegro travellers
-          </Typography>
-        </ExpansionPanelDetails>
       </ExpansionPanel>
     );
 
