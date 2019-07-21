@@ -2,11 +2,17 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {TaskContext} from '../../services/taskContext/index.jsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, IconButton } from '@material-ui/core';
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import {
+  Block as CancelIcon,
+  PauseCircleOutline as PauseIcon,
+  PlayCircleOutline as RestartIcon,
+} from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: 260,
+    width: 460,
     // display: 'flex',
     // flexDirection: 'column',
     // justifyContent: 'start',
@@ -30,13 +36,54 @@ const useStyles = makeStyles(theme => ({
     color: 'green'
   },
   nameText: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
   },
+  icon: {
+    padding: theme.spacing(0)
+  },
+  taskText: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    textAlign: 'justify',
+    display: 'inline-block',
+    width: '60%',
+  }
 }));
 
 
 export default function TaskSidebar() {
   const classes = useStyles();
+
+  function cancelTask(id) {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.cancelTask_1({id});
+      })
+      .then((response) => {
+        console.log('cancelled', response);
+      })
+  };
+
+  function pauseTask(id) {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.pauseTask_1({id});
+      })
+      .then((response) => {
+        console.log('paused', response);
+      })
+  };
+
+  function restartTask(id) {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.startTask_1({id});
+      })
+      .then((response) => {
+        console.log('restarted', response);
+      })
+  };
 
   return <TaskContext.Consumer>{
     tasks => {
@@ -49,23 +96,43 @@ export default function TaskSidebar() {
       </Typography>
       {
 
-        tasks.allTasks.map((id) => {
-          let task = tasks.taskById[id]
-          let path = `/group-search/${id}`
+        tasks.taskStatuses.map((task) => {
+          console.log(task)
+          let path = `/group-search/${task.id}`
           if (!task.done) {
-            return <Link to={path} key={id}>
+            return <Link to={path} key={task.id}>
               <Typography
                 className={classes.itemPending}
               >
-                {task.name} — {task.progress}%
+                <IconButton
+                  className={classes.icon}
+                  onClick={() => this.cancelTask(task.id)}
+                >
+                  <CancelIcon />
+                </IconButton>
+                <IconButton
+                  className={classes.icon}
+                  onClick={() => this.pauseTask(task.id)}
+                >
+                  <PauseIcon />
+                </IconButton>
+                <IconButton
+                  className={classes.icon}
+                  onClick={() => this.pauseTask(task.id)}
+                >
+                  <RestartIcon />
+                </IconButton>
+                <div className={classes.taskText}>
+                  {task.title} — {task.state}
+                </div>
               </Typography>
             </Link>
           } else {
-            return <Link to={path} key={id}>
+            return <Link to={path} key={task.id}>
               <Typography
                 className={classes.itemCompleted}
               >
-                {task.name} [completed]
+                {task.title} [completed]
               </Typography>
             </Link>
           }

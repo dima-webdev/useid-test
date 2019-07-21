@@ -41,6 +41,7 @@ import {
   StarBorder,
   Add,
   Home,
+  Create as DraftsIcon,
 } from '@material-ui/icons';
 
 // Component styles
@@ -165,6 +166,20 @@ class Sidebar extends Component {
             <ListItemText
               classes={{ primary: classes.listItemText }}
               primary="Group Search"
+            />
+          </ListItem>
+          <ListItem
+            activeClassName={classes.activeListItem}
+            className={classes.listItem}
+            component={NavLink}
+            to="/drafts"
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <DraftsIcon />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.listItemText }}
+              primary="Drafts"
             />
           </ListItem>
           <ListItem

@@ -11,6 +11,7 @@ import GroupSearch from './views/GroupSearch'
 import NotFound from './views/NotFound';
 import Projects from './views/Projects';
 import ResultList from './views/ResultList';
+import Drafts from './views/Drafts';
 
 class ProtectedRoute extends Component {
   render() {
@@ -47,6 +48,11 @@ export default class Routes extends Component {
           component={GroupSearch}
           exact
           path="/group-search"
+        />
+        <Route
+          component={Drafts}
+          exact
+          path="/drafts"
         />
         <Route
           component={GroupSearch}

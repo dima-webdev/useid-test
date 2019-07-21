@@ -1,4 +1,5 @@
 import React from 'react';
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
 
 export const TaskContext = React.createContext();
 
@@ -10,12 +11,31 @@ export class TaskManager extends React.Component {
       resultsById: {},
       pendingTasks: [],
       allTasks: [],
-      createTask: this.createTask.bind(this)
+      createTask: this.createTask.bind(this),
+      taskStatuses: [],
+      userId: '',
     }
   }
 
   componentDidMount() {
     this._timer = setTimeout(() => this.pollTasks(), 0);
+
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.getCurrentUser_1();
+      })
+      .then((response) => {
+        this.setState({userId: response.obj.userId})
+      })
+
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.getTaskInfo_1();
+      })
+      .then((response) => {
+        this.setState({ taskStatuses: response.obj})
+        console.log('task', response);
+      })
   }
 
   componentWillUnmount() {
@@ -70,7 +90,7 @@ export class TaskManager extends React.Component {
         pendingTasks: newPending
       })
 
-      setTimeout(() => this.pollTasks(), 1000);
+      setTimeout(() => this.pollTasks(), 10000);
     })
   }
 

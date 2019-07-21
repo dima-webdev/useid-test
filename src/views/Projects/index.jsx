@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { CreationForm } from './components';
 
 import {TaskContext} from '../../services/taskContext';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
 
 const styles = theme => ({
   root: {
@@ -58,8 +58,6 @@ class Projects extends Component {
             console.log('projects', response.obj);
           })
       })
-
-
   }
 
 
