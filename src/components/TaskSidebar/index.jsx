@@ -58,7 +58,7 @@ export default function TaskSidebar() {
   function cancelTask(id) {
     return resolveClient()
       .then((client) => {
-        return client.apis.default.cancelTask_1({id});
+        return client.apis.default.VkSearchTaskEndpointcancelTask({id});
       })
       .then((response) => {
         console.log('cancelled', response);
@@ -68,7 +68,7 @@ export default function TaskSidebar() {
   function pauseTask(id) {
     return resolveClient()
       .then((client) => {
-        return client.apis.default.pauseTask_1({id});
+        return client.apis.default.VkSearchTaskEndpoint_pauseTask({id});
       })
       .then((response) => {
         console.log('paused', response);
@@ -78,7 +78,7 @@ export default function TaskSidebar() {
   function restartTask(id) {
     return resolveClient()
       .then((client) => {
-        return client.apis.default.startTask_1({id});
+        return client.apis.default.VkSearchTaskEndpoint_startTask({id});
       })
       .then((response) => {
         console.log('restarted', response);

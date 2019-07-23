@@ -49,7 +49,7 @@ class Drafts extends Component {
   componentDidMount() {
     resolveClient()
       .then((client) => {
-        return client.apis.default.getCurrentUser_1();
+        return client.apis.default.UserEndpoint_getCurrentUser();
       })
       .then((response) => {
         this.setState({userId: response.obj.id})
@@ -59,7 +59,7 @@ class Drafts extends Component {
           .then((client) => {
             console.log(this.state.userId);
             // return client.apis.default.getUserProjects_1({userId: this.state.userId});
-            return client.apis.default.getTaskInfo_1();
+            return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
           })
           .then((response) => {
             let draftTasks = response.obj.filter( task => task.state === 'INITIAL')

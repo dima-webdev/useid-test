@@ -22,7 +22,7 @@ export class TaskManager extends React.Component {
 
     resolveClient()
       .then((client) => {
-        return client.apis.default.getCurrentUser_1();
+        return client.apis.default.UserEndpoint_getCurrentUser();
       })
       .then((response) => {
         this.setState({userId: response.obj.userId})
@@ -30,7 +30,8 @@ export class TaskManager extends React.Component {
 
     resolveClient()
       .then((client) => {
-        return client.apis.default.getTaskInfo_1();
+        console.log('try get task info');
+        return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
       })
       .then((response) => {
         this.setState({ taskStatuses: response.obj})

@@ -35,7 +35,7 @@ class SearchForm extends Component {
   sendForm = () => {
     return resolveClient().then((client) => {
       console.log('test');
-      return client.apis.default.getCurrentUser_1();
+      return client.apis.default.UserEndpoint_getCurrentUser();
     })
   };
 
@@ -66,7 +66,7 @@ class SearchForm extends Component {
     return resolveClient()
       .then((client) => {
         const values = this.state.values;
-        return client.apis.default.saveTask_1({
+        return client.apis.default.VkSearchTaskEndpoint_saveTask({
           searchString: values.keyWords,
           excludeString: values.stopWords,
           title: values.taskname,
@@ -84,7 +84,7 @@ class SearchForm extends Component {
   start = (id) => {
     return resolveClient()
       .then((client) => {
-        client.apis.default.startTask_1({
+        client.apis.default.VkSearchTaskEndpoint_startTask({
           id: id
         });
         const task = {taskname: this.state.values.taskname, id: id};

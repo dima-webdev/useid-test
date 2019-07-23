@@ -176,7 +176,7 @@ class Topbar extends Component {
               <Avatar
                 alt="user"
                 className={classes.avatar}
-                src="/images/elon.jpeg"
+                src="/images/avatar.png"
               />
             </IconButton>
           </Toolbar>

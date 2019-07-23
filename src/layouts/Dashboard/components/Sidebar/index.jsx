@@ -54,11 +54,16 @@ class Sidebar extends Component {
 
     this.state = {
       open: true,
+      vkOpen: true,
     };
   };
 
   handleClick = () =>  {
     this.setState({open: !this.state.open});
+  }
+
+  vkHandleClick = () =>  {
+    this.setState({vkOpen: !this.state.vkOpen});
   }
 
   render() {
@@ -144,7 +149,7 @@ class Sidebar extends Component {
             activeClassName={classes.activeListItem}
             className={classes.listItem}
             component={NavLink}
-            to="/results"
+            to="/result-list"
           >
             <ListItemIcon className={classes.listItemIcon}>
               <DashboardIcon />
@@ -152,20 +157,6 @@ class Sidebar extends Component {
             <ListItemText
               classes={{ primary: classes.listItemText }}
               primary="Results"
-            />
-          </ListItem>
-          <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/group-search"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <SearchIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Group Search"
             />
           </ListItem>
           <ListItem
@@ -182,6 +173,36 @@ class Sidebar extends Component {
               primary="Drafts"
             />
           </ListItem>
+          <ListItem
+            button
+            onClick={this.vkHandleClick}
+            className={classes.listItem}
+            activeClassName={classes.activeListItem}>
+            <ListItemIcon className={classes.listItemIcon}>
+              <Folder />
+            </ListItemIcon>
+            <ListItemText primary="Vkontakte" />
+            {this.state.vkOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={this.state.vkOpen} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem
+                activeClassName={classes.activeListItem}
+                className={classes.listItem}
+                component={NavLink}
+                to="/group-search"
+              >
+                <ListItemIcon className={classes.listItemIcon}>
+                  <SearchIcon />
+                </ListItemIcon>
+                <ListItemText
+                  classes={{ primary: classes.listItemText }}
+                  primary="Group Search"
+                />
+              </ListItem>
+            </List>
+          </Collapse>
+
           <ListItem
             button
             onClick={this.handleClick}

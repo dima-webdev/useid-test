@@ -46,7 +46,7 @@ const signUp = (email, password, firstName) => {
   // });
   return resolveClient().then((client) => {
     console.log(email, password, sha256(password), firstName)
-    return client.apis.default.signIn_1({login: email, password: sha256(password)});
+    return client.apis.default.LoginEndpoint_signIn({login: email, password: sha256(password)});
   })
 };
 

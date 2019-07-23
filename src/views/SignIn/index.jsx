@@ -39,7 +39,7 @@ const signIn = (email, password) => {
 
   return resolveClient()
     .then((client) => {
-      return client.apis.default.login_1({login: email, password: sha256(password)});
+      return client.apis.default.LoginEndpoint_login({login: email, password: sha256(password)});
     })
     .then((response) => {
       if (response.ok) {

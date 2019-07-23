@@ -18,7 +18,7 @@ export class ProjectManager extends React.Component {
       .then((client) => {
         console.log(this.state.userId);
         // return client.apis.default.getUserProjects_1({userId: this.state.userId});
-        return client.apis.default.getCurrentUserProjects_1();
+        return client.apis.default.ProjectEndpoint_getCurrentUserProjects();
       })
       .then((response) => {
         let projectsArr = response.obj;

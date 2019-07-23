@@ -41,6 +41,8 @@ class ResultList extends Component {
   render() {
     const { classes, className, ...rest } = this.props;
 
+    console.log('test');
+
     const readyTasks = [
       {
         id: 1,

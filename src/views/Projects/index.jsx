@@ -40,7 +40,7 @@ class Projects extends Component {
   componentDidMount() {
     resolveClient()
       .then((client) => {
-        return client.apis.default.getCurrentUser_1();
+        return client.apis.default.UserEndpoint_getCurrentUser();
       })
       .then((response) => {
         this.setState({userId: response.obj.id})
@@ -49,8 +49,8 @@ class Projects extends Component {
         return resolveClient()
           .then((client) => {
             console.log(this.state.userId);
-            // return client.apis.default.getUserProjects_1({userId: this.state.userId});
-            return client.apis.default.getCurrentUserProjects_1();
+            // return client.apis.default.ProjectEndpoint_getUserProjects({userId: this.state.userId});
+            return client.apis.default.ProjectEndpoint_getCurrentUserProjects();
           })
           .then((response) => {
 

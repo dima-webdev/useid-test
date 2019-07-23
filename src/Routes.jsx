@@ -50,9 +50,9 @@ export default class Routes extends Component {
           path="/group-search"
         />
         <Route
-          component={Drafts}
+          component={Projects}
           exact
-          path="/drafts"
+          path="/projects"
         />
         <Route
           component={GroupSearch}
@@ -70,16 +70,18 @@ export default class Routes extends Component {
         />
         <ProtectedRoute>
           <Route
-            component={Projects}
+            component={ResultList}
             exact
-            path="/projects"
+            path="/result-list"
           />
         </ProtectedRoute>
-        <Route
-          component={ResultList}
-          exact
-          path="/results"
-        />
+        <ProtectedRoute>
+          <Route
+            component={Drafts}
+            exact
+            path="/drafts"
+          />
+        </ProtectedRoute>
         <Route
           component={NotFound}
           exact

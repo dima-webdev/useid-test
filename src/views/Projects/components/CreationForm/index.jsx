@@ -27,7 +27,7 @@ class CreationForm extends Component {
   createProject = () => {
     return resolveClient().then((client) => {
       console.log('test');
-      return client.apis.default.saveProject_1(this.state.values);
+      return client.apis.default.ProjectEndpoint_saveProject(this.state.values);
     })
   };
 
