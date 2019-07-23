@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
+import { Link, NavLink } from 'react-router-dom';
 
 import {
   Portlet,

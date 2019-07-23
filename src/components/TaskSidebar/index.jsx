@@ -97,28 +97,27 @@ export default function TaskSidebar() {
       {
 
         tasks.taskStatuses.map((task) => {
-          console.log(task)
           let path = `/group-search/${task.id}`
-          if (!task.done) {
+          if (task.state !== 'COMPLETED') {
             return <Link to={path} key={task.id}>
               <Typography
                 className={classes.itemPending}
               >
                 <IconButton
                   className={classes.icon}
-                  onClick={() => this.cancelTask(task.id)}
+                  onClick={() => cancelTask(task.id)}
                 >
                   <CancelIcon />
                 </IconButton>
                 <IconButton
                   className={classes.icon}
-                  onClick={() => this.pauseTask(task.id)}
+                  onClick={() => pauseTask(task.id)}
                 >
                   <PauseIcon />
                 </IconButton>
                 <IconButton
                   className={classes.icon}
-                  onClick={() => this.pauseTask(task.id)}
+                  onClick={() => restartTask(task.id)}
                 >
                   <RestartIcon />
                 </IconButton>
@@ -132,7 +131,19 @@ export default function TaskSidebar() {
               <Typography
                 className={classes.itemCompleted}
               >
-                {task.title} [completed]
+              <IconButton
+                className={classes.icon}
+              >
+              </IconButton>
+              <IconButton
+                className={classes.icon}
+              >
+              </IconButton>
+              <IconButton
+                className={classes.icon}
+              >
+              </IconButton>
+                {task.title} — {task.state}
               </Typography>
             </Link>
           }

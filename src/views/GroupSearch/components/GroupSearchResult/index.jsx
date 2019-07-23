@@ -43,7 +43,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
     useEffect(() => {
       resolveClient()
         .then((client) => {
-          return client.apis.default.VkSearchTaskEndpoint_getTaskStatuses();
+          return client.apis.default.VkSearchTaskEndpoint_getTaskState();
         })
         .then((response) => {
           console.log(response);

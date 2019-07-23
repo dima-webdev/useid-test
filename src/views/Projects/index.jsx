@@ -13,6 +13,7 @@ import { CreationForm } from './components';
 
 import {TaskContext} from '../../services/taskContext';
 import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import { ProjectContext } from '../../services/projectContext/index.jsx'
 
 const styles = theme => ({
   root: {
@@ -99,6 +100,25 @@ class Projects extends Component {
             xl={8}
             xs={12}
           >
+          <ProjectContext.Consumer>
+            { ({projectsArr, setCurrentProject}) =>
+              { if (projectsArr) {
+                return projectsArr
+                .map(element =>
+                  <ExpansionPanel>
+                    <ExpansionPanelSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls={element.id + '-content'}
+                      id={element.id + '-header'}
+                    >
+                      <Typography className={classes.heading}>{element.title}</Typography>
+                    </ExpansionPanelSummary>
+                  </ExpansionPanel>
+                  )
+                }
+              }
+            }
+          </ProjectContext.Consumer>
           {
             projectsList
           }

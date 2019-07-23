@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route, Redirect } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 
 // Externals
@@ -132,7 +132,9 @@ class Topbar extends Component {
     const rootClassName = classNames(classes.root, className);
     const showNotifications = Boolean(notificationsEl);
 
-    return (
+    let isAuth = localStorage.getItem('isAuthenticated');
+    return !isAuth ? <Redirect to="/sign-in" /> :
+    (
       <Fragment>
         <div className={rootClassName}>
           <Toolbar className={classes.toolbar}>

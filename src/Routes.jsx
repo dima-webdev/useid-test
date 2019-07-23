@@ -27,7 +27,7 @@ export default class Routes extends Component {
         <Redirect
           exact
           from="/"
-          to="/group-search"
+          to="/dashboard"
         />
         <Route
           component={Dashboard}
@@ -68,20 +68,16 @@ export default class Routes extends Component {
           exact
           path="/settings"
         />
-        <ProtectedRoute>
-          <Route
-            component={ResultList}
-            exact
-            path="/result-list"
-          />
-        </ProtectedRoute>
-        <ProtectedRoute>
-          <Route
-            component={Drafts}
-            exact
-            path="/drafts"
-          />
-        </ProtectedRoute>
+        <Route
+          component={ResultList}
+          exact
+          path="/result-list"
+        />
+        <Route
+          component={Drafts}
+          exact
+          path="/drafts"
+        />
         <Route
           component={NotFound}
           exact

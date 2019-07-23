@@ -83,7 +83,7 @@ class ResultList extends Component {
     ];
 
     return (
-      <DashboardLayout title="Dashboard">
+      <DashboardLayout title="Parsed rasks">
         <div className={classes.root}>
           <Grid
             container

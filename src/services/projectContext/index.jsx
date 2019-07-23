@@ -28,10 +28,7 @@ export class ProjectManager extends React.Component {
           projectKeys.push(elem.id);
           allProjects[elem.id] = elem;
         })
-        console.log(projectKeys);
-        console.log(allProjects);
-        this.setState({projectKeys, allProjects})
-        console.log('state', this.state);
+        this.setState({projectKeys, allProjects});
       })
   }
 

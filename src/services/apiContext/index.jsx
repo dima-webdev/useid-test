@@ -2,8 +2,8 @@ import Swagger from 'swagger-client';
 import React from 'react';
 export const ApiContext = React.createContext();
 
-// const URL = 'http://142.91.9.164:8490/api/swagger.json';
-const URL = '/api/swagger.json';
+const URL = 'http://142.91.9.164:8490/api/swagger.json';
+// const URL = '/api/swagger.json';
 //Swagger.http.withCredentials = true;
 
 let _client = null;
@@ -14,14 +14,14 @@ export const resolveClient = () => {
     return Promise.resolve(_client)
   } else {
     let poll = (resolve, reject) => {
-      console.log('polling...')
+      // console.log('polling...')
       setTimeout(() => {
         if (_client) {
           resolve(_client)
         } else {
           setTimeout(poll.bind(null, resolve, reject), 50)
         }
-      }, 50)
+      }, 5)
     }
     return new Promise(poll)
   }

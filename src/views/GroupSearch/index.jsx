@@ -54,10 +54,10 @@ class GroupSearch extends Component {
               ? <GroupSearchResult taskId={taskId} />
               : <GroupSearchForm onSearchStart={(task) => {
                 console.log(task);
-                task.name = task.taskname || 'Taskname';
+                task.name = task.taskname || 'New Task';
                 task.id = task.id || Math.floor(Math.random() * 10000).toString()
 
-                tasks.createTask(task)
+                // tasks.createTask(task)
                 .then(() => this.setState({
                   redirectTo: `/group-search/${task.id}`
                 }));
