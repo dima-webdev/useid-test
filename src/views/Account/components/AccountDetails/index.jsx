@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField, Typography } from '@material-ui/core';
 import { Link, NavLink } from 'react-router-dom';
+
+import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
 
 import {
   Portlet,
@@ -21,8 +23,20 @@ class Account extends Component {
     lastName: '',
     email: '',
     phone: '',
-    country: 'Russia'
+    country: 'Russia',
+    login: '',
   };
+
+  componentDidMount() {
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.UserEndpoint_getCurrentUser();
+      })
+      .then((response) => {
+        this.setState({login: response.obj.email})
+      })
+
+  }
 
   handleChange = e => {
     this.setState({
@@ -50,10 +64,7 @@ class Account extends Component {
         className={rootClassName}
       >
         <PortletHeader>
-          <PortletLabel
-            subtitle="The information can be edited"
-            title="Profile"
-          />
+          <Typography variant="h2">{this.state.login}</Typography>
         </PortletHeader>
         <PortletContent noPadding>
           <form

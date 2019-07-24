@@ -188,7 +188,7 @@ class Sidebar extends Component {
             <List component="div" disablePadding>
               <ListItem
                 activeClassName={classes.activeListItem}
-                className={classes.listItem}
+                className={classes.nested}
                 component={NavLink}
                 to="/group-search"
               >

@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core';
 import { Avatar, Typography, Button, LinearProgress } from '@material-ui/core';
 import { Portlet, PortletContent, PortletFooter } from 'components';
 import styles from './styles';
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx'
+import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
 
 class AccountProfile extends Component {
 

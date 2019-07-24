@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
+import {Link} from 'react-router-dom';
 
 import classNames from 'classnames';
 import {
@@ -33,15 +34,16 @@ const styles = theme => ({
   },
   item: {
     height: '100%'
-  }
+  },
+  tableCell: {
+    whiteSpace: 'nowrap'
+  },
 });
 
 
 class ResultList extends Component {
   render() {
     const { classes, className, ...rest } = this.props;
-
-    console.log('test');
 
     const readyTasks = [
       {
@@ -129,12 +131,9 @@ class ResultList extends Component {
                         <TableCell className={classes.tableCell, classes.descCell}>{task.idPrice}</TableCell>
                         <TableCell className={classes.tableCell, classes.descCell}>{task.sumPrice}</TableCell>
                         <TableCell className={classes.tableCell, classes.descCell}>
-                          <Button
-                            color="primary"
-                            variant="contained"
-                          >
+                          <Link to='/' key={task.id}>
                             Download
-                          </Button>
+                          </Link>
                         </TableCell>
                         </TableRow>
                       ))}
