@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import {TaskContext} from '../../services/taskContext/index.jsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,6 +55,23 @@ const useStyles = makeStyles(theme => ({
 export default function TaskSidebar() {
   const classes = useStyles();
 
+  // const [selected, setSelected] = useState([]);
+  //
+  // useEffect(() => {
+  //   resolveClient()
+  //     .then((client) => {
+  //       return client.apis.default.VkSearchTaskEndpoint_getTaskState();
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+  //     })
+  // }, []);
+  //
+  // const [state, setState] = useState({
+  //   rowsPerPage: 10,
+  //   page: 0
+  // });
+
   function cancelTask(id) {
     return resolveClient()
       .then((client) => {
@@ -105,19 +122,28 @@ export default function TaskSidebar() {
               >
                 <IconButton
                   className={classes.icon}
-                  onClick={() => cancelTask(task.id)}
+                  onClick={() => {
+                    cancelTask(task.id);
+                    tasks.updateStatuses();
+                  }}
                 >
                   <CancelIcon />
                 </IconButton>
                 <IconButton
                   className={classes.icon}
-                  onClick={() => pauseTask(task.id)}
+                  onClick={() => {
+                    pauseTask(task.id);
+                    tasks.updateStatuses();
+                  }}
                 >
                   <PauseIcon />
                 </IconButton>
                 <IconButton
                   className={classes.icon}
-                  onClick={() => restartTask(task.id)}
+                  onClick={() => {
+                    restartTask(task.id);
+                    tasks.updateStatuses();
+                  }}
                 >
                   <RestartIcon />
                 </IconButton>

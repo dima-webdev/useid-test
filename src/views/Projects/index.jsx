@@ -13,7 +13,7 @@ import { CreationForm } from './components';
 
 import {TaskContext} from '../../services/taskContext';
 import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
-import { ProjectContext } from '../../services/projectContext/index.jsx'
+import { ProjectContext } from '../../services/projectContext/index.jsx';
 
 const styles = theme => ({
   root: {

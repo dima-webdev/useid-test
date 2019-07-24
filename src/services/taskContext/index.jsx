@@ -12,6 +12,7 @@ export class TaskManager extends React.Component {
       pendingTasks: [],
       allTasks: [],
       createTask: this.createTask.bind(this),
+      updateStatuses: this.updateStatuses.bind(this),
       taskStatuses: [],
       userId: '',
     }
@@ -27,6 +28,17 @@ export class TaskManager extends React.Component {
       .then((response) => {
         this.setState({userId: response.obj.userId})
       })
+
+      setInterval(() => {
+        console.log('timeout statuses')
+        resolveClient()
+        .then((client) => {
+          return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
+        })
+        .then((response) => {
+          this.setState({ taskStatuses: response.obj})
+        })
+      }, 10000);
 
     resolveClient()
       .then((client) => {
@@ -115,6 +127,21 @@ export class TaskManager extends React.Component {
 
       return task.id
     })
+  }
+
+  updateStatuses(){
+    console.log('updateStatuses');
+    setTimeout(() => {
+      console.log('timeout statuses')
+      resolveClient()
+      .then((client) => {
+        return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
+      })
+      .then((response) => {
+        this.setState({ taskStatuses: response.obj})
+      })
+    }, 1000);
+
   }
 
   render() {
