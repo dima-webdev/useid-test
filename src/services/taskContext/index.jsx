@@ -47,7 +47,7 @@ export class TaskManager extends React.Component {
       })
       .then((response) => {
         this.setState({ taskStatuses: response.obj})
-        console.log('task', response);
+        console.log('task statuses', response);
       })
   }
 
@@ -56,55 +56,57 @@ export class TaskManager extends React.Component {
   }
 
   pollTasks() {
-    let tasks = this.state.taskById;
-    let results = this.state.resultsById;
 
-    let fetches = this.state.pendingTasks.map((id) => {
-      // API CALL
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          if (Math.random() < 0.1) {
-            resolve({
-              id: id,
-              done: true,
-              results: [
-                {name: 'group 1', users: Math.random()*1000, description: 'result 1'},
-                {name: 'group 2', users: 100, description: 'result 2'}
-              ]
-            })
-          } else {
-            resolve({
-              id: id,
-              done: false,
-              progress: Math.min(Math.floor((tasks[id].progress || 0) + (Math.random() * 10)), 99)
-            })
-          }
-        }, Math.random() * 300);
-      })
-    });
+    console.log('pollTasks')
+    // let tasks = this.state.taskById;
+    // let results = this.state.resultsById;
+    //
+    // let fetches = this.state.pendingTasks.map((id) => {
+    //   // API CALL
+    //   return new Promise((resolve) => {
+    //     setTimeout(() => {
+    //       if (Math.random() < 0.1) {
+    //         resolve({
+    //           id: id,
+    //           done: true,
+    //           results: [
+    //             {name: 'group 1', users: Math.random()*1000, description: 'result 1'},
+    //             {name: 'group 2', users: 100, description: 'result 2'}
+    //           ]
+    //         })
+    //       } else {
+    //         resolve({
+    //           id: id,
+    //           done: false,
+    //           progress: Math.min(Math.floor((tasks[id].progress || 0) + (Math.random() * 10)), 99)
+    //         })
+    //       }
+    //     }, Math.random() * 300);
+    //   })
+    // });
 
-    Promise.all(fetches).then((updates) => {
-      let updatedTasks = {}
-      let updatedResults = {}
-      let newPending = []
-      updates.forEach(t => {
-        if (t.done) {
-          updatedTasks[t.id] = Object.assign({}, tasks[t.id], {done: true})
-          updatedResults[t.id] = t.results;
-        } else {
-          newPending.push(t.id);
-          updatedTasks[t.id] = Object.assign({}, tasks[t.id], {progress: t.progress})
-        }
-      })
-
-      this.setState({
-        taskById: Object.assign({}, tasks, updatedTasks),
-        resultsById: Object.assign({}, results, updatedResults),
-        pendingTasks: newPending
-      })
-
-      setTimeout(() => this.pollTasks(), 10000);
-    })
+    // Promise.all(fetches).then((updates) => {
+    //   let updatedTasks = {}
+    //   let updatedResults = {}
+    //   let newPending = []
+    //   updates.forEach(t => {
+    //     if (t.done) {
+    //       updatedTasks[t.id] = Object.assign({}, tasks[t.id], {done: true})
+    //       updatedResults[t.id] = t.results;
+    //     } else {
+    //       newPending.push(t.id);
+    //       updatedTasks[t.id] = Object.assign({}, tasks[t.id], {progress: t.progress})
+    //     }
+    //   })
+    //
+    //   this.setState({
+    //     taskById: Object.assign({}, tasks, updatedTasks),
+    //     resultsById: Object.assign({}, results, updatedResults),
+    //     pendingTasks: newPending
+    //   })
+    //
+    //   setTimeout(() => this.pollTasks(), 10000);
+    // })
   }
 
   createTask(task) {

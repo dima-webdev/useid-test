@@ -75,7 +75,7 @@ export default function TaskSidebar() {
   function cancelTask(id) {
     return resolveClient()
       .then((client) => {
-        return client.apis.default.VkSearchTaskEndpointcancelTask({id});
+        return client.apis.default.VkSearchTaskEndpoint_abortTask({id});
       })
       .then((response) => {
         console.log('cancelled', response);

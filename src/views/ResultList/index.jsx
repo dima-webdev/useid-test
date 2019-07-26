@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import {Link} from 'react-router-dom';
@@ -7,16 +6,11 @@ import {Link} from 'react-router-dom';
 import classNames from 'classnames';
 import {
   Grid,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
-  Button
 } from '@material-ui/core';
 import { Dashboard as DashboardLayout } from 'layouts';
 
@@ -25,7 +19,6 @@ import {
   PortletHeader,
   PortletLabel,
   PortletContent,
-  PortletFooter
 } from 'components';
 
 const styles = theme => ({
@@ -85,7 +78,7 @@ class ResultList extends Component {
     ];
 
     return (
-      <DashboardLayout title="Parsed rasks">
+      <DashboardLayout title="Parsed tasks">
         <div className={classes.root}>
           <Grid
             container
@@ -94,7 +87,7 @@ class ResultList extends Component {
             <Portlet {...rest}>
               <PortletHeader>
                 <PortletLabel
-                  title='Ready to Download'
+                  title='This data is not real!'
                 />
               </PortletHeader>
               <PortletContent>

@@ -28,6 +28,7 @@ class SearchForm extends Component {
       membersMin: 0,
       membersMax: 10000000,
       cities: '',
+      entityType: 'GROUPS'
     },
     id: '',
   };
@@ -72,6 +73,7 @@ class SearchForm extends Component {
           title: values.taskname,
           projectId: localStorage.getItem('currentProject'),
           state: 'INITIAL',
+          entityType: 'GROUPS',
         });
       })
       .then((response) => {
@@ -80,6 +82,21 @@ class SearchForm extends Component {
         this.start(response.text);
       })
   };
+
+  saveSearchTask = () => {
+    return resolveClient()
+      .then((client) => {
+        const values = this.state.values;
+        return client.apis.default.VkSearchTaskEndpoint_saveTask({
+          searchString: values.keyWords,
+          excludeString: values.stopWords,
+          title: values.taskname,
+          projectId: localStorage.getItem('currentProject'),
+          state: 'INITIAL',
+          entityType: 'GROUP',
+        });
+      })
+  }
 
   start = (id) => {
     return resolveClient()
@@ -94,9 +111,11 @@ class SearchForm extends Component {
 
 
   render() {
-    const { classes, className, ...rest } = this.props;
+    const { classes, className, taskId, ...rest } = this.props;
 
     const rootClassName = classNames(classes.root, className);
+
+    console.log('searchform',{taskId})
 
     return (
       <Portlet
@@ -176,22 +195,7 @@ class SearchForm extends Component {
             variant="contained"
             onClick={() => this.startSearch()}
           >
-            Start
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => this.sendForm()}
-          >
-            Save
-          </Button>
-          <Button
-            variant="contained"
-          >
-            Test
-          </Button>
-          <Button
-          >
-            Cancel
+            Start search
           </Button>
         </PortletFooter>
       </Portlet>
@@ -203,6 +207,7 @@ SearchForm.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.object.isRequired,
   onSearchStart: PropTypes.func.isRequired,
+  taskId: PropTypes.string,
 }
 
 export default withStyles(styles)(SearchForm);

@@ -5,8 +5,9 @@ import { Dashboard as DashboardLayout } from 'layouts';
 import { Redirect } from 'react-router-dom';
 
 import {TaskContext} from '../../services/taskContext';
+import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
 
-import { GroupSearchForm, GroupSearchResult } from './components'
+import { GroupSearchForm, GroupSearchResult, SearchResult } from './components'
 const styles = theme => ({
   root: {
     padding: theme.spacing(4)
@@ -17,7 +18,34 @@ const styles = theme => ({
 });
 
 class GroupSearch extends Component {
-  state = {};
+  state = {
+    tasks: [],
+    tasksById: {},
+    statesById: {},
+    task: '',
+  };
+
+  componentDidMount() {
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
+      })
+      .then((response) => {
+        const tasks = response.obj;
+        this.setState({tasks});
+
+        let tasksById = {};
+        let statesById = {};
+
+        tasks.forEach((task) => {
+          tasksById[task.id] = task;
+          statesById[task.id] = task.state;
+        })
+
+        this.setState({tasksById});
+        this.setState({statesById});
+      })
+  }
 
   render() {
     const { classes, match } = this.props;
@@ -50,18 +78,21 @@ class GroupSearch extends Component {
               xl={12}
               xs={12}
             >
-            { taskId
-              ? <GroupSearchResult taskId={taskId} />
-              : <GroupSearchForm onSearchStart={(task) => {
+            {
+              taskId
+              ? <SearchResult taskId={taskId} />
+              : <GroupSearchForm
+              onSearchStart={(task) => {
                 console.log(task);
-                task.name = task.taskname || 'New Task';
-                task.id = task.id || Math.floor(Math.random() * 10000).toString()
-
-                // tasks.createTask(task)
-                .then(() => this.setState({
-                  redirectTo: `/group-search/${task.id}`
-                }));
-              }} />}
+                // task.name = task.taskname || 'New Task';
+                // task.id = task.id || Math.floor(Math.random() * 10000).toString()
+                //
+                // // tasks.createTask(task)
+                // .then(() => this.setState({
+                //   redirectTo: `/group-search/${task.id}`
+                // }));
+              }} />
+            }
             </Grid>
           </Grid>
         </div>

@@ -160,20 +160,6 @@ class Sidebar extends Component {
             />
           </ListItem>
           <ListItem
-            activeClassName={classes.activeListItem}
-            className={classes.listItem}
-            component={NavLink}
-            to="/drafts"
-          >
-            <ListItemIcon className={classes.listItemIcon}>
-              <DraftsIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{ primary: classes.listItemText }}
-              primary="Drafts"
-            />
-          </ListItem>
-          <ListItem
             button
             onClick={this.vkHandleClick}
             className={classes.listItem}

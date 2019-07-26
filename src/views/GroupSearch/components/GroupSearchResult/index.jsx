@@ -43,7 +43,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
     useEffect(() => {
       resolveClient()
         .then((client) => {
-          return client.apis.default.VkSearchTaskEndpoint_getTaskState();
+          return client.apis.default.VkSearchTaskEndpoint_getResult({taskId});
         })
         .then((response) => {
           console.log(response);
@@ -54,6 +54,9 @@ function SearchResult ({ classes, className, taskId, ...rest }){
       rowsPerPage: 10,
       page: 0
     });
+
+    const [taskInfo, setTaskInfo] = useState([]);
+
 
     const groups = [
       {
@@ -141,20 +144,22 @@ function SearchResult ({ classes, className, taskId, ...rest }){
     return (
       <TaskContext.Consumer>
         {(tasks) => {
-          const task = tasks.taskById[taskId]
+          console.log('tasks.taskStatuses', tasks.taskStatuses)
+          console.log('tasks.taskStatuses[taskId]', tasks.taskStatuses[taskId])
+          const task = tasks.taskStatuses[taskId]
 
-          if (!task) {
-            return <Redirect
-              push
-              to={{
-                pathname: '/group-search'
-              }}
-            />;
-          }
+          // if (!task) {
+          //   return <Redirect
+          //     push
+          //     to={{
+          //       pathname: '/group-search'
+          //     }}
+          //   />;
+          // }
           //может не быть таски
           //таска с прогрессом
           //таска завершена
-          if (!task.done) {
+          if (task) {
             return <>
               <Portlet
                 {...rest}
@@ -190,13 +195,15 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                 </PortletFooter>
               </Portlet>
             </>
-          } else {
-            console.log({
-              selected
-            });
-            let results = tasks.resultsById[taskId].map(item => <ResultItem key={item.name} onDeleteItem={(item) => {
-              //setState(state.filter(i => i !== item))
-            }} item={item} />)
+          }
+          // else {
+          //   console.log({
+          //     selected
+          //   });
+          //   // let results = tasks.resultsById[taskId].map(item => <ResultItem key={item.name} onDeleteItem={(item) => {
+          //     //setState(state.filter(i => i !== item))
+          //   }
+          // } item={item} />)
 
                 return <Portlet {...rest}
                   className={rootClassName}
