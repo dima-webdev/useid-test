@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import { Button, TextField } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CitySelect from '../CitySelect/index.jsx';
 import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx'
+
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@material-ui/core';
 
 import {
   Portlet,
@@ -31,6 +39,7 @@ class SearchForm extends Component {
       entityType: 'GROUPS'
     },
     id: '',
+    successDialogOpen: false,
   };
 
   sendForm = () => {
@@ -63,6 +72,14 @@ class SearchForm extends Component {
   //   this.props.onSearchStart(task);
   // }
 
+  // openSuccessDialog = () => {
+  //   this.setState({successDialogOpen: true});
+  // }
+
+  // closeSuccessDialog = () => {
+  //   this.setState({successDialogOpen: false});
+  // }
+
   startSearch = () => {
     return resolveClient()
       .then((client) => {
@@ -72,7 +89,7 @@ class SearchForm extends Component {
           excludeString: values.stopWords,
           title: values.taskname,
           projectId: localStorage.getItem('currentProject'),
-          state: 'INITIAL',
+          state: 'DRAFT',
           entityType: 'GROUPS',
         });
       })
@@ -92,7 +109,7 @@ class SearchForm extends Component {
           excludeString: values.stopWords,
           title: values.taskname,
           projectId: localStorage.getItem('currentProject'),
-          state: 'INITIAL',
+          state: 'DRAFT',
           entityType: 'GROUP',
         });
       })
@@ -106,6 +123,9 @@ class SearchForm extends Component {
         });
         const task = {taskname: this.state.values.taskname, id: id};
         this.props.onSearchStart(task);
+      })
+      .then((response) => {
+        this.setState({successDialogOpen: true});
       })
   };
 
@@ -122,6 +142,24 @@ class SearchForm extends Component {
         {...rest}
         className={rootClassName}
       >
+        <Dialog
+          open={this.state.successDialogOpen}
+          onClose={() => window.location.reload(true)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Task created!<br />
+              Please, wait: search can take some time.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => window.location.reload(true)} color="primary" autoFocus>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
         <PortletHeader>
           <PortletLabel
             title="Search setup"

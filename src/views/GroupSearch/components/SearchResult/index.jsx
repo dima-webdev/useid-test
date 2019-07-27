@@ -45,7 +45,7 @@ class SearchResult extends Component {
         if (response.length > 0) {
           this.setState({taskState: 'ready'})
         }
-        console.log(response);
+        console.log('getResult response', response);
       })
   }
 
@@ -102,13 +102,13 @@ class SearchResult extends Component {
       >
         <PortletHeader>
           <PortletLabel
-            title="Search result"
+            title="This page is under construction"
           />
         </PortletHeader>
         <PortletContent>
 
         {
-          this.state.taskState !== 'ready' ?
+          this.state.taskState === 'ready' ?
             <>
             <div className={tableClassName}>
             <Table>
@@ -122,28 +122,30 @@ class SearchResult extends Component {
                 </TableRow>
               </TableHead>
               <TableBody className={classes.tableBody}>
-                {groups
-                  .map(group => (
-                    <TableRow
-                      className={classes.tableRow}
-                      hover
-                      key={group.id}
-                    >
-                      <TableCell className={classes.tableCell, classes.nameCell}>
-                        <div className={classes.tableCellInner}>
-                          <Typography
-                            className={classes.nameText}
-                            variant="body1"
-                          >
-                            {group.name}
-                          </Typography>
-                        </div>
-                      </TableCell>
-                      <TableCell className={classes.tableCell, classes.descCell}>
-                        {group.data}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                {
+                  // groups
+                  // .map(group => (
+                  //   <TableRow
+                  //     className={classes.tableRow}
+                  //     hover
+                  //     key={group.id}
+                  //   >
+                  //     <TableCell className={classes.tableCell, classes.nameCell}>
+                  //       <div className={classes.tableCellInner}>
+                  //         <Typography
+                  //           className={classes.nameText}
+                  //           variant="body1"
+                  //         >
+                  //           {group.name}
+                  //         </Typography>
+                  //       </div>
+                  //     </TableCell>
+                  //     <TableCell className={classes.tableCell, classes.descCell}>
+                  //       {group.data}
+                  //     </TableCell>
+                  //   </TableRow>
+                  // ))
+                }
               </TableBody>
             </Table>
             </div>

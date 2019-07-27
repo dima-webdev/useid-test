@@ -30,7 +30,6 @@ export class TaskManager extends React.Component {
       })
 
       setInterval(() => {
-        console.log('timeout statuses')
         resolveClient()
         .then((client) => {
           return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
@@ -46,8 +45,10 @@ export class TaskManager extends React.Component {
         return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
       })
       .then((response) => {
+        // let unsortedArray = response.obj;
+        // let sortedByDate = unsortedArray.sort((a,b) => b.createdAt - a.createdAt);
         this.setState({ taskStatuses: response.obj})
-        console.log('task statuses', response);
+        // console.log('sorted', sortedByDate);
       })
   }
 
@@ -134,7 +135,6 @@ export class TaskManager extends React.Component {
   updateStatuses(){
     console.log('updateStatuses');
     setTimeout(() => {
-      console.log('timeout statuses')
       resolveClient()
       .then((client) => {
         return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();

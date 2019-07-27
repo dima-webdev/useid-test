@@ -113,7 +113,9 @@ export default function TaskSidebar() {
       </Typography>
       {
 
-        tasks.taskStatuses.map((task) => {
+        tasks.taskStatuses
+        .sort((a,b) => b.createdAt - a.createdAt)
+        .map((task) => {
           let path = `/group-search/${task.id}`
           if (task.state !== 'COMPLETED') {
             return <Link to={path} key={task.id}>

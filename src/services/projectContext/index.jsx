@@ -10,6 +10,7 @@ export class ProjectManager extends React.Component {
       currentProject: '',
       allProjects: {},
       projectKeys: [],
+      projectsArr: [],
       setCurrentProject: this.setCurrentProject.bind(this),
       updateProjects: this.updateProjects.bind(this),
   }}
@@ -29,7 +30,7 @@ export class ProjectManager extends React.Component {
           projectKeys.push(elem.id);
           allProjects[elem.id] = elem;
         })
-        this.setState({projectKeys, allProjects});
+        this.setState({projectKeys, allProjects, projectsArr});
       })
   }
 
@@ -62,12 +63,13 @@ export class ProjectManager extends React.Component {
         .then((response) => {
           let projectsArr = response.obj;
           let projectKeys = [];
+          let projectValues = [];
           let allProjects = {};
           projectsArr.forEach(function(elem) {
             projectKeys.push(elem.id);
             allProjects[elem.id] = elem;
           })
-          this.setState({projectKeys, allProjects});
+          this.setState({projectKeys, allProjects, projectsArr});
         })
     }, 1000);
 

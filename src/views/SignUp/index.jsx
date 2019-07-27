@@ -20,19 +20,17 @@ import {
   Grid,
   IconButton,
   TextField,
-  Typography
+  Typography,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
+  DialogTitle,
 } from '@material-ui/core';
 
-// Material icons
 import { ArrowBack as ArrowBackIcon } from '@material-ui/icons';
-
-// Shared utilities
 import validators from 'common/validators';
-
-// Component styles
 import styles from './styles';
-
-// Form validation schema
 import schema from './schema';
 
 validate.validators.checked = validators.checked;
@@ -44,13 +42,19 @@ const signUp = (email, password, firstName) => {
   //     resolve(true);
   //   }, 1500);
   // });
-  return resolveClient().then((client) => {
+  return resolveClient()
+  .then((client) => {
     return client.apis.default.LoginEndpoint_signIn({login: email, password: sha256(password)});
   })
+  .then((response) => {
+    this.setState({successDialogOpen: true})
+  }
+  )
 };
 
 class SignUp extends Component {
   state = {
+    successDialogOpen: false,
     values: {
       firstName: '',
       lastName: '',
@@ -120,7 +124,7 @@ class SignUp extends Component {
       // });
       await signUp( values.email, values.password);
 
-      history.push('/sign-in');
+      // history.push('/sign-in');
     } catch (error) {
       this.setState({
         isLoading: false,
@@ -153,6 +157,27 @@ class SignUp extends Component {
 
     return (
       <div className={classes.root}>
+        <Dialog
+          open={this.state.successDialogOpen}
+          onClose={() => this.history.push('/sign-in')}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogTitle>
+              Account was created!
+            </DialogTitle>
+            <DialogContentText id="alert-dialog-description">
+              You dont't need to check email - we don't have this service yet :)<br />
+              Now you can log in with this login and password
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.history.push('/sign-in')} color="primary" autoFocus>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Grid
           className={classes.grid}
           container

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import {injectIntl} from 'react-intl'
 import classNames from 'classnames';
+import { ProjectContext } from '../../services/projectContext/index.jsx';
+
 import {
   Grid,
   ExpansionPanel,
@@ -30,13 +32,7 @@ const styles = theme => ({
   }
 });
 
-const projects = [
-  { id: 'p1', title: 'Adidas' },
-  { id: 'p5', title: 'The secret project' },
-  { id: 'p2', title: 'Hermitage' },
-  { id: 'p4', title: 'Lidl' },
-  { id: 'p3', title: 'Dog rates' },
-]
+const projects = [];
 
 class Dashboard extends Component {
   render() {
@@ -86,9 +82,27 @@ class Dashboard extends Component {
                     title="Last projects"
                   />
                 </PortletHeader>
-                {
-                  projectsList
-                }
+                <ProjectContext.Consumer>
+                  { ({currentProject, allProjects, projectsArr}) => {
+                    // this.allProjects = allProjects;
+                    console.log({projectsArr});
+                    if (projectsArr) {
+                      return (
+                        projectsArr.map(element =>
+                          <ExpansionPanel>
+                            <ExpansionPanelSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls={element.id + '-content'}
+                              id={element.id + '-header'}
+                            >
+                              <Typography className={classes.heading}>{element.title}</Typography>
+                            </ExpansionPanelSummary>
+                          </ExpansionPanel>
+                        )
+                      )
+                    }
+                  }}
+                </ProjectContext.Consumer>
               </Portlet>
             </Grid>
             <Grid

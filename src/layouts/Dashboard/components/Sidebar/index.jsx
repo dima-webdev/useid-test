@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { ProjectContext } from '../../../../services/projectContext/index.jsx'
+import { ProjectContext } from '../../../../services/projectContext/index.jsx';
 
 // Externals
 import classNames from 'classnames';
