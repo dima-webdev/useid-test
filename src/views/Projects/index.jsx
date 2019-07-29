@@ -119,9 +119,7 @@ class Projects extends Component {
               }
             }
           </ProjectContext.Consumer>
-          {
-            projectsList
-          }
+          
           </Grid>
         </Grid>
         </div>

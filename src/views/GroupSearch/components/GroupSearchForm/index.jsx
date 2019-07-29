@@ -15,6 +15,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Snackbar,
+  SnackbarContent,
 } from '@material-ui/core';
 
 import {
@@ -44,7 +46,6 @@ class SearchForm extends Component {
 
   sendForm = () => {
     return resolveClient().then((client) => {
-      console.log('test');
       return client.apis.default.UserEndpoint_getCurrentUser();
     })
   };
@@ -53,14 +54,12 @@ class SearchForm extends Component {
     this.setState({
       taskname: e.target.value
     });
-    console.log(this.state)
   };
 
   handleStopWordsChange = e => {
     this.setState({
       stopWords: e.target.value
     });
-    console.log(this.state)
   };
 
   handleFieldChange = (field) => (event) => {
@@ -135,31 +134,46 @@ class SearchForm extends Component {
 
     const rootClassName = classNames(classes.root, className);
 
-    console.log('searchform',{taskId})
+    const dialog = (
+      <Dialog
+        open={this.state.successDialogOpen}
+        onClose={() => window.location.reload(true)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Task created!<br />
+            Please, wait: search can take some time.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => window.location.reload(true)} color="primary" autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
 
     return (
       <Portlet
         {...rest}
         className={rootClassName}
       >
-        <Dialog
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
           open={this.state.successDialogOpen}
-          onClose={() => window.location.reload(true)}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
+          autoHideDuration={3000}
+          onClose={() => this.setState({successDialogOpen: false})}
         >
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Task created!<br />
-              Please, wait: search can take some time.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => window.location.reload(true)} color="primary" autoFocus>
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
+          <SnackbarContent
+            className={classes.infoMessage}
+            message="Task was created!"
+          />
+        </Snackbar>
         <PortletHeader>
           <PortletLabel
             title="Search setup"

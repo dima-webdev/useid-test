@@ -51,7 +51,6 @@ class GroupSearch extends Component {
     const { classes, match } = this.props;
     const taskId = match.params.taskId || null;
 
-    console.log(taskId);
     return (
       <TaskContext.Consumer>{
         tasks => {

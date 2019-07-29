@@ -47,7 +47,8 @@ const signUp = (email, password, firstName) => {
     return client.apis.default.LoginEndpoint_signIn({login: email, password: sha256(password)});
   })
   .then((response) => {
-    this.setState({successDialogOpen: true})
+    // this.setState({successDialogOpen: true})
+    console.log('signup response', response)
   }
   )
 };
@@ -124,7 +125,7 @@ class SignUp extends Component {
       // });
       await signUp( values.email, values.password);
 
-      // history.push('/sign-in');
+      history.push('/sign-in');
     } catch (error) {
       this.setState({
         isLoading: false,
@@ -158,8 +159,8 @@ class SignUp extends Component {
     return (
       <div className={classes.root}>
         <Dialog
-          open={this.state.successDialogOpen}
-          onClose={() => this.history.push('/sign-in')}
+          open={false}
+          // onClose={() => this.history.push('/sign-in')}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >

@@ -25,5 +25,8 @@ export default theme => ({
   },
   citySelect: {
     width: '420px',
+  },
+  infoMessage: {
+    backgroundColor: '#1975D2',
   }
 });

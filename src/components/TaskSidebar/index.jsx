@@ -72,35 +72,6 @@ export default function TaskSidebar() {
   //   page: 0
   // });
 
-  function cancelTask(id) {
-    return resolveClient()
-      .then((client) => {
-        return client.apis.default.VkSearchTaskEndpoint_abortTask({id});
-      })
-      .then((response) => {
-        console.log('cancelled', response);
-      })
-  };
-
-  function pauseTask(id) {
-    return resolveClient()
-      .then((client) => {
-        return client.apis.default.VkSearchTaskEndpoint_pauseTask({id});
-      })
-      .then((response) => {
-        console.log('paused', response);
-      })
-  };
-
-  function restartTask(id) {
-    return resolveClient()
-      .then((client) => {
-        return client.apis.default.VkSearchTaskEndpoint_startTask({id});
-      })
-      .then((response) => {
-        console.log('restarted', response);
-      })
-  };
 
   return <TaskContext.Consumer>{
     tasks => {
@@ -125,7 +96,7 @@ export default function TaskSidebar() {
                 <IconButton
                   className={classes.icon}
                   onClick={() => {
-                    cancelTask(task.id);
+                    tasks.cancelTask(task.id);
                     tasks.updateStatuses();
                   }}
                 >
@@ -134,7 +105,7 @@ export default function TaskSidebar() {
                 <IconButton
                   className={classes.icon}
                   onClick={() => {
-                    pauseTask(task.id);
+                    tasks.pauseTask(task.id);
                     tasks.updateStatuses();
                   }}
                 >
@@ -143,7 +114,7 @@ export default function TaskSidebar() {
                 <IconButton
                   className={classes.icon}
                   onClick={() => {
-                    restartTask(task.id);
+                    tasks.restartTask(task.id);
                     tasks.updateStatuses();
                   }}
                 >

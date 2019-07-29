@@ -16,6 +16,12 @@ export class ProjectManager extends React.Component {
   }}
 
   componentDidMount() {
+
+    const currentProject = localStorage.getItem('currentProject');
+    if (currentProject) {
+      this.setState({currentProject})
+    };
+
     resolveClient()
       .then((client) => {
         console.log(this.state.userId);

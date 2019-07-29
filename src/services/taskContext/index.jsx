@@ -13,35 +13,36 @@ export class TaskManager extends React.Component {
       allTasks: [],
       createTask: this.createTask.bind(this),
       updateStatuses: this.updateStatuses.bind(this),
+      pauseTask: this.pauseTask.bind(this),
+      restartTask: this.restartTask.bind(this),
+      cancelTask: this.cancelTask.bind(this),
       taskStatuses: [],
       userId: '',
     }
   }
 
   componentDidMount() {
-    this._timer = setTimeout(() => this.pollTasks(), 0);
-
     resolveClient()
       .then((client) => {
         return client.apis.default.UserEndpoint_getCurrentUser();
       })
       .then((response) => {
         this.setState({userId: response.obj.userId})
+        this.updateStatuses()
       })
 
-      setInterval(() => {
-        resolveClient()
-        .then((client) => {
-          return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
-        })
-        .then((response) => {
-          this.setState({ taskStatuses: response.obj})
-        })
-      }, 10000);
+      // setInterval(() => {
+      //   resolveClient()
+      //   .then((client) => {
+      //     return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
+      //   })
+      //   .then((response) => {
+      //     this.setState({ taskStatuses: response.obj})
+      //   })
+      // }, 10000);
 
     resolveClient()
       .then((client) => {
-        console.log('try get task info');
         return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
       })
       .then((response) => {
@@ -54,60 +55,6 @@ export class TaskManager extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(this._timer)
-  }
-
-  pollTasks() {
-
-    console.log('pollTasks')
-    // let tasks = this.state.taskById;
-    // let results = this.state.resultsById;
-    //
-    // let fetches = this.state.pendingTasks.map((id) => {
-    //   // API CALL
-    //   return new Promise((resolve) => {
-    //     setTimeout(() => {
-    //       if (Math.random() < 0.1) {
-    //         resolve({
-    //           id: id,
-    //           done: true,
-    //           results: [
-    //             {name: 'group 1', users: Math.random()*1000, description: 'result 1'},
-    //             {name: 'group 2', users: 100, description: 'result 2'}
-    //           ]
-    //         })
-    //       } else {
-    //         resolve({
-    //           id: id,
-    //           done: false,
-    //           progress: Math.min(Math.floor((tasks[id].progress || 0) + (Math.random() * 10)), 99)
-    //         })
-    //       }
-    //     }, Math.random() * 300);
-    //   })
-    // });
-
-    // Promise.all(fetches).then((updates) => {
-    //   let updatedTasks = {}
-    //   let updatedResults = {}
-    //   let newPending = []
-    //   updates.forEach(t => {
-    //     if (t.done) {
-    //       updatedTasks[t.id] = Object.assign({}, tasks[t.id], {done: true})
-    //       updatedResults[t.id] = t.results;
-    //     } else {
-    //       newPending.push(t.id);
-    //       updatedTasks[t.id] = Object.assign({}, tasks[t.id], {progress: t.progress})
-    //     }
-    //   })
-    //
-    //   this.setState({
-    //     taskById: Object.assign({}, tasks, updatedTasks),
-    //     resultsById: Object.assign({}, results, updatedResults),
-    //     pendingTasks: newPending
-    //   })
-    //
-    //   setTimeout(() => this.pollTasks(), 10000);
-    // })
   }
 
   createTask(task) {
@@ -132,18 +79,35 @@ export class TaskManager extends React.Component {
     })
   }
 
+  cancelTask(id) {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.VkSearchTaskEndpoint_abortTask({id});
+      })
+      .then((response) => {
+        console.log('cancelled', response);
+      })
+  };
+
+  pauseTask(id) {
+    return resolveClient()
+      .then((client) => client.apis.default.VkSearchTaskEndpoint_pauseTask({id}));
+  }
+
+  restartTask(id) {
+    return resolveClient()
+      .then((client) => client.apis.default.VkSearchTaskEndpoint_startTask({id}));
+  }
+
   updateStatuses(){
-    console.log('updateStatuses');
-    setTimeout(() => {
-      resolveClient()
+    resolveClient()
       .then((client) => {
         return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
       })
       .then((response) => {
         this.setState({ taskStatuses: response.obj})
+        setTimeout(() => this.updateStatuses(), 10000);
       })
-    }, 1000);
-
   }
 
   render() {

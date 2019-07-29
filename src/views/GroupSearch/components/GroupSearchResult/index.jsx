@@ -97,37 +97,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
       }
     ]
 
-    function handleSelectAll(event) {
 
-      let selectedGroups;
-
-      if (event.target.checked) {
-        selectedGroups = [];
-      } else {
-        selectedGroups = groups.map(group => group.id);
-      }
-
-      // setUnselected(selectedGroups);
-      setSelected(selectedGroups);
-    };
-
-    function handleSelectOne(event, id) {
-
-      // const selectedIndex = unselected.indexOf(id);
-      const selectedIndex = selected.indexOf(id);
-      let newSelectedGroups = [];
-
-      if (selectedIndex === -1) {
-        // newSelectedGroups = newSelectedGroups.concat(unselected, id);
-        newSelectedGroups = newSelectedGroups.concat(selected, id);
-      } else {
-        // newSelectedGroups = unselected.filter((groupId) => groupId !== id)
-        newSelectedGroups = selected.filter((groupId) => groupId !== id)
-      }
-
-      // setUnselected(newSelectedGroups );
-      setSelected(newSelectedGroups );
-    };
 
     function handleChangePage(event, page) {
       setState({ rowsPerPage: state.rowsPerPage, page });
@@ -219,18 +189,6 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                       <TableHead>
                         <TableRow>
                           <TableCell align="left">
-                            <Checkbox
-                              // checked={unselected.length === 0}
-                              checked={selected.length === 0}
-                              color="primary"
-                              indeterminate={
-                                // unselected.length > 0 &&
-                                selected.length > 0 &&
-                                // unselected.length < groups.length
-                                selected.length < groups.length
-                              }
-                              onChange={handleSelectAll}
-                            />
                             Name
                           </TableCell>
                           <TableCell align="left">Description</TableCell>
@@ -251,15 +209,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                             >
                               <TableCell className={classes.tableCell, classes.nameCell}>
                                 <div className={classes.tableCellInner}>
-                                  <Checkbox
-                                    // checked={unselected.indexOf(group.id) === -1}
-                                    checked={selected.indexOf(group.id) === -1}
-                                    color="primary"
-                                    onChange={event =>
-                                      handleSelectOne(event, group.id)
-                                    }
-                                    value="true"
-                                  />
+                                  
                                   <Typography
                                     className={classes.nameText}
                                     variant="body1"

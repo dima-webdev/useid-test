@@ -49,6 +49,7 @@ class Account extends Component {
 
     localStorage.setItem('isAuthenticated', false);
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('currentProject');
     history.push('/sign-in');
   };
 
