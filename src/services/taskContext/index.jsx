@@ -106,7 +106,7 @@ export class TaskManager extends React.Component {
       })
       .then((response) => {
         this.setState({ taskStatuses: response.obj})
-        setTimeout(() => this.updateStatuses(), 10000);
+        setTimeout(() => this.updateStatuses(), 5000);
       })
   }
 

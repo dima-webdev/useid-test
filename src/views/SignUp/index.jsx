@@ -159,8 +159,9 @@ class SignUp extends Component {
     return (
       <div className={classes.root}>
         <Dialog
-          open={false}
+          open={this.state.successDialogOpen}
           // onClose={() => this.history.push('/sign-in')}
+          onClose={() => this.setState({successDialogOpen: false})}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -174,7 +175,7 @@ class SignUp extends Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.history.push('/sign-in')} color="primary" autoFocus>
+            <Button onClick={() => this.setState({successDialogOpen: false})} color="primary" autoFocus>
               OK
             </Button>
           </DialogActions>
@@ -358,6 +359,7 @@ class SignUp extends Component {
                   {isLoading ? (
                     <CircularProgress className={classes.progress} />
                   ) : (
+                    <>
                     <Button
                       className={classes.signUpButton}
                       color="primary"
@@ -368,6 +370,12 @@ class SignUp extends Component {
                     >
                       Sign up now
                     </Button>
+                    <Button
+                      onClick={() => this.setState({successDialogOpen: true})}
+                    >
+                      Test
+                    </Button>
+                    </>
                   )}
                   <Typography
                     className={classes.signIn}

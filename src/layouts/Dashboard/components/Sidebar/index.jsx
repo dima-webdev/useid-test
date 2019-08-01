@@ -101,7 +101,6 @@ class Sidebar extends Component {
           <ProjectContext.Consumer>
             { ({currentProject, allProjects}) => {
               this.allProjects = allProjects;
-              console.log(currentProject);
               if (!currentProject) {
                 return (
                   <Typography
@@ -112,14 +111,17 @@ class Sidebar extends Component {
                   </Typography>
                 )
               } else {
-                return (
-                  <Typography
-                    className={classes.nameText}
-                    variant="h5"
-                  >
-                    {allProjects[currentProject].title}
-                  </Typography>
-                )
+                if (allProjects[currentProject]) {
+                  localStorage.setItem('currentProjectTitle', allProjects[currentProject].title);
+                  return (
+                    <Typography
+                      className={classes.nameText}
+                      variant="h5"
+                    >
+                      Project: {allProjects[currentProject].title}
+                    </Typography>
+                  )
+                }
               }
             }}
           </ProjectContext.Consumer>

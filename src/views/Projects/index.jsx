@@ -86,9 +86,9 @@ class Projects extends Component {
         >
           <Grid
             item
-            lg={4}
-            md={6}
-            xl={4}
+            lg={8}
+            md={8}
+            xl={6}
             xs={12}
           >
             <CreationForm />
@@ -119,7 +119,7 @@ class Projects extends Component {
               }
             }
           </ProjectContext.Consumer>
-          
+
           </Grid>
         </Grid>
         </div>

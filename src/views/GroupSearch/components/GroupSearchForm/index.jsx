@@ -125,6 +125,7 @@ class SearchForm extends Component {
       })
       .then((response) => {
         this.setState({successDialogOpen: true});
+        setTimeout(() => {window.location.assign("/group-search/"+id)}, 1000)
       })
   };
 
@@ -133,6 +134,10 @@ class SearchForm extends Component {
     const { classes, className, taskId, ...rest } = this.props;
 
     const rootClassName = classNames(classes.root, className);
+
+    let searchTitle = 'not set';
+    const projectTitle = localStorage.getItem('currentProjectTitle');
+    if (projectTitle) {searchTitle = projectTitle}
 
     const dialog = (
       <Dialog
@@ -176,7 +181,8 @@ class SearchForm extends Component {
         </Snackbar>
         <PortletHeader>
           <PortletLabel
-            title="Search setup"
+            title={'VK Group Search'}
+            subtitle={'project: ' + searchTitle}
           />
         </PortletHeader>
         <PortletContent noPadding>

@@ -209,7 +209,7 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                             >
                               <TableCell className={classes.tableCell, classes.nameCell}>
                                 <div className={classes.tableCellInner}>
-                                  
+
                                   <Typography
                                     className={classes.nameText}
                                     variant="body1"

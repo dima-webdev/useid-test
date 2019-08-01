@@ -7,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CitySelect from '../CitySelect/index.jsx';
 import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx'
+// import { Link, NavLink } from 'react-router-dom';
 
 import {
   Button,
@@ -17,6 +18,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Link,
 } from '@material-ui/core';
 
 import {
@@ -34,46 +36,13 @@ class SearchResult extends Component {
     taskResult: [],
     taskState: '',
     selectedGroups: [],
-    //феееееейк FIXME
-    groups: [
-          {
-            id: 1,
-            name: 'Группа любителей ',
-            members: '123',
-            data: 'Товарищи! новая модель организационной деятельности в значительной степени обуславливает создание модели развития. '
-          },
-          {
-            id: 2,
-            name: 'Жизнь не та без ',
-            members: '7655',
-            data: 'Повседневная практика показывает, что постоянный количественный рост и сфера нашей активности представляет собой .'
-          },
-          {
-            id: 3,
-            name: 'Продаем и покупаем ',
-            members: '76667',
-            data: 'Идейные соображения высшего порядка, а также рамки и место обучения кадров в значительной степени обуславливает.'
-          },
-          {
-            id: 4,
-            name: 'На необитаемый остров я взяла бы с собой ',
-            members: '2754',
-            data: 'С другой стороны начало повседневной работы по формированию позиции позволяет выполнять важные задания.'
-          },
-          {
-            id: 5,
-            name: 'Лучшее в городе ',
-            members: '86989',
-            data: 'Повседневная практика показывает, что консультация с широким активом способствует подготовки.'
-          },
-          {
-            id: 6,
-            name: 'Продам гараж и ',
-            members: '12',
-            data: 'Повседневная практика показывает, что укрепление и развитие структуры играет.'
-          }
-        ]
-  };
+    groups: [],
+    taskName: '',
+    taskProject: '',
+    parseTaskId: '',
+    parseState: '',
+    parsedData: '',
+   };
 
   componentDidMount() {
     resolveClient()
@@ -81,12 +50,21 @@ class SearchResult extends Component {
         return Promise.all([
           client.apis.default.VkSearchTaskEndpoint_getResult({taskId: this.props.taskId}),
           client.apis.default.VkSearchTaskEndpoint_getTaskState({ids: [this.props.taskId]}),
+          client.apis.default.VkSearchTaskEndpoint_getTaskInfo({ids: [this.props.taskId]}),
+          // client.apis.default.VkParseTaskEndpoint_getTaskInfo(),
         ])
       })
       .then((result) => {
         console.log('getResult result', result);
-        const selectedGroups = this.state.groups.map((group) => group.id) //FIXME
-        this.setState({taskState: result[1].body[0].state, selectedGroups});
+        const selectedGroups = result[0].body.map((group) => group.entityId);
+        if(result[1].body.length > 0) {
+          this.setState({taskState: result[1].body[0].state, selectedGroups});
+        }
+        this.setState({groups: result[0].body});
+        this.setState({taskName: result[2].body[0].title});
+        this.setState({taskProject: result[2].body[0].projectId});
+
+        // console.log('parseTasks', result[3]);
       })
   }
 
@@ -120,8 +98,58 @@ class SearchResult extends Component {
     this.setState({selectedGroups: newSelectedGroups})
   };
 
-  parseGroups() {
-    console.log(this.state.selectedGroups);
+  parseTest() {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.VkParseTaskEndpoint_saveTask({
+          title: this.state.taskName + ' parse' + Math.floor((Math.random() * 100) + 1),
+          ids: this.state.selectedGroups,
+          entityType: 'GROUPS',
+          projectId: this.state.taskProject,
+        });
+      })
+      .then((response) => {
+        // console.log('save parsing', response)
+        this.setState({parseTaskId: response.text});
+        setTimeout(() => this.start(response.text), 1000);
+      })
+  }
+
+  start(id) {
+    this.setState({parseTaskId: id});
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.VkParseTaskEndpoint_startTask({
+          id: id
+        });
+      })
+      .then((response) => {
+        console.log('start', response);
+        setTimeout(() => this.getParseResults(id), 1000);
+      })
+  };
+
+  getParseState(id) {
+    return resolveClient()
+      .then((client) => {
+        client.apis.default.VkParseTaskEndpoint_getTaskInfo({ids: [id]})
+      })
+      .then((response) => {
+        // this.setState({parseState})
+        console.log(response);
+      })
+  }
+
+  getParseResults(id) {
+    return resolveClient()
+      .then((client) => {
+        // return client.apis.default.VkParseTaskEndpoint_getTaskState({ids: [id]})
+        return client.apis.default.VkParseTaskEndpoint_getTaskInfo()
+        // return client.apis.default.VkSearchTaskEndpoint_getResult({taskId: id})
+      })
+      .then((response) => {
+        console.log(response);
+      })
   }
 
   render() {
@@ -132,6 +160,14 @@ class SearchResult extends Component {
 
     const groups = this.state.groups;
     const selected = this.state.selectedGroups;
+
+    const data = 'sdfg, r, ersf, fgbd, garg, sgdfgb, dfgfe, sfgf, sgs, syh, oluio'
+    const header = 'data:text/csv;charset=utf-8;base64,'
+
+    const text = header + btoa(data)
+
+    // const a = document.querySelector('a')
+    // a.href = text;
 
     return (
       <Portlet
@@ -156,8 +192,6 @@ class SearchResult extends Component {
            } else if (this.state.taskState === 'COMPLETED' && this.state.taskResult.length === 0) {
               return (
                 <>
-                  Таблица результатов + парсинг <br/><br/>
-
                   <div className={tableClassName}>
                   <Table>
                     <TableHead>
@@ -172,7 +206,7 @@ class SearchResult extends Component {
                             }
                             onChange={(e) => this.handleSelectAll(e)}
                           />
-                          Name
+                            Link
                         </TableCell>
                         <TableCell align="left">Description</TableCell>
 
@@ -181,36 +215,37 @@ class SearchResult extends Component {
                     <TableBody className={classes.tableBody}>
 
                       {
-                        // groups
-                        // .map(group => (
-                        //   <TableRow
-                        //     className={classes.tableRow}
-                        //     hover
-                        //     key={group.id}
-                        //   >
-                        //     <TableCell className={classes.tableCell, classes.nameCell}>
-                        //       <div className={classes.tableCellInner}>
-                        //         <Checkbox
-                        //           checked={selected.indexOf(group.id) !== -1}
-                        //           color="primary"
-                        //           onChange={(event) =>
-                        //             this.handleSelectOne(event, group.id)
-                        //           }
-                        //           value="true"
-                        //         />
-                        //         <Typography
-                        //           className={classes.nameText}
-                        //           variant="body1"
-                        //         >
-                        //           {group.name}
-                        //         </Typography>
-                        //       </div>
-                        //     </TableCell>
-                        //     <TableCell className={classes.tableCell, classes.descCell}>
-                        //       {group.data}
-                        //     </TableCell>
-                        //   </TableRow>
-                        // ))
+                        groups
+                        .map(group => (
+                          <TableRow
+                            className={classes.tableRow}
+                            hover
+                            key={group.entityId}
+                          >
+                            <TableCell className={classes.tableCell, classes.nameCell}>
+                              <div className={classes.tableCellInner}>
+                                <Checkbox
+                                  checked={selected.indexOf(group.entityId) !== -1}
+                                  color="primary"
+                                  onChange={(event) =>
+                                    this.handleSelectOne(event, group.entityId)
+                                  }
+                                  value="true"
+                                />
+                                <Link
+                                  href={"https://vk.com/" + group.title}
+                                  underline='hover'
+                                  target='_blank'
+                                >
+                                    {group.title}
+                                </Link>
+                              </div>
+                            </TableCell>
+                            <TableCell className={classes.tableCell, classes.descCell}>
+                              {group.description}
+                            </TableCell>
+                          </TableRow>
+                        ))
                       }
                     </TableBody>
                   </Table>
@@ -232,10 +267,22 @@ class SearchResult extends Component {
           <Button
             color="primary"
             variant="contained"
-            disabled
-            onClick={() => this.parseGroups()}
+            onClick={() => this.parseTest()}
           >
             Parse
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => this.getParseResults(this.state.parseTaskId)}
+          >
+            Test
+          </Button>
+          <Button
+            download="data.txt"
+            href={text}
+          >
+            Download
           </Button>
         </PortletFooter>
       </Portlet>
