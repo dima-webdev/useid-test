@@ -42,6 +42,9 @@ class SearchResult extends Component {
     parseTaskId: '',
     parseState: '',
     parsedData: '',
+    values: {
+      parsingName: '',
+    },
    };
 
   componentDidMount() {
@@ -102,7 +105,7 @@ class SearchResult extends Component {
     return resolveClient()
       .then((client) => {
         return client.apis.default.VkParseTaskEndpoint_saveTask({
-          title: this.state.taskName + ' parse' + Math.floor((Math.random() * 100) + 1),
+          title: this.state.values.parsingName,
           ids: this.state.selectedGroups,
           entityType: 'GROUPS',
           projectId: this.state.taskProject,
@@ -125,18 +128,48 @@ class SearchResult extends Component {
       })
       .then((response) => {
         console.log('start', response);
-        setTimeout(() => this.getParseResults(id), 1000);
+        this.checkParseState();
       })
   };
+
+  // const checkParseState = setInterval(function() {
+  //
+  //   return resolveClient()
+  //     .then((client) => {
+  //       return client.apis.default.VkParseTaskEndpoint_getTaskState({ids: [this.state.parseTaskId]})
+  //     })
+  //     .then((response) => {
+  //       if (response.obj[0].state === 'COMPLETED') {
+  //         this.setState({parseState: 'completed'});
+  //         clearInterval(checkParseState);
+  //       }
+  //       console.log('check parse state', response);
+  //     })
+  // }, 5000);
+
+  checkParseState() {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.VkParseTaskEndpoint_getTaskState({ids: [this.state.parseTaskId]})
+      })
+      .then((response) => {
+        if (response.obj[0].state === 'COMPLETED') {
+          this.setState({parseState: 'completed'});
+          this.getParseResults(this.state.parseTaskId);
+        } else {
+          setTimeout(() => this.checkParseState(), 5000);
+        }
+      })
+  }
 
   getParseState(id) {
     return resolveClient()
       .then((client) => {
-        client.apis.default.VkParseTaskEndpoint_getTaskInfo({ids: [id]})
+        return client.apis.default.VkParseTaskEndpoint_getTaskState({ids: [this.state.parseTaskId]})
       })
       .then((response) => {
         // this.setState({parseState})
-        console.log(response);
+        console.log('parse state', response);
       })
   }
 
@@ -144,13 +177,18 @@ class SearchResult extends Component {
     return resolveClient()
       .then((client) => {
         // return client.apis.default.VkParseTaskEndpoint_getTaskState({ids: [id]})
-        return client.apis.default.VkParseTaskEndpoint_getTaskInfo()
+        return client.apis.default.VkParseTaskEndpoint_getResult({taskId: this.state.parseTaskId})
         // return client.apis.default.VkSearchTaskEndpoint_getResult({taskId: id})
       })
       .then((response) => {
-        console.log(response);
+        this.setState({parsedData: response.data})
+        console.log('parseResult', response);
       })
   }
+
+  handleFieldChange = (field) => (event) => {
+    this.setState({values: {...this.state.values, [field]: event.target.value}});
+  };
 
   render() {
     const { classes, className, taskId, ...rest } = this.props;
@@ -164,7 +202,7 @@ class SearchResult extends Component {
     const data = 'sdfg, r, ersf, fgbd, garg, sgdfgb, dfgfe, sfgf, sgs, syh, oluio'
     const header = 'data:text/csv;charset=utf-8;base64,'
 
-    const text = header + btoa(data)
+    const text = header + btoa(this.state.parsedData);
 
     // const a = document.querySelector('a')
     // a.href = text;
@@ -264,26 +302,38 @@ class SearchResult extends Component {
 
         </PortletContent>
         <PortletFooter className={classes.portletFooter}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => this.parseTest()}
-          >
-            Parse
-          </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => this.getParseResults(this.state.parseTaskId)}
-          >
-            Test
-          </Button>
-          <Button
-            download="data.txt"
-            href={text}
-          >
-            Download
-          </Button>
+          <div className={classes.field}>
+          <Typography>1. Введите имя парсинга. Именно по нему можно будет находить аудиторию.<br/></Typography>
+            <TextField
+              className={classes.textField}
+              label="Parsing name"
+              margin="dense"
+              required
+              variant="outlined"
+              onChange={this.handleFieldChange('parsingName')}
+            />
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => this.parseTest()}
+              disabled={this.state.values.parsingName === ''}
+            >
+              Parse
+            </Button>
+          </div>
+          <div className={classes.field}>
+            <Typography>2. Подождите, пока загрузится результат <br/></Typography>
+
+            <Button
+              download="data.txt"
+              color="primary"
+              variant="contained"
+              href={text}
+              disabled={this.state.parseState !== 'completed'}
+            >
+              Download
+            </Button>
+          </div>
         </PortletFooter>
       </Portlet>
     );
