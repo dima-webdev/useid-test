@@ -32,11 +32,16 @@ export class ProjectManager extends React.Component {
         let projectsArr = response.obj;
         let projectKeys = [];
         let allProjects = {};
+        let currentProject = this.state.currentProject;
         projectsArr.forEach(function(elem) {
           projectKeys.push(elem.id);
           allProjects[elem.id] = elem;
         })
-        this.setState({projectKeys, allProjects, projectsArr});
+        if (!allProjects[currentProject]) {
+          console.log('no project with id ' + currentProject);
+          currentProject = '';
+        }
+        this.setState({projectKeys, allProjects, projectsArr, currentProject});
       })
   }
 
