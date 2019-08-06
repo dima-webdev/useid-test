@@ -19,6 +19,7 @@ import {
   TableRow,
   Typography,
   Link,
+  CircularProgress,
 } from '@material-ui/core';
 
 import {
@@ -47,7 +48,7 @@ class SearchResult extends Component {
     },
    };
 
-  componentDidMount() {
+  fetchData() {
     resolveClient()
       .then((client) => {
         return Promise.all([
@@ -68,6 +69,30 @@ class SearchResult extends Component {
         this.setState({taskProject: result[2].body[0].projectId});
 
         // console.log('parseTasks', result[3]);
+      })
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.taskId !== prevProps.taskId) {
+      this.fetchData();
+    }
+  }
+
+  checkTaskState() {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.VkSearchTaskEndpoint_getTaskState({ids: [this.props.taskId]})
+      })
+      .then((response) => {
+        if (response.obj[0].state === 'COMPLETED') {
+          this.setState({taskState: 'COMPLETED'});
+        } else {
+          setTimeout(() => this.checkTaskState(), 10000);
+        }
       })
   }
 
@@ -102,13 +127,16 @@ class SearchResult extends Component {
   };
 
   parseTest() {
+    let groups = this.state.selectedGroups
+    const newGroups = groups.filter((i) => i !== undefined);
     return resolveClient()
       .then((client) => {
         return client.apis.default.VkParseTaskEndpoint_saveTask({
           title: this.state.values.parsingName,
-          ids: this.state.selectedGroups,
+          ids: newGroups,
           entityType: 'GROUPS',
           projectId: this.state.taskProject,
+          required: 'SUBSCRIBERS',
         });
       })
       .then((response) => {
@@ -128,6 +156,7 @@ class SearchResult extends Component {
       })
       .then((response) => {
         console.log('start', response);
+        this.setState({parseState: 'loading'});
         this.checkParseState();
       })
   };
@@ -170,6 +199,18 @@ class SearchResult extends Component {
       .then((response) => {
         // this.setState({parseState})
         console.log('parse state', response);
+      })
+  }
+
+  stopTask() {
+    let id = '22714967-3f65-46ec-a292-19af6e4a6da8'
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.VkParseTaskEndpoint_pauseTask({id});
+      })
+      .then((response) => {
+        // this.setState({parseState})
+        console.log('stop task', response);
       })
   }
 
@@ -247,6 +288,7 @@ class SearchResult extends Component {
                             Link
                         </TableCell>
                         <TableCell align="left">Description</TableCell>
+                        <TableCell align="left">followers Amount</TableCell>
 
                       </TableRow>
                     </TableHead>
@@ -282,6 +324,9 @@ class SearchResult extends Component {
                             <TableCell className={classes.tableCell, classes.descCell}>
                               {group.description}
                             </TableCell>
+                            <TableCell className={classes.tableCell, classes.descCell}>
+                              {group.followersAmount}
+                            </TableCell>
                           </TableRow>
                         ))
                       }
@@ -302,6 +347,9 @@ class SearchResult extends Component {
 
         </PortletContent>
         <PortletFooter className={classes.portletFooter}>
+
+        {this.state.taskState === 'COMPLETED' ?
+          <>
           <div className={classes.field}>
           <Typography>1. Введите имя парсинга. Именно по нему можно будет находить аудиторию.<br/></Typography>
             <TextField
@@ -323,6 +371,10 @@ class SearchResult extends Component {
           </div>
           <div className={classes.field}>
             <Typography>2. Подождите, пока загрузится результат <br/></Typography>
+            {this.state.parseState === 'loading' ?
+              <CircularProgress className={classes.progress} /> :
+              <></>
+            }
 
             <Button
               download="data.txt"
@@ -334,6 +386,10 @@ class SearchResult extends Component {
               Download
             </Button>
           </div>
+          </> :
+          <></>
+        }
+
         </PortletFooter>
       </Portlet>
     );

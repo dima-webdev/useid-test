@@ -162,6 +162,20 @@ class Sidebar extends Component {
             />
           </ListItem>
           <ListItem
+            activeClassName={classes.activeListItem}
+            className={classes.listItem}
+            component={NavLink}
+            to="/parse-result"
+          >
+            <ListItemIcon className={classes.listItemIcon}>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText
+              classes={{ primary: classes.listItemText }}
+              primary="Parsing tasks"
+            />
+          </ListItem>
+          <ListItem
             button
             onClick={this.vkHandleClick}
             className={classes.listItem}

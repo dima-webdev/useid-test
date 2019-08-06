@@ -7,7 +7,8 @@ import SignUp from './views/SignUp';
 import SignIn from './views/SignIn';
 import Account from './views/Account';
 import Settings from './views/Settings';
-import GroupSearch from './views/GroupSearch'
+import GroupSearch from './views/GroupSearch';
+import ParseResult from './views/ParseResult';
 import NotFound from './views/NotFound';
 import Projects from './views/Projects';
 import ResultList from './views/ResultList';
@@ -57,6 +58,15 @@ export default class Routes extends Component {
         <Route
           component={GroupSearch}
           path="/group-search/:taskId"
+        />
+        <Route
+          component={ParseResult}
+          path="/parse-result/:taskId"
+        />
+        <Route
+          component={ParseResult}
+          exact
+          path="/parse-result"
         />
         <Route
           component={Account}

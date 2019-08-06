@@ -2,8 +2,8 @@ import Swagger from 'swagger-client';
 import React from 'react';
 export const ApiContext = React.createContext();
 
-// const URL = 'http://142.91.9.164:8490/api/swagger.json';
-const URL = '/api/swagger.json';
+const URL = 'http://142.91.9.164:8490/api/swagger.json';
+// const URL = '/api/swagger.json';
 // Swagger.http.withCredentials = true;
 
 let _client = null;
