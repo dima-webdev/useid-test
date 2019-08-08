@@ -6,7 +6,10 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CitySelect from '../CitySelect/index.jsx';
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx'
+import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
+import schema from './schema';
+import validate from 'validate.js';
+import _ from 'underscore';
 
 import {
   Button,
@@ -17,6 +20,7 @@ import {
   DialogActions,
   Snackbar,
   SnackbarContent,
+  Typography,
 } from '@material-ui/core';
 
 import {
@@ -42,7 +46,24 @@ class SearchForm extends Component {
     },
     id: '',
     successDialogOpen: false,
+    errors: {
+      taskname: null,
+      keyWords: null
+    },
+    isValid: false,
   };
+
+  validateForm = _.debounce(() => {
+    const { values } = this.state;
+
+    const newState = { ...this.state };
+    const errors = validate(values, schema);
+
+    newState.errors = errors || {};
+    newState.isValid = errors ? false : true;
+
+    this.setState(newState);
+  }, 300);
 
   sendForm = () => {
     return resolveClient().then((client) => {
@@ -63,23 +84,19 @@ class SearchForm extends Component {
   };
 
   handleFieldChange = (field) => (event) => {
+    this.validateForm();
     this.setState({values: {...this.state.values, [field]: event.target.value}});
   };
 
-  // startSearch() {
-  //   const task = {taskname: this.state.taskname};
-  //   this.props.onSearchStart(task);
-  // }
-
-  // openSuccessDialog = () => {
-  //   this.setState({successDialogOpen: true});
-  // }
-
-  // closeSuccessDialog = () => {
-  //   this.setState({successDialogOpen: false});
-  // }
-
   startSearch = () => {
+
+    this.validateForm();
+
+    if (this.state.isValid === false) {
+      window.scrollTo(0, 0);
+      return;
+    }
+
     return resolveClient()
       .then((client) => {
         const values = this.state.values;
@@ -184,6 +201,14 @@ class SearchForm extends Component {
             title={'VK Group Search'}
             subtitle={'project: ' + searchTitle}
           />
+          {!projectTitle && (
+            <Typography
+              className={classes.fieldError}
+              variant="body2"
+            >
+              Project is not set!
+            </Typography>
+          )}
         </PortletHeader>
         <PortletContent noPadding>
           <form
@@ -199,6 +224,14 @@ class SearchForm extends Component {
                 variant="outlined"
                 onChange={this.handleFieldChange('taskname')}
               />
+              {this.state.errors.taskname && (
+                <Typography
+                  className={classes.fieldError}
+                  variant="body2"
+                >
+                  {this.state.errors.taskname[0]}
+                </Typography>
+              )}
             </div>
             <div className={classes.field}>
               <TextField
@@ -211,6 +244,14 @@ class SearchForm extends Component {
                 variant="outlined"
                 onChange={this.handleFieldChange('keyWords')}
               />
+              {this.state.errors.keyWords && (
+                <Typography
+                  className={classes.fieldError}
+                  variant="body2"
+                >
+                  {this.state.errors.keyWords[0]}
+                </Typography>
+              )}
             </div>
             <div className={classes.field}>
               <TextField
