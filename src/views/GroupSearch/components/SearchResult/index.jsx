@@ -404,10 +404,10 @@ class SearchResult extends Component {
             <Typography> Или перейдите к экрану результата <br/></Typography>
             <Button
               onClick={this.handleSignOut}
-              href={'/parse-result/' + this.state.parseTaskId}
+              href={'/parse-result/' + this.state.parseTaskId + ''}
               color="primary"
               variant="contained"
-              disabled={this.state.parseTaskId !== ''}
+              disabled={this.state.parseTaskId === ''}
             >
               Перейти
             </Button>

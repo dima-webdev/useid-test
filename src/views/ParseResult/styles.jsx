@@ -1,5 +1,7 @@
 export default theme => ({
-  root: {},
+  root: {
+    padding: theme.spacing(4)
+  },
   field: {
     margin: theme.spacing(3)
   },
