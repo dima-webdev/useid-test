@@ -16,7 +16,11 @@ export class TaskManager extends React.Component {
       pauseTask: this.pauseTask.bind(this),
       restartTask: this.restartTask.bind(this),
       cancelTask: this.cancelTask.bind(this),
+      pauseParseTask: this.pauseParseTask.bind(this),
+      restartParseTask: this.restartParseTask.bind(this),
+      cancelParseTask: this.cancelParseTask.bind(this),
       taskStatuses: [],
+      parseTaskStatuses: [],
       userId: '',
     }
   }
@@ -49,6 +53,17 @@ export class TaskManager extends React.Component {
         // let unsortedArray = response.obj;
         // let sortedByDate = unsortedArray.sort((a,b) => b.createdAt - a.createdAt);
         this.setState({ taskStatuses: response.obj})
+        // console.log('sorted', sortedByDate);
+      })
+
+    resolveClient()
+      .then((client) => {
+        return client.apis.default.VkParseTaskEndpoint_getTaskInfo();
+      })
+      .then((response) => {
+        // let unsortedArray = response.obj;
+        // let sortedByDate = unsortedArray.sort((a,b) => b.createdAt - a.createdAt);
+        this.setState({ parseTaskStatuses: response.obj})
         // console.log('sorted', sortedByDate);
       })
   }
@@ -99,6 +114,26 @@ export class TaskManager extends React.Component {
       .then((client) => client.apis.default.VkSearchTaskEndpoint_startTask({id}));
   }
 
+  cancelParseTask(id) {
+    return resolveClient()
+      .then((client) => {
+        return client.apis.default.VkParseTaskEndpoint_abortTask({id});
+      })
+      .then((response) => {
+        console.log('cancelled', response);
+      })
+  };
+
+  pauseParseTask(id) {
+    return resolveClient()
+      .then((client) => client.apis.default.VkParseTaskEndpoint_pauseTask({id}));
+  }
+
+  restartParseTask(id) {
+    return resolveClient()
+      .then((client) => client.apis.default.VkParseTaskEndpoint_startTask({id}));
+  }
+
   updateStatuses(){
     resolveClient()
       .then((client) => {
@@ -106,8 +141,16 @@ export class TaskManager extends React.Component {
       })
       .then((response) => {
         this.setState({ taskStatuses: response.obj})
-        setTimeout(() => this.updateStatuses(), 5000);
       })
+
+      resolveClient()
+        .then((client) => {
+          return client.apis.default.VkParseTaskEndpoint_getTaskInfo();
+        })
+        .then((response) => {
+          this.setState({ parseTaskStatuses: response.obj})
+          setTimeout(() => this.updateStatuses(), 5000);
+        })
   }
 
   render() {

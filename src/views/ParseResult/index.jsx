@@ -44,7 +44,9 @@ class ParseResult extends Component {
   state = {
     taskId: '',
     allTasks: {},
+    allSearchTasks: {},
     allTasksArr: [],
+    allSearchTasksArr: [],
     taskInfo: {},
     taskState: '',
     parsedData: '',
@@ -75,6 +77,7 @@ class ParseResult extends Component {
             // почему приходит пустой массив?
             client.apis.default.VkParseTaskEndpoint_getTaskInfo({ids: [taskId]}),
             client.apis.default.VkParseTaskEndpoint_getTaskInfo(),
+            client.apis.default.VkSearchTaskEndpoint_getTaskInfo(),
           ])
         })
         .then((result) => {
@@ -82,12 +85,19 @@ class ParseResult extends Component {
           let tasksObj = {};
           result[3].body.forEach((task) => tasksObj[task.id] = task);
 
+          let searchTasksObj = {};
+          result[4].body.forEach((task) => searchTasksObj[task.id] = task);
+
           let sortedTasks = result[3].body.sort((a,b) => b.createdAt - a.createdAt);
+          let sortedSearchTasks = result[4].body.sort((a,b) => b.createdAt - a.createdAt);
+
 
           this.setState({
               allTasks: tasksObj,
+              allSearchTasks: searchTasksObj,
               taskState: result[1].obj[0].state,
               allTasksArr: sortedTasks,
+              allSearchTasksArr: sortedSearchTasks,
               taskInfo: result[2].body[0],
               parsedData: result[0].body,
             })
@@ -97,6 +107,7 @@ class ParseResult extends Component {
         .then((client) => {
           return Promise.all([
             client.apis.default.VkParseTaskEndpoint_getTaskInfo(),
+            client.apis.default.VkSearchTaskEndpoint_getTaskInfo(),
           ])
         })
         .then((result) => {
@@ -104,11 +115,17 @@ class ParseResult extends Component {
           let tasksObj = {};
           result[0].body.forEach((task) => tasksObj[task.id] = task);
 
+          let searchTasksObj = {};
+          result[1].body.forEach((task) => searchTasksObj[task.id] = task);
+
           let sortedTasks = result[0].body.sort((a,b) => b.createdAt - a.createdAt);
+          let sortedSearchTasks = result[1].body.sort((a,b) => b.createdAt - a.createdAt);
 
           this.setState({
               allTasks: tasksObj,
               allTasksArr: sortedTasks,
+              allSearchTasks: searchTasksObj,
+              allSearchTasksArr: sortedSearchTasks,
             })
         })
     }
@@ -263,60 +280,140 @@ class ParseResult extends Component {
       >
         <PortletHeader>
           <PortletLabel
-            title="Все задачи на парсинг"
+            title="Задачи на сбор аудитории"
           />
         </PortletHeader>
         <PortletContent>
+        <div className={tableClassName}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Date</TableCell>
+                <TableCell align="left">ID</TableCell>
+                <TableCell align="left">Title</TableCell>
+                <TableCell align="left">Status</TableCell>
+                <TableCell align="left">Actions</TableCell>
 
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">Date</TableCell>
-              <TableCell align="left">ID</TableCell>
-              <TableCell align="left">Title</TableCell>
-              <TableCell align="left">Status</TableCell>
-              <TableCell align="left">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.allTasksArr
+                .map(task => (
+                  <TableRow
+                    className={classes.tableRow}
+                    hover
+                    key={task.id}
+                  >
+                  <TableCell className={classes.tableCell, classes.descCell}>{this.msToDate(task.createdAt)}</TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>{task.id}</TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>
+                    <Link component={RouterLink} to={'/parse-result/' + task.id} key={task.id}>
+                      {task.title}
+                    </Link>
+                  </TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>{task.state}</TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>
+                  { task.state === 'COMPLETED' ?
+                    <Link component={RouterLink} to={'/parse-result/' + task.id} key={task.id}>
+                      Download
+                    </Link> :
+                    <>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={() => {
+                          this.cancelTask(task.id);
+                        }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={() => {
+                          this.pauseTask(task.id);
+                        }}
+                      >
+                        <PauseIcon />
+                      </IconButton>
+                    </>
+                  }
+                  </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </div>
+        </PortletContent>
+        <PortletFooter className={classes.portletFooter}>
 
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.allTasksArr
-              .map(task => (
-                <TableRow
-                  className={classes.tableRow}
-                  hover
-                  key={task.id}
-                >
-                <TableCell className={classes.tableCell, classes.descCell}>{this.msToDate(task.createdAt)}</TableCell>
-                <TableCell className={classes.tableCell, classes.descCell}>{task.id}</TableCell>
-                <TableCell className={classes.tableCell, classes.descCell}>
-                  <Link component={RouterLink} to={'/parse-result/' + task.id} key={task.id}>
-                    {task.title}
-                  </Link>
-                </TableCell>
-                <TableCell className={classes.tableCell, classes.descCell}>{task.state}</TableCell>
-                <TableCell className={classes.tableCell, classes.descCell}>
-                  <IconButton
-                    className={classes.icon}
-                    onClick={() => {
-                      this.cancelTask(task.id);
-                    }}
+        </PortletFooter>
+      </Portlet>
+      <Portlet
+        {...rest}
+        className={rootClassName}
+      >
+        <PortletHeader>
+          <PortletLabel
+            title="Задачи на поиск групп"
+          />
+        </PortletHeader>
+        <PortletContent>
+        <div className={tableClassName}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Date</TableCell>
+                <TableCell align="left">ID</TableCell>
+                <TableCell align="left">Title</TableCell>
+                <TableCell align="left">Status</TableCell>
+                <TableCell align="left">Actions</TableCell>
+
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.allSearchTasksArr
+                .map(task => (
+                  <TableRow
+                    className={classes.tableRow}
+                    hover
+                    key={task.id}
                   >
-                    <CancelIcon />
-                  </IconButton>
-                  <IconButton
-                    className={classes.icon}
-                    onClick={() => {
-                      this.pauseTask(task.id);
-                    }}
-                  >
-                    <PauseIcon />
-                  </IconButton>
-                </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+                  <TableCell className={classes.tableCell, classes.descCell}>{this.msToDate(task.createdAt)}</TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>{task.id}</TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>
+                    <Link component={RouterLink} to={'/group-search/' + task.id} key={task.id}>
+                      {task.title}
+                    </Link>
+                  </TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>{task.state}</TableCell>
+                  <TableCell className={classes.tableCell, classes.descCell}>
+                  { task.state === 'COMPLETED' ?
+                    <>
+                    </> :
+                    <>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={() => {
+                          this.cancelTask(task.id);
+                        }}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                      <IconButton
+                        className={classes.icon}
+                        onClick={() => {
+                          this.pauseTask(task.id);
+                        }}
+                      >
+                        <PauseIcon />
+                      </IconButton>
+                    </>
+                  }
+                  </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </div>
         </PortletContent>
         <PortletFooter className={classes.portletFooter}>
 

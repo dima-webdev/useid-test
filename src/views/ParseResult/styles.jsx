@@ -25,7 +25,7 @@ export default theme => ({
   },
   table: {
     overflow: 'auto',
-    maxHeight: 100 + (64*5) + 'px'
+    maxHeight: 100 + (64*4) + 'px'
   },
   tableBody: {
     // overflow: 'auto',

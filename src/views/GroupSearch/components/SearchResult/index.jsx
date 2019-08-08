@@ -38,6 +38,7 @@ class SearchResult extends Component {
     taskState: '',
     selectedGroups: [],
     groups: [],
+    groupsById: {},
     taskName: '',
     taskProject: '',
     parseTaskId: '',
@@ -46,6 +47,8 @@ class SearchResult extends Component {
     values: {
       parsingName: '',
     },
+    accountsCount: 0,
+    allAccountsCount: 0,
    };
 
   fetchData() {
@@ -61,14 +64,27 @@ class SearchResult extends Component {
       .then((result) => {
         console.log('getResult result', result);
         const selectedGroups = result[0].body.map((group) => group.entityId);
+
         if(result[1].body.length > 0) {
           this.setState({taskState: result[1].body[0].state, selectedGroups});
         }
-        this.setState({groups: result[0].body});
-        this.setState({taskName: result[2].body[0].title});
-        this.setState({taskProject: result[2].body[0].projectId});
 
-        // console.log('parseTasks', result[3]);
+        let groupsById = {};
+        let allAccountsCount = 0;
+
+        result[0].body.forEach(function(group) {
+          groupsById[group.entityId] = group;
+          allAccountsCount += group.followersAmount;
+        });
+
+        this.setState({
+          groups: result[0].body,
+          groupsById,
+          taskName: result[2].body[0].title,
+          taskProject: result[2].body[0].projectId,
+          allAccountsCount,
+          accountsCount: allAccountsCount,
+        });
       })
   }
 
@@ -99,14 +115,17 @@ class SearchResult extends Component {
   handleSelectAll(event) {
 
     let selectedGroups;
+    let accountsCount;
 
-    if (event.target.checked) {
+    if (!event.target.checked) {
       selectedGroups = [];
+      accountsCount = 0;
     } else {
       selectedGroups = this.state.groups.map(group => group.id);
+      accountsCount = this.state.allAccountsCount;
     }
 
-    this.setState({selectedGroups})
+    this.setState({selectedGroups, accountsCount})
   };
 
   handleSelectOne(event, id) {
@@ -123,7 +142,14 @@ class SearchResult extends Component {
       newSelectedGroups = selected.filter((groupId) => groupId !== id)
     }
 
-    this.setState({selectedGroups: newSelectedGroups})
+    const groupsById = this.state.groupsById;
+
+    let newCount = 0;
+    newSelectedGroups.forEach(function(group) {
+      newCount += groupsById[group].followersAmount;
+    });
+
+    this.setState({selectedGroups: newSelectedGroups, accountsCount: newCount});
   };
 
   parseTest() {
@@ -160,21 +186,6 @@ class SearchResult extends Component {
         this.checkParseState();
       })
   };
-
-  // const checkParseState = setInterval(function() {
-  //
-  //   return resolveClient()
-  //     .then((client) => {
-  //       return client.apis.default.VkParseTaskEndpoint_getTaskState({ids: [this.state.parseTaskId]})
-  //     })
-  //     .then((response) => {
-  //       if (response.obj[0].state === 'COMPLETED') {
-  //         this.setState({parseState: 'completed'});
-  //         clearInterval(checkParseState);
-  //       }
-  //       console.log('check parse state', response);
-  //     })
-  // }, 5000);
 
   checkParseState() {
     return resolveClient()
@@ -240,7 +251,7 @@ class SearchResult extends Component {
     const groups = this.state.groups;
     const selected = this.state.selectedGroups;
 
-    const data = 'sdfg, r, ersf, fgbd, garg, sgdfgb, dfgfe, sfgf, sgs, syh, oluio'
+    const data = ''
     const header = 'data:text/csv;charset=utf-8;base64,'
 
     const text = header + btoa(this.state.parsedData);
@@ -271,6 +282,9 @@ class SearchResult extends Component {
            } else if (this.state.taskState === 'COMPLETED' && this.state.taskResult.length === 0) {
               return (
                 <>
+                <Typography>Groups: {this.state.groups.length}<br/></Typography>
+                <Typography>Accounts total: {this.state.allAccountsCount}<br/></Typography>
+                <Typography>Accounts in selected groups: {this.state.accountsCount}<br/></Typography><br/>
                   <div className={tableClassName}>
                   <Table>
                     <TableHead>
@@ -351,10 +365,10 @@ class SearchResult extends Component {
         {this.state.taskState === 'COMPLETED' ?
           <>
           <div className={classes.field}>
-          <Typography>1. Введите имя парсинга. Именно по нему можно будет находить аудиторию.<br/></Typography>
+          <Typography>1. Введите имя задачи на сбор аудитории.<br/></Typography>
             <TextField
               className={classes.textField}
-              label="Parsing name"
+              label="Task name"
               margin="dense"
               required
               variant="outlined"
@@ -366,7 +380,7 @@ class SearchResult extends Component {
               onClick={() => this.parseTest()}
               disabled={this.state.values.parsingName === ''}
             >
-              Parse
+              Start
             </Button>
           </div>
           <div className={classes.field}>
@@ -384,6 +398,18 @@ class SearchResult extends Component {
               disabled={this.state.parseState !== 'completed'}
             >
               Download
+            </Button>
+          </div>
+          <div className={classes.field}>
+            <Typography> Или перейдите к экрану результата <br/></Typography>
+            <Button
+              onClick={this.handleSignOut}
+              href={'/parse-result/' + this.state.parseTaskId}
+              color="primary"
+              variant="contained"
+              disabled={this.state.parseTaskId !== ''}
+            >
+              Перейти
             </Button>
           </div>
           </> :

@@ -19,6 +19,13 @@ const useStyles = makeStyles(theme => ({
     borderLeft: '1px solid #d3d3d3',
     padding: theme.spacing(1),
   },
+  tasksBlock: {
+    overflow: 'auto',
+    maxHeight: 100 + (64*4) + 'px',
+    paddingBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    borderBottom: '1px solid #d3d3d3',
+  },
   title: {
     padding: theme.spacing(2),
     fontWeight: 500,
@@ -47,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     textAlign: 'justify',
     display: 'inline-block',
-    width: '60%',
+    width: '100%',
   }
 }));
 
@@ -76,79 +83,80 @@ export default function TaskSidebar() {
   return <TaskContext.Consumer>{
     tasks => {
       return <div className={classes.root}>
-      <Typography
-        className={classes.nameText}
-        variant="subtitle2"
-      >
-        Current tasks
-      </Typography>
-      {
-
-        tasks.taskStatuses
-        .sort((a,b) => b.createdAt - a.createdAt)
-        .map((task) => {
-          let path = `/group-search/${task.id}`
-          if (task.state !== 'COMPLETED') {
-            return <Link to={path} key={task.id}>
-              <Typography
-                className={classes.itemPending}
-              >
-                <IconButton
-                  className={classes.icon}
-                  onClick={() => {
-                    tasks.cancelTask(task.id);
-                    tasks.updateStatuses();
-                  }}
+        <Typography
+          className={classes.nameText}
+          variant="subtitle2"
+        >
+          Group search tasks
+        </Typography>
+        <div className={classes.tasksBlock}>
+          {
+          tasks.taskStatuses
+          .sort((a,b) => b.createdAt - a.createdAt)
+          .map((task) => {
+            let path = `/group-search/${task.id}`
+            if (task.state !== 'COMPLETED') {
+              return <Link to={path} key={task.id}>
+                <Typography
+                  className={classes.itemPending}
                 >
-                  <CancelIcon />
-                </IconButton>
-                <IconButton
-                  className={classes.icon}
-                  onClick={() => {
-                    tasks.pauseTask(task.id);
-                    tasks.updateStatuses();
-                  }}
+                  <div className={classes.taskText}>
+                    {task.title} — {task.state}
+                  </div>
+                </Typography>
+              </Link>
+            } else {
+              return <Link to={path} key={task.id}>
+                <Typography
+                  className={classes.itemCompleted}
                 >
-                  <PauseIcon />
-                </IconButton>
-                <IconButton
-                  className={classes.icon}
-                  onClick={() => {
-                    tasks.restartTask(task.id);
-                    tasks.updateStatuses();
-                  }}
-                >
-                  <RestartIcon />
-                </IconButton>
                 <div className={classes.taskText}>
                   {task.title} — {task.state}
                 </div>
-              </Typography>
-            </Link>
-          } else {
-            return <Link to={path} key={task.id}>
-              <Typography
-                className={classes.itemCompleted}
-              >
-              <IconButton
-                className={classes.icon}
-              >
-              </IconButton>
-              <IconButton
-                className={classes.icon}
-              >
-              </IconButton>
-              <IconButton
-                className={classes.icon}
-              >
-              </IconButton>
-                {task.title} — {task.state}
-              </Typography>
-            </Link>
-          }
-        })
+                </Typography>
+              </Link>
+            }
+          })
 
-      }
+        }
+        </div>
+        <Typography
+          className={classes.nameText}
+          variant="subtitle2"
+        >
+          Audience search tasks
+        </Typography>
+        <div className={classes.tasksBlock}>
+          {
+          tasks.parseTaskStatuses
+          .sort((a,b) => b.createdAt - a.createdAt)
+          .map((task) => {
+            let path = `/parse-result/${task.id}`
+            if (task.state !== 'COMPLETED') {
+              return <Link to={path} key={task.id}>
+                <Typography
+                  className={classes.itemPending}
+                >
+                <div className={classes.taskText}>
+                  {task.title} — {task.state}
+                </div>
+                </Typography>
+              </Link>
+            } else {
+              return <Link to={path} key={task.id}>
+                <Typography
+                  className={classes.itemCompleted}
+                >
+                <div className={classes.taskText}>
+                  {task.title} — {task.state}
+                </div>
+                </Typography>
+              </Link>
+            }
+          })
+
+        }
+        </div>
       </div>
     }
   }</TaskContext.Consumer>
