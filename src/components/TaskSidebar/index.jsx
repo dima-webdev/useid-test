@@ -1,9 +1,10 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useContext } from 'react';
 import {Link} from 'react-router-dom';
 import {TaskContext} from '../../services/taskContext/index.jsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, IconButton } from '@material-ui/core';
 import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import { ProjectContext } from '../../services/projectContext/index.jsx';
 import {
   Block as CancelIcon,
   PauseCircleOutline as PauseIcon,
@@ -21,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
   tasksBlock: {
     overflow: 'auto',
-    maxHeight: 100 + (64*4) + 'px',
+    maxHeight: '100%',
     paddingBottom: theme.spacing(1),
     marginBottom: theme.spacing(2),
     borderBottom: '1px solid #d3d3d3',
@@ -79,85 +80,78 @@ export default function TaskSidebar() {
   //   page: 0
   // });
 
+  const [currentProjectId, setCurrentProject] = useState('');
+  const [currentProjectTitle, setCurrentProjectTitle] = useState('');
+  const projects = useContext(ProjectContext);
+  let idFromContext = typeof projects.currentProject === 'object'
+    ? projects.currentProject.id
+    : projects.currentProject;
+  let titleFromContext = typeof projects.currentProject === 'object'
+    ? projects.currentProject.title
+    : (
+        typeof projects.currentProjectTitle === 'object'
+          ? projects.currentProjectTitle.title
+          : projects.currentProjectTitle
+      );
+  if (idFromContext != currentProjectId) {
+    setCurrentProject(idFromContext)
+    setCurrentProjectTitle(titleFromContext)
+  }
 
   return <TaskContext.Consumer>{
-    tasks => {
-      return <div className={classes.root}>
-        <Typography
-          className={classes.nameText}
-          variant="subtitle2"
-        >
-          Group search tasks
-        </Typography>
-        <div className={classes.tasksBlock}>
-          {
-          tasks.taskStatuses
-          .sort((a,b) => b.createdAt - a.createdAt)
-          .map((task) => {
-            let path = `/group-search/${task.id}`
-            if (task.state !== 'COMPLETED') {
-              return <Link to={path} key={task.id}>
-                <Typography
-                  className={classes.itemPending}
-                >
+      tasks => {
+        return <div className={classes.root}>
+          <Typography
+            className={classes.nameText}
+            variant="h3"
+          >
+            {currentProjectTitle}
+          </Typography>
+          <Typography
+            className={classes.nameText}
+            variant="subtitle2"
+          >
+            All project tasks
+          </Typography>
+          <div className={classes.tasksBlock}>
+            {
+            tasks.mixedTasks
+            .filter((task) => {
+              if (currentProjectId) {
+                return task.projectId === currentProjectId;
+              }
+              return true;
+            })
+            .sort((a,b) => b.createdAt - a.createdAt)
+            .map((task) => {
+              let path = `/group-search/${task.id}`
+              if (task.state !== 'COMPLETED') {
+                return <Link to={path} key={task.id}>
+                  <Typography
+                    className={classes.itemPending}
+                  >
+                    <div className={classes.taskText}>
+                      {task.title} — {task.state}
+                    </div>
+                  </Typography>
+                </Link>
+              } else {
+                return <Link to={path} key={task.id}>
+                  <Typography
+                    className={classes.itemCompleted}
+                  >
                   <div className={classes.taskText}>
                     {task.title} — {task.state}
                   </div>
-                </Typography>
-              </Link>
-            } else {
-              return <Link to={path} key={task.id}>
-                <Typography
-                  className={classes.itemCompleted}
-                >
-                <div className={classes.taskText}>
-                  {task.title} — {task.state}
-                </div>
-                </Typography>
-              </Link>
-            }
-          })
+                  </Typography>
+                </Link>
+              }
+            })
 
-        }
-        </div>
-        <Typography
-          className={classes.nameText}
-          variant="subtitle2"
-        >
-          Audience search tasks
-        </Typography>
-        <div className={classes.tasksBlock}>
-          {
-          tasks.parseTaskStatuses
-          .sort((a,b) => b.createdAt - a.createdAt)
-          .map((task) => {
-            let path = `/parse-result/${task.id}`
-            if (task.state !== 'COMPLETED') {
-              return <Link to={path} key={task.id}>
-                <Typography
-                  className={classes.itemPending}
-                >
-                <div className={classes.taskText}>
-                  {task.title} — {task.state}
-                </div>
-                </Typography>
-              </Link>
-            } else {
-              return <Link to={path} key={task.id}>
-                <Typography
-                  className={classes.itemCompleted}
-                >
-                <div className={classes.taskText}>
-                  {task.title} — {task.state}
-                </div>
-                </Typography>
-              </Link>
-            }
-          })
+          }
+          </div>
 
-        }
         </div>
-      </div>
-    }
-  }</TaskContext.Consumer>
+      }
+    }</TaskContext.Consumer>;
 }

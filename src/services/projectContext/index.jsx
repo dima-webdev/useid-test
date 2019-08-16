@@ -8,6 +8,7 @@ export class ProjectManager extends React.Component {
     super();
     this.state = {
       currentProject: '',
+      currentProjectTitle: '',
       allProjects: {},
       projectKeys: [],
       projectsArr: [],
@@ -18,8 +19,9 @@ export class ProjectManager extends React.Component {
   componentDidMount() {
 
     const currentProject = localStorage.getItem('currentProject');
+    const currentProjectTitle = localStorage.getItem('currentProjectTitle');
     if (currentProject) {
-      this.setState({currentProject})
+      this.setState({currentProject, currentProjectTitle})
     };
 
     resolveClient()
@@ -56,6 +58,7 @@ export class ProjectManager extends React.Component {
 
       this.setState({
         currentProject: projectId,
+        currentProjectTitle: this.state.allProjects[projectId],
       })
 
       localStorage.setItem('currentProject', projectId);
