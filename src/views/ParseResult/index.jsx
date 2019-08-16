@@ -24,6 +24,10 @@ import {
   FormGroup,
   IconButton,
   Grid,
+  FormControl,
+  Select,
+  MenuItem,
+  FormHelperText,
 } from '@material-ui/core';
 
 import {
@@ -52,10 +56,31 @@ class ParseResult extends Component {
     taskInfo: {},
     taskState: '',
     parsedData: '',
+    projects: [],
+    projectsById: {},
+    selectedProject: '',
+    projectFilter: '',
    };
 
    componentDidMount() {
      this.fetchData();
+
+     resolveClient()
+       .then((client) => {
+         return client.apis.default.ProjectEndpoint_getCurrentUserProjects();
+       })
+       .then((response) => {
+         let projectsById = {};
+         response.obj.forEach((task) => projectsById[task.id] = task);
+         this.setState({
+           projects: response.obj,
+           projectsById,
+         })
+
+         console.log('projectsById', this.state.projectsById);
+       })
+
+
    }
 
    componentDidUpdate(prevProps) {
@@ -216,9 +241,13 @@ class ParseResult extends Component {
   }
 
   msToDate(ms){
-    // let d = new Date(parseInt(ms));
     let d = new Date(ms);
     return d.toTimeString();
+    // return d.toTimeString();
+  }
+  msToLocalDate(ms){
+    let d = new Date(ms);
+    return d.toLocaleDateString();
     // return d.toTimeString();
   }
 
@@ -280,7 +309,8 @@ class ParseResult extends Component {
                 }
 
                 <Button
-                  download="data.txt"
+                  // download="hi.txt"
+                  download={this.state.taskInfo.title + ".txt"}
                   color="primary"
                   variant="contained"
                   href={text}
@@ -302,17 +332,42 @@ class ParseResult extends Component {
           >
             <PortletHeader>
               <PortletLabel
-                title="Задачи на сбор аудитории"
+                title="All Tasks"
               />
             </PortletHeader>
             <PortletContent>
+            <TaskContext.Consumer>
+              {tasks => {
+                return <FormControl className={classes.formControl}>
+                <Select
+                  value={this.state.projectFilter}
+                  onChange={(event) => { this.setState({projectFilter: event.target.value}) }}
+                  name="project"
+                  displayEmpty
+                  className={classes.selectEmpty}
+                >
+                <MenuItem value="" key="">
+                  Select project
+                </MenuItem>
+                {tasks.projects.map( task => (
+                  <MenuItem key={task.id} value={task.id}>{task.title}</MenuItem>
+                ))}
+                </Select>
+                <FormHelperText>Filter by project</FormHelperText>
+              </FormControl>
+            }}
+            </TaskContext.Consumer>
+
             <div className={tableClassName}>
+
               <Table>
                 <TableHead>
                   <TableRow>
+
                     <TableCell align="left">Date</TableCell>
-                    <TableCell align="left">ID</TableCell>
-                    <TableCell align="left">Title</TableCell>
+                    <TableCell align="left">Project</TableCell>
+                    <TableCell align="left">Name</TableCell>
+                    <TableCell align="left">Search Type</TableCell>
                     <TableCell align="left">Status</TableCell>
                     <TableCell align="left">Actions</TableCell>
 
@@ -323,48 +378,71 @@ class ParseResult extends Component {
                   { tasks =>
                     {
                       // this.state.allTasksArr
-                      return tasks.parseTaskStatuses
+                      return tasks.mixedTasks
                       .sort((a,b) => b.createdAt - a.createdAt)
+                      .filter((task) => {
+                        if (this.state.projectFilter) {
+                          return task.projectId === this.state.projectFilter;
+                        }
+                        return true;
+                      })
                       .map(task => (
-                        <TableRow
+                          <TableRow
                           className={classes.tableRow}
                           hover
                           key={task.id}
                         >
-                        <TableCell className={classes.tableCell, classes.descCell}>{this.msToDate(task.createdAt)}</TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>{task.id}</TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>
-                          <Link component={RouterLink} to={'/parse-result/' + task.id} key={task.id}>
-                            {task.title}
-                          </Link>
+
+                        <TableCell align="left">{this.msToLocalDate(task.createdAt)}</TableCell>
+                        <TableCell align="left">{tasks.projectsById[task.projectId].title}</TableCell>
+                        <TableCell align="left">
+                        <Link
+                          component={RouterLink}
+                          to={task.type === 'VK_PARSE' ? '/parse-result/' + task.id : '/group-search/' + task.id}
+                          key={task.id}
+                        >
+                          {task.title}
+                        </Link>
                         </TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>{task.state}</TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>
+                        <TableCell align="left">{task.type}</TableCell>
+                        <TableCell align="left">{task.state}</TableCell>
+                        <TableCell align="left">
                         { task.state === 'COMPLETED' ?
-                          <Link component={RouterLink} to={'/parse-result/' + task.id} key={task.id}>
-                            Download
-                          </Link> :
                           <>
-                            <IconButton
-                              className={classes.icon}
+                            {
+                              task.type === 'VK_PARSE' ?
+                              <Link component={RouterLink} to={'/parse-result/' + task.id} key={'-to' + task.id}>
+                              <Button
+                                onClick={() => window.scrollTo(0, 0)}
+                                color="primary"
+                                variant="contained"
+                              >
+                                Download
+                              </Button>
+                              </Link>
+                               : <></>
+                            }
+                          </>:
+                          <>
+                            <Button
                               onClick={() => {
-                                this.cancelTask(task.id);
+                                if (task.type === 'VK_PARSE') {
+                                  this.cancelParseTask(task.id)
+                                } else {
+                                  this.cancelTask(task.id)
+                                }
                               }}
+                              color="primary"
+                              variant="contained"
                             >
-                              <CancelIcon />
-                            </IconButton>
-                            <IconButton
-                              className={classes.icon}
-                              onClick={() => {
-                                this.pauseTask(task.id);
-                              }}
-                            >
-                              <PauseIcon />
-                            </IconButton>
+                               cancel
+                            </Button>
+
                           </>
                         }
                         </TableCell>
                         </TableRow>
+
                       ))}
                   }
                   </TaskContext.Consumer>
@@ -376,82 +454,7 @@ class ParseResult extends Component {
 
             </PortletFooter>
           </Portlet>
-          <Portlet
-            {...rest}
-            className={rootClassName}
-          >
-            <PortletHeader>
-              <PortletLabel
-                title="Задачи на поиск групп"
-              />
-            </PortletHeader>
-            <PortletContent>
-            <div className={tableClassName}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="left">Date</TableCell>
-                    <TableCell align="left">ID</TableCell>
-                    <TableCell align="left">Title</TableCell>
-                    <TableCell align="left">Status</TableCell>
-                    <TableCell align="left">Actions</TableCell>
 
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                <TaskContext.Consumer>
-                  { tasks =>
-                    {return tasks.taskStatuses
-                      .sort((a,b) => b.createdAt - a.createdAt)
-                      .map(task => (
-                        <TableRow
-                          className={classes.tableRow}
-                          hover
-                          key={task.id}
-                        >
-                        <TableCell className={classes.tableCell, classes.descCell}>{this.msToDate(task.createdAt)}</TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>{task.id}</TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>
-                          <Link component={RouterLink} to={'/group-search/' + task.id} key={task.id}>
-                            {task.title}
-                          </Link>
-                        </TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>{task.state}</TableCell>
-                        <TableCell className={classes.tableCell, classes.descCell}>
-                        { task.state === 'COMPLETED' ?
-                          <>
-                          </> :
-                          <>
-                            <IconButton
-                              className={classes.icon}
-                              onClick={() => {
-                                this.cancelTask(task.id);
-                              }}
-                            >
-                              <CancelIcon />
-                            </IconButton>
-                            <IconButton
-                              className={classes.icon}
-                              onClick={() => {
-                                this.pauseTask(task.id);
-                              }}
-                            >
-                              <PauseIcon />
-                            </IconButton>
-                          </>
-                        }
-                        </TableCell>
-                        </TableRow>
-                      ))}}
-                  </TaskContext.Consumer>
-                </TableBody>
-              </Table>
-            </div>
-            </PortletContent>
-            <PortletFooter className={classes.portletFooter}>
-
-            </PortletFooter>
-          </Portlet>
           </Grid>
         </Grid>
       </div>

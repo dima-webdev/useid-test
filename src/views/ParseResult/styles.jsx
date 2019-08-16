@@ -61,4 +61,11 @@ export default theme => ({
   progress: {
     margin: theme.spacing(2),
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 });

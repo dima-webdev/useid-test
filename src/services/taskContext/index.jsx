@@ -19,57 +19,58 @@ export class TaskManager extends React.Component {
       pauseParseTask: this.pauseParseTask.bind(this),
       restartParseTask: this.restartParseTask.bind(this),
       cancelParseTask: this.cancelParseTask.bind(this),
+      filterByProject: this.filterByProject.bind(this),
       taskStatuses: [],
       parseTaskStatuses: [],
       userId: '',
+      mixedTasks: [],
+      filteredTasks: [],
+      taskProjectFilter: '',
+      projects: [],
+      projectsById: {},
     }
   }
 
   componentDidMount() {
+
     resolveClient()
       .then((client) => {
-        return client.apis.default.UserEndpoint_getCurrentUser();
+        return Promise.all([
+          client.apis.default.UserEndpoint_getCurrentUser(),
+          client.apis.default.ProjectEndpoint_getCurrentUserProjects(),
+          client.apis.default.VkSearchTaskEndpoint_getTaskInfo(),
+          client.apis.default.VkParseTaskEndpoint_getTaskInfo(),
+        ])
       })
-      .then((response) => {
-        this.setState({userId: response.obj.userId})
+      .then(([userResponse, projectsResponse, searchTasksResponse, parseTasksResponse]) => {
+
+        let projectsById = {};
+        projectsResponse.obj.map((project) => projectsById[project.id] = project);
+
+        let mixedTasks = searchTasksResponse.obj.concat(parseTasksResponse.obj)
+
+        this.setState({
+          userId: userResponse.obj.userId,
+          projects: projectsResponse.obj,
+          projectsById,
+          taskStatuses: searchTasksResponse.obj,
+          parseTaskStatuses: parseTasksResponse.obj,
+          mixedTasks,
+          // filteredTasks: mixedTasks,
+        })
         this.updateStatuses()
       })
 
-      // setInterval(() => {
-      //   resolveClient()
-      //   .then((client) => {
-      //     return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
-      //   })
-      //   .then((response) => {
-      //     this.setState({ taskStatuses: response.obj})
-      //   })
-      // }, 10000);
-
-    resolveClient()
-      .then((client) => {
-        return client.apis.default.VkSearchTaskEndpoint_getTaskInfo();
-      })
-      .then((response) => {
-        // let unsortedArray = response.obj;
-        // let sortedByDate = unsortedArray.sort((a,b) => b.createdAt - a.createdAt);
-        this.setState({ taskStatuses: response.obj})
-        // console.log('sorted', sortedByDate);
-      })
-
-    resolveClient()
-      .then((client) => {
-        return client.apis.default.VkParseTaskEndpoint_getTaskInfo();
-      })
-      .then((response) => {
-        // let unsortedArray = response.obj;
-        // let sortedByDate = unsortedArray.sort((a,b) => b.createdAt - a.createdAt);
-        this.setState({ parseTaskStatuses: response.obj})
-        // console.log('sorted', sortedByDate);
-      })
   }
 
   componentWillUnmount() {
     clearTimeout(this._timer)
+  }
+
+  filterByProject(projectId) {
+    this.setState({
+      taskProjectFilter: projectId,
+    })
   }
 
   createTask(task) {
