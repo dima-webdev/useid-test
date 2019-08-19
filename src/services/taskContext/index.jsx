@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
+import { resolveClient } from '../../services/apiContext/index.jsx'
 
 export const TaskContext = React.createContext();
 

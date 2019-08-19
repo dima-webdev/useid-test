@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import { resolveClient } from '../../services/apiContext/index.jsx';
 
-import classNames from 'classnames';
 import {
   Grid,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   Button
 } from '@material-ui/core';
 import { Dashboard as DashboardLayout } from 'layouts';
@@ -26,7 +20,6 @@ import {
   PortletHeader,
   PortletLabel,
   PortletContent,
-  PortletFooter
 } from 'components';
 
 const styles = theme => ({
@@ -78,45 +71,6 @@ class Drafts extends Component {
 
   render() {
     const { classes, className, ...rest } = this.props;
-
-    const readyTasks = [
-      {
-        id: 1,
-        date: '11.07.2017',
-        project: 'Hermitage',
-        title: 'Музейщики',
-        query: 'keys: музей, классическое искусство',
-        peopleCount: 15097,
-        status: 'Ready to download',
-        idPrice: '-',
-        sumPrice: '-',
-        downloadLink: '/',
-      },
-      {
-        id: 2,
-        date: '12.07.2017',
-        project: 'Hermitage',
-        title: 'Эстеты',
-        query: 'keys: Эрмитаж, искусство',
-        peopleCount: 9372,
-        status: 'Downloaded',
-        idPrice: '-',
-        sumPrice: '-',
-        downloadLink: '/',
-      },
-      {
-        id: 3,
-        date: '12.07.2017',
-        project: 'Adidas',
-        title: 'Спортсмены для адидаса',
-        query: 'keys: Adidas, адидас, спорт это жизнь',
-        peopleCount: 591827,
-        status: 'Downloaded',
-        idPrice: '-',
-        sumPrice: '-',
-        downloadLink: '/',
-      },
-    ];
 
     return (
       <DashboardLayout title="Dashboard">

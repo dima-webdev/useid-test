@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CitySelect from '../CitySelect/index.jsx';
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx'
-// import { Link, NavLink } from 'react-router-dom';
+import { resolveClient } from '../../../../services/apiContext/index.jsx';
 
 import {
   Button,
@@ -251,7 +247,6 @@ class SearchResult extends Component {
     const groups = this.state.groups;
     const selected = this.state.selectedGroups;
 
-    const data = ''
     const header = 'data:text/csv;charset=utf-8;base64,'
 
     const text = header + btoa(this.state.parsedData);

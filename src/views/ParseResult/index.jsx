@@ -4,13 +4,11 @@ import { Dashboard as DashboardLayout } from 'layouts';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import { resolveClient } from '../../services/apiContext/index.jsx';
 import { TaskContext } from '../../services/taskContext/index.jsx';
-// import { Link, NavLink } from 'react-router-dom';
 
 import {
   Button,
-  TextField,
   Table,
   TableBody,
   TableCell,
@@ -19,10 +17,6 @@ import {
   Typography,
   Link,
   CircularProgress,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-  IconButton,
   Grid,
   FormControl,
   Select,
@@ -37,12 +31,6 @@ import {
   PortletContent,
   PortletFooter,
 } from 'components';
-
-import {
-  Block as CancelIcon,
-  PauseCircleOutline as PauseIcon,
-  PlayCircleOutline as RestartIcon,
-} from '@material-ui/icons';
 
 import styles from './styles';
 
@@ -96,68 +84,8 @@ class ParseResult extends Component {
     if (taskId) {
       this.setState({taskId});
       this.checkParseState(taskId);
-
-      // resolveClient()
-      //   .then((client) => {
-      //     return Promise.all([
-      //       client.apis.default.VkParseTaskEndpoint_getResult({taskId}),
-      //       client.apis.default.VkParseTaskEndpoint_getTaskState({ids: [taskId]}),
-      //       // почему приходит пустой массив?
-      //       client.apis.default.VkParseTaskEndpoint_getTaskInfo({ids: [taskId]}),
-      //       client.apis.default.VkParseTaskEndpoint_getTaskInfo(),
-      //       client.apis.default.VkSearchTaskEndpoint_getTaskInfo(),
-      //     ])
-      //   })
-      //   .then((result) => {
-      //     console.log('getResult1 result', result);
-      //     let tasksObj = {};
-      //     result[3].body.forEach((task) => tasksObj[task.id] = task);
-      //
-      //     let searchTasksObj = {};
-      //     result[4].body.forEach((task) => searchTasksObj[task.id] = task);
-      //
-      //     let sortedTasks = result[3].body.sort((a,b) => b.createdAt - a.createdAt);
-      //     let sortedSearchTasks = result[4].body.sort((a,b) => b.createdAt - a.createdAt);
-      //
-      //
-      //     this.setState({
-      //         allTasks: tasksObj,
-      //         allSearchTasks: searchTasksObj,
-      //         taskState: result[1].obj[0].state,
-      //         allTasksArr: sortedTasks,
-      //         allSearchTasksArr: sortedSearchTasks,
-      //         taskInfo: result[2].body[0],
-      //         parsedData: result[0].body,
-      //       })
-      //   })
-
     } else {
       console.log('else');
-      // resolveClient()
-      //   .then((client) => {
-      //     return Promise.all([
-      //       client.apis.default.VkParseTaskEndpoint_getTaskInfo(),
-      //       client.apis.default.VkSearchTaskEndpoint_getTaskInfo(),
-      //     ])
-      //   })
-      //   .then((result) => {
-      //     console.log('getResult result', result);
-      //     let tasksObj = {};
-      //     result[0].body.forEach((task) => tasksObj[task.id] = task);
-      //
-      //     let searchTasksObj = {};
-      //     result[1].body.forEach((task) => searchTasksObj[task.id] = task);
-      //
-      //     let sortedTasks = result[0].body.sort((a,b) => b.createdAt - a.createdAt);
-      //     let sortedSearchTasks = result[1].body.sort((a,b) => b.createdAt - a.createdAt);
-      //
-      //     this.setState({
-      //         allTasks: tasksObj,
-      //         allTasksArr: sortedTasks,
-      //         allSearchTasks: searchTasksObj,
-      //         allSearchTasksArr: sortedSearchTasks,
-      //       })
-      //   })
     }
 
 
@@ -262,15 +190,9 @@ class ParseResult extends Component {
     const rootClassName = classNames(classes.root, className);
     const tableClassName = classNames(classes.table, className);
 
-    const groups = this.state.groups;
-    const selected = this.state.selectedGroups;
-
     const header = 'data:text/csv;charset=utf-8;base64,'
 
     const text = header + btoa(this.state.parsedData);
-
-    // const a = document.querySelector('a')
-    // a.href = text;
 
     return (
       <DashboardLayout title="Раздел в разработке" subtitle="This page is under development">

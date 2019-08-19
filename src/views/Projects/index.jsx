@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Grid, Link } from '@material-ui/core';
+import { withStyles, Grid } from '@material-ui/core';
 import { Dashboard as DashboardLayout } from 'layouts';
-import { Redirect } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { CreationForm } from './components';
 
-import {TaskContext} from '../../services/taskContext';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import { resolveClient } from '../../services/apiContext/index.jsx';
 import { ProjectContext } from '../../services/projectContext/index.jsx';
 
 const styles = theme => ({
@@ -24,11 +20,6 @@ const styles = theme => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
 });
-
-
-const projects = [
-  { id: 'p1', title: 'Adidas' },
-]
 
 class Projects extends Component {
   state = {
@@ -64,18 +55,6 @@ class Projects extends Component {
 
   render() {
     const { classes } = this.props;
-
-    let projectsList = this.state.projects.map(element =>
-      <ExpansionPanel>
-        <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls={element.id + '-content'}
-          id={element.id + '-header'}
-        >
-          <Typography className={classes.heading}>{element.title}</Typography>
-        </ExpansionPanelSummary>
-      </ExpansionPanel>
-    );
 
     return (
       <DashboardLayout title="Projects">

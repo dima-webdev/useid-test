@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import {Link} from 'react-router-dom';
-import { TaskContext } from '../../services/taskContext/index.jsx';
-
-import classNames from 'classnames';
 import {
   Grid,
   Table,

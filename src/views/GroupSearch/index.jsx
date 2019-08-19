@@ -5,9 +5,9 @@ import { Dashboard as DashboardLayout } from 'layouts';
 import { Redirect } from 'react-router-dom';
 
 import {TaskContext} from '../../services/taskContext';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
+import { resolveClient } from '../../services/apiContext/index.jsx'
 
-import { GroupSearchForm, GroupSearchResult, SearchResult } from './components'
+import { GroupSearchForm, SearchResult } from './components'
 const styles = theme => ({
   root: {
     padding: theme.spacing(4)

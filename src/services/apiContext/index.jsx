@@ -7,7 +7,6 @@ const URL = 'http://142.91.9.164:8490/api/swagger.json';
 // Swagger.http.withCredentials = true;
 
 let _client = null;
-let _clientP = null;
 
 export const resolveClient = () => {
   if (_client) {

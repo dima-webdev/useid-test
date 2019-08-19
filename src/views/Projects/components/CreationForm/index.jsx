@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
+import { resolveClient } from '../../../../services/apiContext/index.jsx';
 
 import {
   Portlet,

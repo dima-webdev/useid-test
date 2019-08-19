@@ -1,15 +1,9 @@
-import React, { Component, useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {Link} from 'react-router-dom';
 import {TaskContext} from '../../services/taskContext/index.jsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, IconButton } from '@material-ui/core';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx';
+import { Typography } from '@material-ui/core';
 import { ProjectContext } from '../../services/projectContext/index.jsx';
-import {
-  Block as CancelIcon,
-  PauseCircleOutline as PauseIcon,
-  PlayCircleOutline as RestartIcon,
-} from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -93,7 +87,7 @@ export default function TaskSidebar() {
           ? projects.currentProjectTitle.title
           : projects.currentProjectTitle
       );
-  if (idFromContext != currentProjectId) {
+  if (idFromContext !== currentProjectId) {
     setCurrentProject(idFromContext)
     setCurrentProjectTitle(titleFromContext)
   }

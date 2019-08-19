@@ -3,14 +3,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { Button, TextField, Typography } from '@material-ui/core';
-import { Link, NavLink } from 'react-router-dom';
 
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
+import { resolveClient } from '../../../../services/apiContext/index.jsx';
 
 import {
   Portlet,
   PortletHeader,
-  PortletLabel,
   PortletContent,
   PortletFooter
 } from 'components';

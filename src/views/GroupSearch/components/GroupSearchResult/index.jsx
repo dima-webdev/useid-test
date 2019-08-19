@@ -1,10 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import {
   Button,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -14,18 +13,16 @@ import {
   TablePagination,
   Radio,
   RadioGroup,
-  FormHelperText,
   FormControlLabel,
   FormControl,
   FormLabel
 } from '@material-ui/core';
 
 import LinearProgress from '@material-ui/core/LinearProgress';
-import ResultItem from '../ResultItem/index.jsx'
 import styles from './styles';
 import { TaskContext } from '../../../../services/taskContext/index.jsx'
 import { Redirect } from 'react-router-dom';
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
+import { resolveClient } from '../../../../services/apiContext/index.jsx';
 
 import {
   Portlet,
@@ -36,9 +33,6 @@ import {
 } from 'components';
 
 function SearchResult ({ classes, className, taskId, ...rest }){
-
-    // const [unselected, setUnselected] = useState([]);
-    const [selected, setSelected] = useState([]);
 
     useEffect(() => {
       resolveClient()
@@ -54,9 +48,6 @@ function SearchResult ({ classes, className, taskId, ...rest }){
       rowsPerPage: 10,
       page: 0
     });
-
-    const [taskInfo, setTaskInfo] = useState([]);
-
 
     const groups = [
       {
@@ -205,7 +196,6 @@ function SearchResult ({ classes, className, taskId, ...rest }){
                               hover
                               key={group.id}
                               // selected={unselected.indexOf(group.id) === -1}
-                              selected={selected.indexOf(group.id) === -1}
                             >
                               <TableCell className={classes.tableCell, classes.nameCell}>
                                 <div className={classes.tableCellInner}>

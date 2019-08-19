@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
-import { Avatar, Typography, Button, LinearProgress } from '@material-ui/core';
+import { Avatar, Typography, Button } from '@material-ui/core';
 import { Portlet, PortletContent, PortletFooter } from 'components';
 import styles from './styles';
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
+import { resolveClient } from '../../../../services/apiContext/index.jsx';
 
 class AccountProfile extends Component {
 

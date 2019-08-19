@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
+import { resolveClient } from '../../services/apiContext/index.jsx'
 
 export const ProjectContext = React.createContext();
 
@@ -77,7 +77,6 @@ export class ProjectManager extends React.Component {
         .then((response) => {
           let projectsArr = response.obj;
           let projectKeys = [];
-          let projectValues = [];
           let allProjects = {};
           projectsArr.forEach(function(elem) {
             projectKeys.push(elem.id);

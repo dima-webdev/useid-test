@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { ApiContext, resolveClient } from '../../services/apiContext/index.jsx'
+import { resolveClient } from '../../services/apiContext/index.jsx'
 import sha256 from 'js-sha256';
 
 // Externals

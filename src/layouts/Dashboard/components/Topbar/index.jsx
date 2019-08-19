@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter, Route, Redirect } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 
 // Externals
@@ -12,7 +12,6 @@ import { withStyles, Avatar } from '@material-ui/core';
 
 // Material components
 import {
-  Badge,
   IconButton,
   Popover,
   Toolbar,
@@ -26,8 +25,6 @@ import {
 import {
   Menu as MenuIcon,
   Close as CloseIcon,
-  NotificationsOutlined as NotificationsIcon,
-  Input as InputIcon,
 } from '@material-ui/icons';
 
 // Shared services
@@ -127,7 +124,7 @@ class Topbar extends Component {
       onToggleSidebar,
       intl,
     } = this.props;
-    const { notifications, notificationsCount, notificationsEl, anchorEl } = this.state;
+    const { notifications, notificationsEl, anchorEl } = this.state;
 
     const rootClassName = classNames(classes.root, className);
     const showNotifications = Boolean(notificationsEl);

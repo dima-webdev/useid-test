@@ -25,7 +25,7 @@ const language = toSupportedLang(localStorage.getItem('lang') || navigator.langu
 addLocaleData([...locale_en, ...locale_ru]);
 
 ReactDOM.render(
-  <IntlProvider locale='en' locale={language} messages={messages[language]} supportedLanguages={supportedLanguages} >
+  <IntlProvider locale={language} messages={messages[language]} supportedLanguages={supportedLanguages} >
     <App />
   </IntlProvider>,
   document.getElementById('root'));

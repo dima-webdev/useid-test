@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import CitySelect from '../CitySelect/index.jsx';
-import { ApiContext, resolveClient } from '../../../../services/apiContext/index.jsx';
+import { resolveClient } from '../../../../services/apiContext/index.jsx';
 import schema from './schema';
 import validate from 'validate.js';
 import _ from 'underscore';
@@ -14,10 +11,6 @@ import _ from 'underscore';
 import {
   Button,
   TextField,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   Snackbar,
   SnackbarContent,
   Typography,
@@ -155,27 +148,6 @@ class SearchForm extends Component {
     let searchTitle = 'not set';
     const projectTitle = localStorage.getItem('currentProjectTitle');
     if (projectTitle) {searchTitle = projectTitle}
-
-    const dialog = (
-      <Dialog
-        open={this.state.successDialogOpen}
-        onClose={() => window.location.reload(true)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Task created!<br />
-            Please, wait: search can take some time.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => window.location.reload(true)} color="primary" autoFocus>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
 
     return (
       <Portlet

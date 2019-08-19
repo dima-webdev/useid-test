@@ -11,7 +11,6 @@ import { withStyles } from '@material-ui/core';
 
 // Material components
 import {
-  Avatar,
   Divider,
   List,
   ListItem,
@@ -25,23 +24,14 @@ import {
 // Material icons
 import {
   DashboardOutlined as DashboardIcon,
-  PeopleOutlined as PeopleIcon,
-  ShoppingBasketOutlined as ShoppingBasketIcon,
-  LockOpenOutlined as LockOpenIcon,
-  TextFields as TextFieldsIcon,
-  ImageOutlined as ImageIcon,
   InfoOutlined as InfoIcon,
-  AccountBoxOutlined as AccountBoxIcon,
-  SettingsOutlined as SettingsIcon,
   Search as SearchIcon,
-  ArrowRight as SetProject,
   Folder,
   ExpandMore,
   ExpandLess,
   StarBorder,
   Add,
   Home,
-  Create as DraftsIcon,
 } from '@material-ui/icons';
 
 // Component styles
@@ -68,16 +58,6 @@ class Sidebar extends Component {
 
   render() {
     const { classes, className } = this.props;
-
-    let allProjects = [
-      { id: 'p1', title: 'Adidas' },
-      { id: 'p2', title: 'Hermitage' },
-      { id: 'p3', title: 'Dog rates' },
-      { id: 'p4', title: 'Lidl' },
-      { id: 'p5', title: 'The secret project' },
-      { id: 'p6', title: 'Кириллический' },
-      { id: 'p7', title: 'Ifmo' },
-    ];
 
     const rootClassName = classNames(classes.root, className);
 
