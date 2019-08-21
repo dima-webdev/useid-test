@@ -118,9 +118,11 @@ export default function TaskSidebar() {
             })
             .sort((a,b) => b.createdAt - a.createdAt)
             .map((task) => {
-              let path = `/group-search/${task.id}`
+              // let path = `/group-search/${task.id}`
               if (task.state !== 'COMPLETED') {
-                return <Link to={path} key={task.id}>
+                return <Link
+                  to={task.type === 'VK_PARSE' ? '/parse-result/' + task.id : '/group-search/' + task.id}
+                  key={task.id}>
                   <Typography
                     className={classes.itemPending}
                   >
@@ -130,7 +132,9 @@ export default function TaskSidebar() {
                   </Typography>
                 </Link>
               } else {
-                return <Link to={path} key={task.id}>
+                return <Link
+                  to={task.type === 'VK_PARSE' ? '/parse-result/' + task.id : '/group-search/' + task.id} 
+                  key={task.id}>
                   <Typography
                     className={classes.itemCompleted}
                   >

@@ -85,6 +85,7 @@ class SearchResult extends Component {
   }
 
   componentDidMount() {
+    console.log('this.props.taskId', this.props.taskId);
     this.fetchData();
   }
 
@@ -305,6 +306,7 @@ class SearchResult extends Component {
 
                       {
                         groups
+                        .sort((a, b) => b.followersAmount - a.followersAmount)
                         .map(group => (
                           <TableRow
                             className={classes.tableRow}
@@ -360,7 +362,7 @@ class SearchResult extends Component {
         {this.state.taskState === 'COMPLETED' ?
           <>
           <div className={classes.field}>
-          <Typography>1. Введите имя задачи на сбор аудитории.<br/></Typography>
+          <Typography>1. Введите название аудитории<br/></Typography>
             <TextField
               className={classes.textField}
               label="Task name"
@@ -392,7 +394,7 @@ class SearchResult extends Component {
               href={text}
               disabled={this.state.parseState !== 'completed'}
             >
-              Download
+              Export
             </Button>
           </div>
           <div className={classes.field}>

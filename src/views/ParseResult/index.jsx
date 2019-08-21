@@ -231,14 +231,13 @@ class ParseResult extends Component {
                 }
 
                 <Button
-                  // download="hi.txt"
                   download={this.state.taskInfo.title + ".txt"}
                   color="primary"
                   variant="contained"
                   href={text}
                   disabled={this.state.taskState !== 'COMPLETED'}
                 >
-                  Download
+                  Export
                 </Button>
               </div>
 
@@ -339,7 +338,7 @@ class ParseResult extends Component {
                                 color="primary"
                                 variant="contained"
                               >
-                                Download
+                                Export
                               </Button>
                               </Link>
                                : <></>
