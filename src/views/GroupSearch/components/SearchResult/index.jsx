@@ -45,6 +45,7 @@ class SearchResult extends Component {
     },
     accountsCount: 0,
     allAccountsCount: 0,
+    taskProjectTitle: '',
    };
 
   fetchData() {
@@ -54,11 +55,12 @@ class SearchResult extends Component {
           client.apis.default.VkSearchTaskEndpoint_getResult({taskId: this.props.taskId}),
           client.apis.default.VkSearchTaskEndpoint_getTaskState({ids: [this.props.taskId]}),
           client.apis.default.VkSearchTaskEndpoint_getTaskInfo({ids: [this.props.taskId]}),
+          client.apis.default.ProjectEndpoint_getCurrentUserProjects(),
           // client.apis.default.VkParseTaskEndpoint_getTaskInfo(),
         ])
       })
       .then((result) => {
-        console.log('getResult result', result);
+        // console.log('getResult result', result);
         const selectedGroups = result[0].body.map((group) => group.entityId);
 
         if(result[1].body.length > 0) {
@@ -73,6 +75,14 @@ class SearchResult extends Component {
           allAccountsCount += group.followersAmount;
         });
 
+        let userProjectsById = {};
+
+        result[3].body.forEach(function(project) {
+          userProjectsById[project.id] = project;
+        });
+
+        let taskProjectTitle = userProjectsById[result[2].body[0].projectId].title;
+
         this.setState({
           groups: result[0].body,
           groupsById,
@@ -80,6 +90,7 @@ class SearchResult extends Component {
           taskProject: result[2].body[0].projectId,
           allAccountsCount,
           accountsCount: allAccountsCount,
+          taskProjectTitle,
         });
       })
   }
@@ -277,6 +288,7 @@ class SearchResult extends Component {
            } else if (this.state.taskState === 'COMPLETED' && this.state.taskResult.length === 0) {
               return (
                 <>
+                <Typography>Project: {this.state.taskProjectTitle}<br/></Typography>
                 <Typography>Groups: {this.state.groups.length}<br/></Typography>
                 <Typography>Accounts total: {this.state.allAccountsCount}<br/></Typography>
                 <Typography>Accounts in selected groups: {this.state.accountsCount}<br/></Typography><br/>
