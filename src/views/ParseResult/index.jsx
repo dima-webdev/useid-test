@@ -48,6 +48,8 @@ class ParseResult extends Component {
     projectsById: {},
     selectedProject: '',
     projectFilter: '',
+    searchFilter: '',
+    statusFilter: '',
    };
 
    componentDidMount() {
@@ -279,6 +281,41 @@ class ParseResult extends Component {
             }}
             </TaskContext.Consumer>
 
+            <FormControl className={classes.formControl}>
+              <Select
+                value={this.state.searchFilter}
+                onChange={(event) => { this.setState({searchFilter: event.target.value}) }}
+                name="search"
+                displayEmpty
+                className={classes.selectEmpty}
+              >
+                <MenuItem value="" key="">
+                  Select search type
+                </MenuItem>
+                <MenuItem key='groups-search' value='VK_SEARCH'>Groups</MenuItem>
+                <MenuItem key='audience-search' value='VK_PARSE'>Audience</MenuItem>
+              </Select>
+              <FormHelperText>Filter by search type</FormHelperText>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <Select
+                value={this.state.statusFilter}
+                onChange={(event) => { this.setState({statusFilter: event.target.value}) }}
+                name="status"
+                displayEmpty
+                className={classes.selectEmpty}
+              >
+                <MenuItem value="" key="">
+                  Select status
+                </MenuItem>
+                <MenuItem key='status-completed' value='COMPLETED'>Completed</MenuItem>
+                <MenuItem key='status-running' value='RUNNING'>Running</MenuItem>
+                <MenuItem key='status-aborted' value='ABORTED'>Aborted</MenuItem>
+              </Select>
+              <FormHelperText>Filter by status</FormHelperText>
+            </FormControl>
+
             <div className={tableClassName}>
 
               <Table>
@@ -304,6 +341,18 @@ class ParseResult extends Component {
                       .filter((task) => {
                         if (this.state.projectFilter) {
                           return task.projectId === this.state.projectFilter;
+                        }
+                        return true;
+                      })
+                      .filter((task) => {
+                        if (this.state.searchFilter) {
+                          return task.type === this.state.searchFilter;
+                        }
+                        return true;
+                      })
+                      .filter((task) => {
+                        if (this.state.statusFilter) {
+                          return task.state === this.state.statusFilter;
                         }
                         return true;
                       })

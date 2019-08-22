@@ -85,7 +85,6 @@ class SearchResult extends Component {
   }
 
   componentDidMount() {
-    console.log('this.props.taskId', this.props.taskId);
     this.fetchData();
   }
 
