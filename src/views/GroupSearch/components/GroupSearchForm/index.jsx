@@ -7,6 +7,7 @@ import { resolveClient } from '../../../../services/apiContext/index.jsx';
 import schema from './schema';
 import validate from 'validate.js';
 import _ from 'underscore';
+import {injectIntl} from 'react-intl';
 
 import {
   Button,
@@ -141,7 +142,7 @@ class SearchForm extends Component {
 
 
   render() {
-    const { classes, className, taskId, ...rest } = this.props;
+    const { classes, className, taskId, intl, ...rest } = this.props;
 
     const rootClassName = classNames(classes.root, className);
 
@@ -165,20 +166,20 @@ class SearchForm extends Component {
         >
           <SnackbarContent
             className={classes.infoMessage}
-            message="Task was created!"
+            message={intl.messages['snackbar.task-created']}
           />
         </Snackbar>
         <PortletHeader>
           <PortletLabel
-            title={'VK Group Search'}
-            subtitle={'project: ' + searchTitle}
+            title={intl.messages['vk-group-search-form.title']}
+            subtitle={intl.messages['vk-group-search-form.project-title'] + searchTitle}
           />
           {!projectTitle && (
             <Typography
               className={classes.fieldError}
               variant="body2"
             >
-              Project is not set!
+              {intl.messages['vk-group-search-form.project-not-set']}
             </Typography>
           )}
         </PortletHeader>
@@ -190,7 +191,7 @@ class SearchForm extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                label="Task name"
+                label={intl.messages['vk-group-search-form.task-name']}
                 margin="dense"
                 required
                 variant="outlined"
@@ -208,7 +209,7 @@ class SearchForm extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                label="Enter key words"
+                label={intl.messages['vk-group-search-form.key-words']}
                 margin="dense"
                 multiline
                 rows="4"
@@ -228,7 +229,7 @@ class SearchForm extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                label="Enter exception words"
+                label={intl.messages['vk-group-search-form.exception-words']}
                 margin="dense"
                 multiline
                 rows="4"
@@ -240,7 +241,7 @@ class SearchForm extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textFieldSmall}
-                label="members min"
+                label={intl.messages['vk-group-search-form.members-min']}
                 margin="dense"
                 rows="1"
                 variant="outlined"
@@ -248,7 +249,7 @@ class SearchForm extends Component {
               />
               <TextField
                 className={classes.textFieldSmall}
-                label="members max"
+                label={intl.messages['vk-group-search-form.members-max']}
                 margin="dense"
                 rows="1"
                 variant="outlined"
@@ -266,7 +267,7 @@ class SearchForm extends Component {
             variant="contained"
             onClick={() => this.startSearch()}
           >
-            Start search
+            {intl.messages['button.start-search']}
           </Button>
         </PortletFooter>
       </Portlet>
@@ -281,4 +282,4 @@ SearchForm.propTypes = {
   taskId: PropTypes.string,
 }
 
-export default withStyles(styles)(SearchForm);
+export default injectIntl(withStyles(styles)(SearchForm));

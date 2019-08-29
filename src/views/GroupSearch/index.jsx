@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles, Grid } from '@material-ui/core';
 import { Dashboard as DashboardLayout } from 'layouts';
 import { Redirect } from 'react-router-dom';
+import {injectIntl} from 'react-intl';
 
 import {TaskContext} from '../../services/taskContext';
 import { resolveClient } from '../../services/apiContext/index.jsx'
@@ -48,7 +49,7 @@ class GroupSearch extends Component {
   }
 
   render() {
-    const { classes, match } = this.props;
+    const { classes, match, intl } = this.props;
     const taskId = match.params.taskId || null;
 
     return (
@@ -56,7 +57,7 @@ class GroupSearch extends Component {
         tasks => {
 
           return (
-      <DashboardLayout title="Group Search">
+      <DashboardLayout title={intl.messages['vk-group-search.title']}>
         <div className={classes.root}>
         {this.state.redirectTo
           ? <Redirect
@@ -105,4 +106,4 @@ GroupSearch.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(GroupSearch);
+export default injectIntl(withStyles(styles)(GroupSearch));

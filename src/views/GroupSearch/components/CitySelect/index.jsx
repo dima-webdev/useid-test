@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popper from '@material-ui/core/Popper';
 import { makeStyles } from '@material-ui/core/styles';
+import {injectIntl} from 'react-intl';
 
 // Imagine you have a list of languages that you'd like to autosuggest.
 const countries = [

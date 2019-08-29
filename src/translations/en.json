@@ -1,4 +1,40 @@
 {
     "test.title": "Test title here",
-    "test.text": "some text in english"
+    "test.text": "some text in english",
+
+    "dashboard.title": "Dashboard",
+    "dashboard.instruction-title": "How to Search",
+
+    "vk-group-search.title": "Group Search",
+
+    "snackbar.task-created": "Task was created!",
+
+    "vk-group-search-form.title": "VK Group Search",
+    "vk-group-search-form.project-title": "project: ",
+    "vk-group-search-form.project-default": "not set",
+    "vk-group-search-form.project-not-set": "Project is not set!",
+    "vk-group-search-form.task-name": "Task name",
+    "vk-group-search-form.key-words": "Enter key words",
+    "vk-group-search-form.key-words": "Enter exception words",
+    "vk-group-search-form.members-min": "members min",
+    "vk-group-search-form.members-max": "members max",
+
+    "button.start-search": "Start search",
+    "button.start": "Start",
+    "button.export": "Export",
+    "button.go-to": "Go To",
+
+    "search-result.vk-groups-title": "VK Groups Search Result",
+    "search-result.project": "Project: ",
+    "search-result.groups": "Groups: ",
+    "search-result.accounts-total": "Accounts total: ",
+    "search-result.accounts-selected": "Accounts selected: ",
+    "search-result.table-header-link": "Link",
+    "search-result.table-header-description": "Description",
+    "search-result.table-header-followers": "Followers",
+    "search-result.not-ready": "This task is not ready yet!",
+    "search-result.audience-input": "1. Введите название аудитории",
+    "search-result.audience-input-label": "Audience name",
+    "search-result.wait-for-result": "2. Подождите, пока загрузится результат",
+    "search-result.go-to-result": "Или перейдите к экрану результата"
 }

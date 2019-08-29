@@ -29,10 +29,8 @@ class Dashboard extends Component {
   render() {
     const { classes, className, intl, ...rest } = this.props;
 
-    console.log("messages", intl);
-
     return (
-      <DashboardLayout title={intl.messages['test.title']}>
+      <DashboardLayout title={intl.messages['dashboard.title']}>
         <div className={classes.root}>
           <Grid
             container
@@ -50,7 +48,7 @@ class Dashboard extends Component {
             >
               <PortletHeader>
                 <PortletLabel
-                  title="Как запустить поиск?"
+                  title={intl.messages['dashboard.instruction-title']}
                   subtitle="version 0.0.1"
                 />
               </PortletHeader>

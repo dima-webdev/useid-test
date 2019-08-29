@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { resolveClient } from '../../../../services/apiContext/index.jsx';
+import {injectIntl} from 'react-intl';
 
 import {
   Button,
@@ -250,7 +251,7 @@ class SearchResult extends Component {
   };
 
   render() {
-    const { classes, className, taskId, ...rest } = this.props;
+    const { classes, className, taskId, intl, ...rest } = this.props;
 
     const rootClassName = classNames(classes.root, className);
     const tableClassName = classNames(classes.table, className);
@@ -272,7 +273,7 @@ class SearchResult extends Component {
       >
         <PortletHeader>
           <PortletLabel
-            title="This page is under construction"
+            title={intl.messages['search-result.vk-groups-title']}
           />
         </PortletHeader>
         <PortletContent>
@@ -282,16 +283,16 @@ class SearchResult extends Component {
             if (this.state.taskState === 'COMPLETED' && this.state.taskResult.length > 0){
              return (
                <>
-                  Ничего не найдено!
+                  title={intl.messages['search-result.not-found']}
                 </>
              )
            } else if (this.state.taskState === 'COMPLETED' && this.state.taskResult.length === 0) {
               return (
                 <>
-                <Typography>Project: {this.state.taskProjectTitle}<br/></Typography>
-                <Typography>Groups: {this.state.groups.length}<br/></Typography>
-                <Typography>Accounts total: {this.state.allAccountsCount}<br/></Typography>
-                <Typography>Accounts in selected groups: {this.state.accountsCount}<br/></Typography><br/>
+                <Typography>{intl.messages['search-result.project']} {this.state.taskProjectTitle}<br/></Typography>
+                <Typography>{intl.messages['search-result.groups']} {this.state.groups.length}<br/></Typography>
+                <Typography>{intl.messages['search-result.accounts-total']} {this.state.allAccountsCount}<br/></Typography>
+                <Typography>{intl.messages['search-result.accounts-selected']} {this.state.accountsCount}<br/></Typography><br/>
                   <div className={tableClassName}>
                   <Table>
                     <TableHead>
@@ -306,10 +307,10 @@ class SearchResult extends Component {
                             }
                             onChange={(e) => this.handleSelectAll(e)}
                           />
-                            Link
+                            {intl.messages['search-result.table-header-link']}
                         </TableCell>
-                        <TableCell align="left">Description</TableCell>
-                        <TableCell align="left">followers Amount</TableCell>
+                        <TableCell align="left">{intl.messages['search-result.table-header-description']}</TableCell>
+                        <TableCell align="left">{intl.messages['search-result.table-header-followers']}</TableCell>
 
                       </TableRow>
                     </TableHead>
@@ -359,9 +360,7 @@ class SearchResult extends Component {
               )
             } else {
               return (
-                <>
-                  This task is not ready yet!
-                </>
+                <>{intl.messages['search-result.not-ready']}</>
               )
             }
           })()
@@ -373,10 +372,10 @@ class SearchResult extends Component {
         {this.state.taskState === 'COMPLETED' ?
           <>
           <div className={classes.field}>
-          <Typography>1. Введите название аудитории<br/></Typography>
+          <Typography>{intl.messages['search-result.audience-input']}<br/></Typography>
             <TextField
               className={classes.textField}
-              label="Task name"
+              label={intl.messages['search-result.audience-input-label']}
               margin="dense"
               required
               variant="outlined"
@@ -388,11 +387,11 @@ class SearchResult extends Component {
               onClick={() => this.parseTest()}
               disabled={this.state.values.parsingName === ''}
             >
-              Start
+              {intl.messages['button.start']}
             </Button>
           </div>
           <div className={classes.field}>
-            <Typography>2. Подождите, пока загрузится результат <br/></Typography>
+            <Typography>{intl.messages['search-result.wait-for-result']}<br/></Typography>
             {this.state.parseState === 'loading' ?
               <CircularProgress className={classes.progress} /> :
               <></>
@@ -405,11 +404,11 @@ class SearchResult extends Component {
               href={text}
               disabled={this.state.parseState !== 'completed'}
             >
-              Export
+              {intl.messages['button.export']}
             </Button>
           </div>
           <div className={classes.field}>
-            <Typography> Или перейдите к экрану результата <br/></Typography>
+            <Typography>{intl.messages['search-result.go-to-result']}<br/></Typography>
             <Button
               onClick={this.handleSignOut}
               href={'/parse-result/' + this.state.parseTaskId + ''}
@@ -417,7 +416,7 @@ class SearchResult extends Component {
               variant="contained"
               disabled={this.state.parseTaskId === ''}
             >
-              Перейти
+              {intl.messages['button.go-to']} result
             </Button>
           </div>
           </> :
@@ -436,4 +435,4 @@ SearchResult.propTypes = {
   taskId: PropTypes.string,
 }
 
-export default withStyles(styles)(SearchResult);
+export default injectIntl(withStyles(styles)(SearchResult));
