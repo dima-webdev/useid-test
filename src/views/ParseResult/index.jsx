@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { resolveClient } from '../../services/apiContext/index.jsx';
 import { TaskContext } from '../../services/taskContext/index.jsx';
+import {injectIntl} from 'react-intl';
 
 import {
   Button,
@@ -439,4 +440,4 @@ ParseResult.propTypes = {
   taskId: PropTypes.string,
 }
 
-export default withStyles(styles)(ParseResult);
+export default injectIntl(withStyles(styles)(ParseResult));

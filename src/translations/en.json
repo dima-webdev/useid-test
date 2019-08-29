@@ -15,7 +15,7 @@
     "vk-group-search-form.project-not-set": "Project is not set!",
     "vk-group-search-form.task-name": "Task name",
     "vk-group-search-form.key-words": "Enter key words",
-    "vk-group-search-form.key-words": "Enter exception words",
+    "vk-group-search-form.exception-words": "Enter exception words",
     "vk-group-search-form.members-min": "members min",
     "vk-group-search-form.members-max": "members max",
 
@@ -33,8 +33,8 @@
     "search-result.table-header-description": "Description",
     "search-result.table-header-followers": "Followers",
     "search-result.not-ready": "This task is not ready yet!",
-    "search-result.audience-input": "1. Введите название аудитории",
+    "search-result.audience-input": "1. Enter the audience name",
     "search-result.audience-input-label": "Audience name",
-    "search-result.wait-for-result": "2. Подождите, пока загрузится результат",
-    "search-result.go-to-result": "Или перейдите к экрану результата"
+    "search-result.wait-for-result": "2. Wait for the the result. It can take some time",
+    "search-result.go-to-result": "You can go to result page"
 }
