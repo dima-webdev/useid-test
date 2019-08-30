@@ -164,8 +164,8 @@ class Topbar extends Component {
                 open={Boolean(anchorEl)}
                 onClose={() => this.handleClose()}
               >
-                <MenuItem onClick={() => this.handleSetLanguge('ru')}>Ru</MenuItem>
-                <MenuItem onClick={() => this.handleSetLanguge('en')}>En</MenuItem>
+                <MenuItem onClick={() => this.handleSetLanguge('ru')}>{intl.messages['lang.ru']}</MenuItem>
+                <MenuItem onClick={() => this.handleSetLanguge('en')}>{intl.messages['lang.en']}</MenuItem>
               </Menu>
             </div>
             <IconButton

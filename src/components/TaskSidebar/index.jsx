@@ -101,12 +101,6 @@ export default function TaskSidebar() {
           >
             {currentProjectTitle}
           </Typography>
-          <Typography
-            className={classes.nameText}
-            variant="subtitle2"
-          >
-            All project tasks
-          </Typography>
           <div className={classes.tasksBlock}>
             {
             tasks.mixedTasks
@@ -133,7 +127,7 @@ export default function TaskSidebar() {
                 </Link>
               } else {
                 return <Link
-                  to={task.type === 'VK_PARSE' ? '/parse-result/' + task.id : '/group-search/' + task.id} 
+                  to={task.type === 'VK_PARSE' ? '/parse-result/' + task.id : '/group-search/' + task.id}
                   key={task.id}>
                   <Typography
                     className={classes.itemCompleted}

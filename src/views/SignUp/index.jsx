@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { resolveClient } from '../../services/apiContext/index.jsx'
 import sha256 from 'js-sha256';
+import {injectIntl} from 'react-intl';
 
 // Externals
 import PropTypes from 'prop-types';
@@ -135,7 +136,7 @@ class SignUp extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, intl } = this.props;
     const {
       values,
       touched,
@@ -235,18 +236,18 @@ class SignUp extends Component {
                     className={classes.title}
                     variant="h2"
                   >
-                    Create new account
+                    {intl.messages['auth.new-account']}
                   </Typography>
                   <Typography
                     className={classes.subtitle}
                     variant="body1"
                   >
-                    Use your work email to create new account.
+                    {intl.messages['auth.new-account-subtitle']}
                   </Typography>
                   <div className={classes.fields}>
                     <TextField
                       className={classes.textField}
-                      label="First name"
+                      label={intl.messages['auth.input-first-name']}
                       name="firstName"
                       onChange={event =>
                         this.handleFieldChange('firstName', event.target.value)
@@ -264,7 +265,7 @@ class SignUp extends Component {
                     )}
                     <TextField
                       className={classes.textField}
-                      label="Last name"
+                      label={intl.messages['auth.input-last-name']}
                       onChange={event =>
                         this.handleFieldChange('lastName', event.target.value)
                       }
@@ -281,7 +282,7 @@ class SignUp extends Component {
                     )}
                     <TextField
                       className={classes.textField}
-                      label="Email address"
+                      label={intl.messages['auth.input-email']}
                       name="email"
                       onChange={event =>
                         this.handleFieldChange('email', event.target.value)
@@ -299,7 +300,7 @@ class SignUp extends Component {
                     )}
                     <TextField
                       className={classes.textField}
-                      label="Password"
+                      label={intl.messages['auth.input-password']}
                       onChange={event =>
                         this.handleFieldChange('password', event.target.value)
                       }
@@ -329,14 +330,13 @@ class SignUp extends Component {
                         className={classes.policyText}
                         variant="body1"
                       >
-                        I have read the &nbsp;
+                        {intl.messages['auth.new-account-terms-1']}&nbsp;
                         <Link
                           className={classes.policyUrl}
                           to="#"
                         >
-                          Terms and Conditions
+                          {intl.messages['auth.new-account-terms-2']}
                         </Link>
-                        .
                       </Typography>
                     </div>
                     {showPolicyError && (
@@ -368,12 +368,7 @@ class SignUp extends Component {
                       size="large"
                       variant="contained"
                     >
-                      Sign up now
-                    </Button>
-                    <Button
-                      onClick={() => this.setState({successDialogOpen: true})}
-                    >
-                      Test
+                      {intl.messages['button.sign-up-now']}
                     </Button>
                     </>
                   )}
@@ -381,12 +376,12 @@ class SignUp extends Component {
                     className={classes.signIn}
                     variant="body1"
                   >
-                    Have an account?{' '}
+                    {intl.messages['auth.have-account']}{' '}
                     <Link
                       className={classes.signInUrl}
                       to="/sign-in"
                     >
-                      Sign In
+                      {intl.messages['button.sign-in']}
                     </Link>
                   </Typography>
                 </form>
@@ -405,7 +400,8 @@ SignUp.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default compose(
-  withRouter,
-  withStyles(styles)
-)(SignUp);
+export default injectIntl(
+  compose(
+    withRouter,
+    withStyles(styles)
+)(SignUp));

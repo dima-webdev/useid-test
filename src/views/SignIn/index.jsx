@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { resolveClient } from '../../services/apiContext/index.jsx';
 import sha256 from 'js-sha256';
+import {injectIntl} from 'react-intl';
 
 // Externals
 import PropTypes from 'prop-types';
@@ -125,7 +126,7 @@ class SignIn extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, intl } = this.props;
     const {
       values,
       touched,
@@ -195,13 +196,13 @@ class SignIn extends Component {
                     className={classes.title}
                     variant="h2"
                   >
-                    Sign in
+                    {intl.messages['auth.sign-in']}
                   </Typography>
                   <Typography
                     className={classes.subtitle}
                     variant="body1"
                   >
-                    Sign in with social media
+                    {intl.messages['auth.sign-in-social']}
                   </Typography>
                   <Button
                     className={classes.facebookButton}
@@ -212,7 +213,7 @@ class SignIn extends Component {
                     disabled
                   >
                     <FacebookIcon className={classes.facebookIcon} />
-                    Login with Facebook
+                    {intl.messages['auth.login-fb']}
                   </Button>
                   <Button
                     className={classes.googleButton}
@@ -222,18 +223,18 @@ class SignIn extends Component {
                     disabled
                   >
                     <GoogleIcon className={classes.googleIcon} />
-                    Login with Google
+                    {intl.messages['auth.login-vk']}
                   </Button>
                   <Typography
                     className={classes.sugestion}
                     variant="body1"
                   >
-                    or login with email address
+                    {intl.messages['auth.login-email']}
                   </Typography>
                   <div className={classes.fields}>
                     <TextField
                       className={classes.textField}
-                      label="Email address"
+                      label={intl.messages['auth.input-email']}
                       name="email"
                       onChange={event =>
                         this.handleFieldChange('email', event.target.value)
@@ -252,7 +253,7 @@ class SignIn extends Component {
                     )}
                     <TextField
                       className={classes.textField}
-                      label="Password"
+                      label={intl.messages['auth.input-password']}
                       name="password"
                       onChange={event =>
                         this.handleFieldChange('password', event.target.value)
@@ -289,19 +290,19 @@ class SignIn extends Component {
                       size="large"
                       variant="contained"
                     >
-                      Sign in now
+                      {intl.messages['button.sign-in-now']}
                     </Button>
                   )}
                   <Typography
                     className={classes.signUp}
                     variant="body1"
                   >
-                    Don't have an account?{' '}
+                    {intl.messages['auth.no-account']}{' '}
                     <Link
                       className={classes.signUpUrl}
                       to="/sign-up"
                     >
-                      Sign up
+                      {intl.messages['button.sign-up']}
                     </Link>
                   </Typography>
                 </form>
@@ -320,7 +321,9 @@ SignIn.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default compose(
-  withRouter,
-  withStyles(styles)
-)(SignIn);
+export default injectIntl(
+  compose(
+    withRouter,
+    withStyles(styles)
+  )(SignIn)
+);

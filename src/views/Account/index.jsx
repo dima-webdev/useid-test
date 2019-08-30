@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
-
-// Externals
 import PropTypes from 'prop-types';
-
-// Material helpers
 import { withStyles } from '@material-ui/core';
-
-// Material components
 import { Grid } from '@material-ui/core';
-
-// Shared layouts
 import { Dashboard as DashboardLayout } from 'layouts';
-
-// Custom components
 import { AccountDetails } from './components';
+import {injectIntl} from 'react-intl';
 
 // Component styles
 const styles = theme => ({
@@ -26,10 +17,10 @@ class Account extends Component {
   state = { tabIndex: 0 };
 
   render() {
-    const { classes } = this.props;
+    const { classes, intl } = this.props;
 
     return (
-      <DashboardLayout title="Account">
+      <DashboardLayout title={intl.messages['account.title']}>
         <div className={classes.root}>
           <Grid
             container
@@ -55,4 +46,4 @@ Account.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Account);
+export default injectIntl(withStyles(styles)(Account));

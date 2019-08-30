@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { withStyles } from '@material-ui/core';
 import { Button, TextField } from '@material-ui/core';
 import { resolveClient } from '../../../../services/apiContext/index.jsx';
+import {injectIntl} from 'react-intl';
 
 import {
   Portlet,
@@ -40,7 +41,7 @@ class CreationForm extends Component {
   };
 
   render() {
-    const { classes, className, ...rest } = this.props;
+    const { classes, className, intl, ...rest } = this.props;
     const { values } = this.state;
 
     const rootClassName = classNames(classes.root, className);
@@ -52,14 +53,14 @@ class CreationForm extends Component {
       >
         <PortletHeader>
           <PortletLabel
-            title="Create New Project"
+            title={intl.messages['project.new-project-title']}
           />
         </PortletHeader>
         <PortletContent>
           <form className={classes.form}>
             <TextField
               className={classes.textField}
-              label="Title"
+              label={intl.messages['project.input-title']}
               name="title"
               margin="dense"
               required
@@ -69,7 +70,7 @@ class CreationForm extends Component {
             />
             <TextField
               className={classes.textField}
-              label="Description"
+              label={intl.messages['project.input-description']}
               name="description"
               margin="dense"
               value={values.description}
@@ -84,7 +85,7 @@ class CreationForm extends Component {
             variant="outlined"
             onClick={() => this.createProject()}
           >
-            Create
+            {intl.messages['button.create']}
           </Button>
         </PortletFooter>
       </Portlet>
@@ -97,4 +98,4 @@ CreationForm.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(CreationForm);
+export default injectIntl(withStyles(styles)(CreationForm));

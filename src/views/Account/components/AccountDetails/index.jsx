@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { Button, TextField, Typography } from '@material-ui/core';
+import {injectIntl} from 'react-intl';
 
 import { resolveClient } from '../../../../services/apiContext/index.jsx';
 
@@ -21,7 +22,7 @@ class Account extends Component {
     lastName: '',
     email: '',
     phone: '',
-    country: 'Russia',
+    country: '',
     login: '',
   };
 
@@ -52,7 +53,7 @@ class Account extends Component {
   };
 
   render() {
-    const { classes, className, ...rest } = this.props;
+    const { classes, className, intl, ...rest } = this.props;
     const { firstName, lastName, phone, country, email } = this.state;
 
     const rootClassName = classNames(classes.root, className);
@@ -73,8 +74,7 @@ class Account extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                helperText="Please specify the first name"
-                label="First name"
+                label={intl.messages['account.input-first-name']}
                 margin="dense"
                 required
                 value={firstName}
@@ -82,7 +82,7 @@ class Account extends Component {
               />
               <TextField
                 className={classes.textField}
-                label="Last name"
+                label={intl.messages['account.input-last-name']}
                 margin="dense"
                 required
                 value={lastName}
@@ -92,7 +92,7 @@ class Account extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                label="Email Address"
+                label={intl.messages['account.input-email']}
                 margin="dense"
                 required
                 value={email}
@@ -100,7 +100,7 @@ class Account extends Component {
               />
               <TextField
                 className={classes.textField}
-                label="Phone Number"
+                label={intl.messages['account.input-phone']}
                 margin="dense"
                 type="number"
                 value={phone}
@@ -110,7 +110,7 @@ class Account extends Component {
             <div className={classes.field}>
               <TextField
                 className={classes.textField}
-                label="Country"
+                label={intl.messages['account.input-country']}
                 margin="dense"
                 required
                 value={country}
@@ -124,13 +124,12 @@ class Account extends Component {
             color="primary"
             variant="contained"
           >
-            Save details
+            {intl.messages['button.save']}
           </Button>
-          <Button variant="contained" href='/settings'>Settings</Button>
           <Button
             onClick={this.handleSignOut}
             href='/sign-in'>
-            Log out
+            {intl.messages['button.log-out']}
           </Button>
         </PortletFooter>
       </Portlet>
@@ -143,4 +142,4 @@ Account.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Account);
+export default injectIntl(withStyles(styles)(Account));

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { ProjectContext } from '../../../../services/projectContext/index.jsx';
+import {injectIntl} from 'react-intl';
 
 // Externals
 import classNames from 'classnames';
@@ -57,7 +58,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { classes, className } = this.props;
+    const { classes, className, intl } = this.props;
 
     const rootClassName = classNames(classes.root, className);
 
@@ -87,7 +88,7 @@ class Sidebar extends Component {
                     className={classes.nameText}
                     variant="h5"
                   >
-                    Current project is not set
+                    {intl.messages['sidebar.no-current-project']}
                   </Typography>
                 )
               } else {
@@ -98,7 +99,7 @@ class Sidebar extends Component {
                       className={classes.nameText}
                       variant="h5"
                     >
-                      Project: {allProjects[currentProject].title}
+                      {intl.messages['sidebar.current-project-title']} {allProjects[currentProject].title}
                     </Typography>
                   )
                 }
@@ -124,7 +125,7 @@ class Sidebar extends Component {
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Dashboard"
+              primary={intl.messages['sidebar.item-dashboard']}
             />
           </ListItem>
 
@@ -139,7 +140,7 @@ class Sidebar extends Component {
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="All tasks"
+              primary={intl.messages['sidebar.item-all-tasks']}
             />
           </ListItem>
           <ListItem
@@ -150,7 +151,7 @@ class Sidebar extends Component {
             <ListItemIcon className={classes.listItemIcon}>
               <Folder />
             </ListItemIcon>
-            <ListItemText primary="Vkontakte" />
+            <ListItemText primary={intl.messages['sidebar.item-vk']} />
             {this.state.vkOpen ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.vkOpen} timeout="auto" unmountOnExit>
@@ -166,7 +167,7 @@ class Sidebar extends Component {
                 </ListItemIcon>
                 <ListItemText
                   classes={{ primary: classes.listItemText }}
-                  primary="Group Search"
+                  primary={intl.messages['sidebar.item-group-search']}
                 />
               </ListItem>
             </List>
@@ -180,7 +181,7 @@ class Sidebar extends Component {
             <ListItemIcon className={classes.listItemIcon}>
               <Folder />
             </ListItemIcon>
-            <ListItemText primary="Projects" />
+            <ListItemText primary={intl.messages['sidebar.item-projects']} />
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
@@ -195,7 +196,7 @@ class Sidebar extends Component {
                 </ListItemIcon>
                 <ListItemText
                   classes={{ primary: classes.listItemText }}
-                  primary="Add new project"
+                  primary={intl.messages['sidebar.projects-new']}
                 />
               </ListItem>
               <ProjectContext.Consumer>
@@ -226,7 +227,7 @@ class Sidebar extends Component {
           disablePadding
           subheader={
             <ListSubheader className={classes.listSubheader}>
-              Support
+              {intl.messages['sidebar.support']}
             </ListSubheader>
           }
         >
@@ -241,7 +242,7 @@ class Sidebar extends Component {
             </ListItemIcon>
             <ListItemText
               classes={{ primary: classes.listItemText }}
-              primary="Customer support"
+              primary={intl.messages['sidebar.item-customer-support']}
             />
           </ListItem>
         </List>
@@ -255,4 +256,4 @@ Sidebar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Sidebar);
+export default injectIntl(withStyles(styles)(Sidebar));
