@@ -23,6 +23,7 @@
     "button.start": "Start",
     "button.export": "Export",
     "button.go-to": "Go To",
+    "button.cancel": "Cancel",
 
     "search-result.vk-groups-title": "VK Groups Search Result",
     "search-result.project": "Project: ",
@@ -36,5 +37,23 @@
     "search-result.audience-input": "1. Enter the audience name",
     "search-result.audience-input-label": "Audience name",
     "search-result.wait-for-result": "2. Wait for the the result. It can take some time",
-    "search-result.go-to-result": "You can go to result page"
+    "search-result.go-to-result": "You can go to result page",
+
+    "parse-result.title": "All Tasks", 
+    "parse-result.task-info": "Task info",
+    "parse-result.task-info-title": "Title: ",
+    "parse-result.task-info-state": "State: ",
+    "parse-result.table-title": "All Tasks",
+    "parse-result.select-project": "not selected",
+    "parse-result.filter-project": "Filter by project",
+    "parse-result.select-search-type": "not selected",
+    "parse-result.filter-search-type": "Filter by search type",
+    "parse-result.select-state": "not selected",
+    "parse-result.filter-state": "Filter by state",
+    "parse-result.table-head-date": "Date",
+    "parse-result.table-head-project": "Project",
+    "parse-result.table-head-name": "Name",
+    "parse-result.table-head-search-type": "Search type",
+    "parse-result.table-head-state": "State",
+    "parse-result.table-head-actions": "Actions"
 }

@@ -36,5 +36,23 @@
     "search-result.audience-input": "1. Введите название аудитории",
     "search-result.audience-input-label": "Название аудитории",
     "search-result.wait-for-result": "2. Подождите, пока загрузится результат",
-    "search-result.go-to-result": "Или перейдите к экрану результата"
+    "search-result.go-to-result": "Или перейдите к экрану результата",
+
+    "parse-result.title": "Все задачи",
+    "parse-result.task-info": "Информация о задаче",
+    "parse-result.task-info-title": "Название: ",
+    "parse-result.task-info-state": "Статус: ",
+    "parse-result.table-title": "Все задачи",
+    "parse-result.select-project": "не выбрано",
+    "parse-result.filter-project": "Фильтровать по проекту",
+    "parse-result.select-search-type": "не выбрано",
+    "parse-result.filter-search-type": "Фильтровать по типу поиска",
+    "parse-result.select-state": "не выбрано",
+    "parse-result.filter-state": "Фильтровать по статусу",
+    "parse-result.table-head-date": "Дата",
+    "parse-result.table-head-project": "Проект",
+    "parse-result.table-head-name": "Название",
+    "parse-result.table-head-search-type": "Тип поиска", 
+    "parse-result.table-head-state": "Статус",
+    "parse-result.table-head-actions": "Действия"
 }

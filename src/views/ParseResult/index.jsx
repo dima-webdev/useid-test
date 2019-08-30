@@ -187,7 +187,7 @@ class ParseResult extends Component {
   };
 
   render() {
-    const { classes, className, match, ...rest } = this.props;
+    const { classes, className, match, intl, ...rest } = this.props;
     const taskId = match.params.taskId || null;
 
     const rootClassName = classNames(classes.root, className);
@@ -198,7 +198,7 @@ class ParseResult extends Component {
     const text = header + btoa(this.state.parsedData);
 
     return (
-      <DashboardLayout title="Раздел в разработке" subtitle="This page is under development">
+      <DashboardLayout title={intl.messages['parse-result.title']}>
       <div className={classes.root}>
         <Grid
           container
@@ -219,14 +219,14 @@ class ParseResult extends Component {
           >
             <PortletHeader>
               <PortletLabel
-                title="Задача с этим id"
+                title={intl.messages['parse-result.task-info']}
               />
             </PortletHeader>
             <PortletContent>
               <div className={classes.field}>
 
-                <Typography>Title: {this.state.taskInfo.title} <br/><br/></Typography>
-                <Typography>State: {this.state.taskInfo.state} <br/><br/></Typography>
+                <Typography>{intl.messages['parse-result.task-info-title']} {this.state.taskInfo.title} <br/><br/></Typography>
+                <Typography>{intl.messages['parse-result.task-info-state']} {this.state.taskInfo.state} <br/><br/></Typography>
 
                 {this.state.taskState === 'RUNNING' ?
                   <CircularProgress className={classes.progress} /> :
@@ -240,7 +240,7 @@ class ParseResult extends Component {
                   href={text}
                   disabled={this.state.taskState !== 'COMPLETED'}
                 >
-                  Export
+                  {intl.messages['button.export']}
                 </Button>
               </div>
 
@@ -256,7 +256,7 @@ class ParseResult extends Component {
           >
             <PortletHeader>
               <PortletLabel
-                title="All Tasks"
+                title={intl.messages['parse-result.table-title']}
               />
             </PortletHeader>
             <PortletContent>
@@ -271,13 +271,13 @@ class ParseResult extends Component {
                   className={classes.selectEmpty}
                 >
                 <MenuItem value="" key="">
-                  Select project
+                  {intl.messages['parse-result.select-project']}
                 </MenuItem>
                 {tasks.projects.map( task => (
                   <MenuItem key={task.id} value={task.id}>{task.title}</MenuItem>
                 ))}
                 </Select>
-                <FormHelperText>Filter by project</FormHelperText>
+                <FormHelperText>{intl.messages['parse-result.filter-project']}</FormHelperText>
               </FormControl>
             }}
             </TaskContext.Consumer>
@@ -291,12 +291,12 @@ class ParseResult extends Component {
                 className={classes.selectEmpty}
               >
                 <MenuItem value="" key="">
-                  Select search type
+                  {intl.messages['parse-result.select-search-type']}
                 </MenuItem>
                 <MenuItem key='groups-search' value='VK_SEARCH'>Groups</MenuItem>
                 <MenuItem key='audience-search' value='VK_PARSE'>Audience</MenuItem>
               </Select>
-              <FormHelperText>Filter by search type</FormHelperText>
+              <FormHelperText>{intl.messages['parse-result.filter-search-type']}</FormHelperText>
             </FormControl>
 
             <FormControl className={classes.formControl}>
@@ -308,13 +308,13 @@ class ParseResult extends Component {
                 className={classes.selectEmpty}
               >
                 <MenuItem value="" key="">
-                  Select status
+                  {intl.messages['parse-result.select-state']}
                 </MenuItem>
                 <MenuItem key='status-completed' value='COMPLETED'>Completed</MenuItem>
                 <MenuItem key='status-running' value='RUNNING'>Running</MenuItem>
                 <MenuItem key='status-aborted' value='ABORTED'>Aborted</MenuItem>
               </Select>
-              <FormHelperText>Filter by status</FormHelperText>
+              <FormHelperText>{intl.messages['parse-result.filter-state']}</FormHelperText>
             </FormControl>
 
             <div className={tableClassName}>
@@ -323,12 +323,12 @@ class ParseResult extends Component {
                 <TableHead>
                   <TableRow>
 
-                    <TableCell align="left">Date</TableCell>
-                    <TableCell align="left">Project</TableCell>
-                    <TableCell align="left">Name</TableCell>
-                    <TableCell align="left">Search Type</TableCell>
-                    <TableCell align="left">Status</TableCell>
-                    <TableCell align="left">Actions</TableCell>
+                    <TableCell align="left">{intl.messages['parse-result.table-head-date']}</TableCell>
+                    <TableCell align="left">{intl.messages['parse-result.table-head-project']}</TableCell>
+                    <TableCell align="left">{intl.messages['parse-result.table-head-name']}</TableCell>
+                    <TableCell align="left">{intl.messages['parse-result.table-head-search-type']}</TableCell>
+                    <TableCell align="left">{intl.messages['parse-result.table-head-state']}</TableCell>
+                    <TableCell align="left">{intl.messages['parse-result.table-head-actions']}</TableCell>
 
                   </TableRow>
                 </TableHead>
@@ -388,7 +388,7 @@ class ParseResult extends Component {
                                 color="primary"
                                 variant="contained"
                               >
-                                Export
+                                {intl.messages['button.export']}
                               </Button>
                               </Link>
                                : <></>
@@ -406,7 +406,7 @@ class ParseResult extends Component {
                               color="primary"
                               variant="contained"
                             >
-                               cancel
+                               {intl.messages['button.cancel']}
                             </Button>
 
                           </>
