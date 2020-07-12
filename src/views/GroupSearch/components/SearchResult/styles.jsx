@@ -59,4 +59,7 @@ export default theme => ({
   progress: {
     margin: theme.spacing(2),
   },
+  styledTable: {
+    tableLayout: 'auto'
+  },
 });

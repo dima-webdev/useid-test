@@ -263,6 +263,8 @@ class SearchResult extends Component {
 
     const text = header + btoa(this.state.parsedData);
 
+    const link = 'https://vk.com/'; // first option
+
     // const a = document.querySelector('a')
     // a.href = text;
 
@@ -294,7 +296,7 @@ class SearchResult extends Component {
                 <Typography>{intl.messages['search-result.accounts-total']} {this.state.allAccountsCount}<br/></Typography>
                 <Typography>{intl.messages['search-result.accounts-selected']} {this.state.accountsCount}<br/></Typography><br/>
                   <div className={tableClassName}>
-                  <Table>
+                  <Table classes={{ root: classes.styledTable}}>
                     <TableHead>
                       <TableRow>
                         <TableCell align="left">
@@ -318,40 +320,44 @@ class SearchResult extends Component {
 
                       {
                         groups
+                        .filter( ({title, description, followersAmount}) => (title && description && followersAmount))
                         .sort((a, b) => b.followersAmount - a.followersAmount)
-                        .map(group => (
-                          <TableRow
-                            className={classes.tableRow}
-                            hover
-                            key={group.entityId}
-                          >
-                            <TableCell className={classes.tableCell, classes.nameCell}>
-                              <div className={classes.tableCellInner}>
-                                <Checkbox
-                                  checked={selected.indexOf(group.entityId) !== -1}
-                                  color="primary"
-                                  onChange={(event) =>
-                                    this.handleSelectOne(event, group.entityId)
-                                  }
-                                  value="true"
-                                />
-                                <Link
-                                  href={"https://vk.com/" + group.title}
-                                  underline='hover'
-                                  target='_blank'
-                                >
-                                    {group.title}
-                                </Link>
-                              </div>
-                            </TableCell>
-                            <TableCell className={classes.tableCell, classes.descCell}>
-                              {group.description}
-                            </TableCell>
-                            <TableCell className={classes.tableCell, classes.descCell}>
-                              {group.followersAmount}
-                            </TableCell>
-                          </TableRow>
-                        ))
+                        .map(group => {
+                          const linkTwo = group.title || `id${group.entityId}`; // second option
+                          return (
+                            <TableRow
+                              className={classes.tableRow}
+                              hover
+                              key={group.entityId}
+                            >
+                              <TableCell className={classes.tableCell, classes.nameCell}>
+                                <div className={classes.tableCellInner}>
+                                  <Checkbox
+                                    checked={selected.indexOf(group.entityId) !== -1}
+                                    color="primary"
+                                    onChange={(event) =>
+                                      this.handleSelectOne(event, group.entityId)
+                                    }
+                                    value="true"
+                                  />
+                                  <Link
+                                    // href={`${link}${group.title}` || `${link}id${group.entityId}`} // first option, more code, not optimized
+                                    href={`https://vk.com/${linkTwo}`} // second option
+                                    underline='hover'
+                                    target='_blank'
+                                  >
+                                      {group.title}
+                                  </Link>
+                                </div>
+                              </TableCell>
+                              <TableCell className={classes.tableCell, classes.descCell} style={{ whiteSpace: 'nowrap' }}>
+                                {group.description}
+                              </TableCell>
+                              <TableCell className={classes.tableCell, classes.descCell} style={{ width: '100%' }}>
+                                {group.followersAmount}
+                              </TableCell>
+                            </TableRow>
+                          )})
                       }
                     </TableBody>
                   </Table>
