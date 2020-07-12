@@ -320,7 +320,7 @@ class SearchResult extends Component {
 
                       {
                         groups
-                        .filter( ({title, description, followersAmount}) => (title && description && followersAmount))
+                        .filter( ({ title, description, followersAmount }) => title && description && followersAmount) // пустые поля: отсут-е title/descr - пустое поле?
                         .sort((a, b) => b.followersAmount - a.followersAmount)
                         .map(group => {
                           const linkTwo = group.title || `id${group.entityId}`; // second option
@@ -346,7 +346,7 @@ class SearchResult extends Component {
                                     underline='hover'
                                     target='_blank'
                                   >
-                                      {group.title}
+                                      {linkTwo}
                                   </Link>
                                 </div>
                               </TableCell>
