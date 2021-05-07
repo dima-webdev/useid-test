@@ -28,7 +28,7 @@
     "react-scripts": "^3.0.1",
     "recompose": "^0.30.0",
     "swagger-client": "^3.9.0",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "validate.js": "^0.13.1"
   },
   "scripts": {
