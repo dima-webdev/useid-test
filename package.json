@@ -15,7 +15,7 @@
     "js-sha256": "^0.9.0",
     "material-table": "^1.40.0",
     "moment": "^2.24.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "prettier-eslint": "^9.0.0",
     "prettier-eslint-cli": "^5.0.0",
     "prop-types": "^15.7.2",
